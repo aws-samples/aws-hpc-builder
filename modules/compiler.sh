@@ -47,18 +47,18 @@ TARGET=$(uname -m)-bing-linux
 #https://registrationcenter-download.intel.com/akdlm/irc_nas/18438/l_HPCKit_p_2022.1.1.97_offline.sh
 
 # Intel OneAPI 2022.2
-#INTEL_COMPILER_VERSION=${2:-2022.2.0.262}
-#INTEL_HPC_COMPILER_VERSION=2022.2.0.191
-#INTEL_COMPILER_DL_ID=18673
-#INTEL_HPC_COMPILER_DL_ID=18679
+INTEL_COMPILER_VERSION=${2:-2022.2.0.262}
+INTEL_HPC_COMPILER_VERSION=2022.2.0.191
+INTEL_COMPILER_DL_ID=18673
+INTEL_HPC_COMPILER_DL_ID=18679
 #https://registrationcenter-download.intel.com/akdlm/irc_nas/18673/l_BaseKit_p_2022.2.0.262_offline.sh
 #https://registrationcenter-download.intel.com/akdlm/irc_nas/18679/l_BaseKit_p_2022.2.0.191_offline.sh
 
 # Intel OneAPI 2022.3
-INTEL_COMPILER_VERSION=${2:-2022.3.1.17310}
-INTEL_HPC_COMPILER_VERSION=2022.3.1.16997
-INTEL_COMPILER_DL_ID=18970
-INTEL_HPC_COMPILER_DL_ID=18975
+#INTEL_COMPILER_VERSION=${2:-2022.3.1.17310}
+#INTEL_HPC_COMPILER_VERSION=2022.3.1.16997
+#INTEL_COMPILER_DL_ID=18970
+#INTEL_HPC_COMPILER_DL_ID=18975
 #https://registrationcenter-download.intel.com/akdlm/irc_nas/18970/l_BaseKit_p_2022.3.1.17310_offline.sh
 #https://registrationcenter-download.intel.com/akdlm/irc_nas/18975/l_HPCKit_p_2022.3.1.16997_offline.sh
 #https://registrationcenter-download.intel.com/akdlm/irc_nas/18852/l_BaseKit_p_2022.3.0.8767_offline.sh

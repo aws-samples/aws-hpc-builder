@@ -78,9 +78,9 @@ set_compiler_env()
     then
 	export FC=$(which ifort)
 	export F77=$(which ifort)
-	export CC=$(which icx)
+	export CC=$(which icc)
 	export CXX=$(which icpc)
-	#export OMPI_CC=icx
+	#export OMPI_CC=icc
 	#export OMPI_CXX=icpc
 	#export OMPI_FC=ifort
     elif [ "${SARCH}" == "amd64" ]
@@ -89,9 +89,9 @@ set_compiler_env()
 	then
 	    export FC=$(which ifort)
 	    export F77=$(which ifort)
-	    export CC=$(which icx)
+	    export CC=$(which icc)
 	    export CXX=$(which icpc)
-	    #export OMPI_CC=icx
+	    #export OMPI_CC=icc
 	    #export OMPI_CXX=icpc
 	    #export OMPI_FC=ifort
 	else
@@ -236,7 +236,7 @@ else
 	else
 	    source ${HPC_PREFIX}/opt/intel/oneapi/compiler/latest/env/vars.sh
 	fi
-        export HPC_TARGET=$(icx -dumpmachine)
+        export HPC_TARGET=$(icc -dumpmachine)
     elif [ "${SARCH}" == "amd64" ]
     then
 	if [ ${USE_INTEL_ICC} -eq 1 ]
@@ -247,7 +247,7 @@ else
 	    else
 	        source ${HPC_PREFIX}/opt/intel/oneapi/compiler/latest/env/vars.sh
 	    fi
-            export HPC_TARGET=$(icx -dumpmachine)
+            export HPC_TARGET=$(icc -dumpmachine)
 	else
 	    source ${HPC_PREFIX}/opt/setenv_AOCC.sh
 	    source $(ls ${HPC_PREFIX}/opt/[0-9.]*/amd-libs.cfg)

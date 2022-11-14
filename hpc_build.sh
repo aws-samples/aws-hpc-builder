@@ -75,13 +75,15 @@ build_hpc_module()
 {
     for module in $(awk -F',' '{ for( i=1; i<=NF; i++ ) print $i }' <<< ${1})
     do
-        source ../modules/${module}.sh DFAULTVERSION
 	# multiple modules, only the match one(last one) use this MODULE_VERSION(original value saved in TARGET_MODULE_VERSION) from command line
 	if [ "${module}" == "${HPC_MODULE}" ]
 	then
             MODULE_VERSION=${TARGET_MODULE_VERSION}
+	    source ../modules/${module}.sh updateversion ${MODULE_VERSION}
+	else
+            source ../modules/${module}.sh DFAULTVERSION
+	    update_$(echo ${module} | tr '-' '_')_version
 	fi
-	update_$(echo ${module} | tr '-' '_')_version
 
 	# 目标模块完全匹配才不安装，非目标模快，模块名匹配就跳过
 	if [ "${module}" != "${HPC_MODULE}" ]
