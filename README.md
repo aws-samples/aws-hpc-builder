@@ -1,4 +1,4 @@
-## AWS HPCBuilder - HPC Application Builder for Cloud
+## AWS HPC Builder - HPC Application Builder for Cloud
 
 [![License](https://img.shields.io/badge/License-MIT--0-blue)](https://opensource.org/licenses/MIT-0)
 
