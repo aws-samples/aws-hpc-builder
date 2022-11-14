@@ -327,4 +327,4 @@ main
 # https://stackoverflow.com/questions/13264274/why-segmentation-fault-is-happening-in-this-openmp-code
 # * Version 8.3 * Add Intel compilers support on AMD platform
 # * Version 9.0 * Rename project from WRF Builder to HPC builder, standardizes and modularizes the build procedure, add osu support
-# * Version 9.1 * Support build VASP on Aarch64(with new module scalapack) and update Intel compiler to 2022.4, AMD compilier to 4.0.0
+# * Version 9.1 * Support build VASP on Aarch64(with new module scalapack) and update Intel compiler to 2022.4, AMD compiler to 4.0.0

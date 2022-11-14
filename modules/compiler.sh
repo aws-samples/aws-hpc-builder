@@ -55,10 +55,12 @@ TARGET=$(uname -m)-bing-linux
 #https://registrationcenter-download.intel.com/akdlm/irc_nas/18679/l_BaseKit_p_2022.2.0.191_offline.sh
 
 # Intel OneAPI 2022.3
-INTEL_COMPILER_VERSION=${2:-2022.3.0.8767}
-INTEL_HPC_COMPILER_VERSION=2022.3.0.8751
-INTEL_COMPILER_DL_ID=18852
-INTEL_HPC_COMPILER_DL_ID=18679
+INTEL_COMPILER_VERSION=${2:-2022.3.1.17310}
+INTEL_HPC_COMPILER_VERSION=2022.3.1.16997
+INTEL_COMPILER_DL_ID=18970
+INTEL_HPC_COMPILER_DL_ID=18975
+#https://registrationcenter-download.intel.com/akdlm/irc_nas/18970/l_BaseKit_p_2022.3.1.17310_offline.sh
+#https://registrationcenter-download.intel.com/akdlm/irc_nas/18975/l_HPCKit_p_2022.3.1.16997_offline.sh
 #https://registrationcenter-download.intel.com/akdlm/irc_nas/18852/l_BaseKit_p_2022.3.0.8767_offline.sh
 #https://registrationcenter-download.intel.com/akdlm/irc_nas/18679/l_HPCKit_p_2022.3.0.8751_offline.sh
 
