@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-MIT--0-blue)](https://opensource.org/licenses/MIT-0)
 
-AWS HPC Builder is a universal HPC application(which is called module for the builder) build and management system that make it easy for you to compile and deploy HPC applications on Amazon Linux 2 and Amazon Linux 2022, which support all major platforms that are Intel/AMD/Graviton. This tool compiles HPC applications and their dependencies with vendor compilers or GNU compilers. It standardizes and modularizes the build procedure across all supported platforms. 
+AWS HPC Builder is a universal HPC application(which is called module for the builder) build and management system that make it easy for you to compile and deploy HPC applications on Amazon Linux 2 and Amazon Linux 2022, which support all major platforms that are Intel/AMD/Graviton. This tool compiles HPC applications(WRF, VASP etc.) and their dependencies with vendor compilers or GNU compilers. It standardizes and modularizes the build procedure across all supported platforms. 
 
 ## Quick Start
 
