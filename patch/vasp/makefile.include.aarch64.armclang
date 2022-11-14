@@ -10,14 +10,14 @@ CPP_OPTIONS = -DHOST=\"LinuxGNU\" \
               -Dfock_dblbuf \
               -D_OPENMP
 
-CPP         = armclang -E -C -w $*$(FUFFIX) >$*$(SUFFIX) $(CPP_OPTIONS)
+CPP         = armflang -E -P -C -w -Mfree $*$(FUFFIX) >$*$(SUFFIX) $(CPP_OPTIONS)
 
-FC          = mpif90 -fopenmp -fno-backslash
-FCL         = mpif90 -fopenmp -fno-backslash
+FC          = mpif90 -fopenmp
+FCL         = mpif90 -fopenmp
 
 FREE        = -ffree-form -ffree-line-length-none
 
-FFLAGS      = -w 
+FFLAGS      = -w -fno-fortran-main $(CPP_OPTIONS) -Mbackslash -ffunc-args-alias
 
 OFLAG       = -O2
 OFLAG_IN    = $(OFLAG)
