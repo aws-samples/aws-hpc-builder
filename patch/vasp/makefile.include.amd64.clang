@@ -56,14 +56,14 @@ FFLAGS     += -Ofast -march=znver3 -ffast-math -fno-math-errno
 
 # BLAS (mandatory)
 AOCL_ROOT ?= /path/to/your/amdblis/installation
-BLAS        = -L${AOCL_ROOT}/lib -lblis-mt
+BLAS        = -L$(AOCL_ROOT)/lib -lblis-mt
 
 # LAPACK (mandatory)
 AOCL_ROOT ?= /path/to/your/amdlibflame/installation
-LAPACK      = -L${AOCL_ROOT}/lib -lflame
+LAPACK      = -L$(AOCL_ROOT)/lib -lflame
 
 # scaLAPACK (mandatory)
-SCALAPACK   = -L${AOCL_ROOT}/lib -lscalapack
+SCALAPACK   = -L$(AOCL_ROOT)/lib -lscalapack
 
 LLIBS      += $(SCALAPACK) $(LAPACK) $(BLAS)
 
@@ -83,9 +83,9 @@ INCS       += -I$(AOCL_ROOT)/include
 #LLIBS          += -L$(WANNIER90_ROOT)/lib -lwannier
 
 # For the fftlib library (experimental)
-#CPP_OPTIONS+= -Dsysv
-#FCL        += fftlib.o
-#CXX_FFTLIB  = g++ -fopenmp -std=c++11 -DFFTLIB_THREADSAFE
-#INCS_FFTLIB = -I./include -I$(AOCL_ROOT)/include
-#LIBS       += fftlib
-#LLIBS      += -ldl
+CPP_OPTIONS+= -Dsysv
+FCL        += fftlib.o
+CXX_FFTLIB  = clang++ -fopenmp -std=c++11 -DFFTLIB_THREADSAFE
+INCS_FFTLIB = -I./include -I$(AOCL_ROOT)/include
+LIBS       += fftlib
+LLIBS      += -ldl

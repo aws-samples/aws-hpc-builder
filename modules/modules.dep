@@ -47,10 +47,9 @@ clang:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
 armgcc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
 
 # vasp's dependencies
+armgcc:openmpi,scalapack,vasp
+armclang:openmpi,scalapack,vasp
 gcc:openmpi,aocl,vasp
 gcc:openmpi,fftw,openblas,scalpack,vasp
 icc:vasp
 clang:openmpi,vasp
-armgcc:vasp
-
-

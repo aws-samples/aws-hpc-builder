@@ -7,8 +7,10 @@
 # **************************************
 GCC_VERSION=${2:-12.2.0}
 ARM_COMPILER_VERSION=${2:-22.1}
-AMD_COMPILER_VERSION=${2:-3.2.0}
-AMD_AOCL_VERSION=${AMD_COMPILER_VERSION}
+AMD_COMPILER_VERSION=${2:-4.0.0}
+#AMD_COMPILER_VERSION=${2:-3.2.0}
+#AMD_AOCL_VERSION=${AMD_COMPILER_VERSION}
+AMD_AOCL_VERSION=4.0
 BINUTILS_VERSION=2.39
 ELFUTILS_VERSION=0.187
 
@@ -19,9 +21,49 @@ TARGET=$(uname -m)-bing-linux
 #TARGET=$(gcc -### 2>&1 | grep "^Target:" | awk '{print $2}')
 # **************************************
 
-INTEL_COMPILER_VERSION=${2:-2022.2.0.262}
+# Intel OneAPI 2021.3
+#INTEL_COMPILER_VERSION=${2:-2021.3.0.3219}
+#INTEL_HPC_COMPILER_VERSION=2021.3.0.3230
+#INTEL_COMPILER_DL_ID=17977
+#INTEL_HPC_COMPILER_DL_ID=17912
+#https://registrationcenter-download.intel.com/akdlm/irc_nas/17977/l_BaseKit_p_2021.3.0.3219_offline.sh
+#https://registrationcenter-download.intel.com/akdlm/irc_nas/17912/l_HPCKit_p_2021.3.0.3230_offline.sh
+
+# Intel OneAPI 2021.4
+#INTEL_COMPILER_VERSION=${2:-2021.4.0.3422}
+#INTEL_HPC_COMPILER_VERSION=2021.4.0.3347
+#INTEL_COMPILER_DL_ID=18236
+#INTEL_HPC_COMPILER_DL_ID=18211
+#https://registrationcenter-download.intel.com/akdlm/irc_nas/18236/l_BaseKit_p_2021.4.0.3422_offline.sh
+#https://registrationcenter-download.intel.com/akdlm/irc_nas/18211/l_HPCKit_p_2021.4.0.3347_offline.sh
+
+# Intel OneAPI 2022.1
+#INTEL_COMPILER_VERSION=${2:-2022.1.2.146}
+#INTEL_HPC_COMPILER_VERSION=2022.1.2.117
+#INTEL_COMPILER_DL_ID=18487
+#INTEL_HPC_COMPILER_DL_ID=18479
+##https://registrationcenter-download.intel.com/akdlm/irc_nas/18487/l_BaseKit_p_2022.1.2.146_offline.sh
+#https://registrationcenter-download.intel.com/akdlm/irc_nas/18479/l_HPCKit_p_2022.1.2.117_offline.sh
+#https://registrationcenter-download.intel.com/akdlm/irc_nas/18438/l_HPCKit_p_2022.1.1.97_offline.sh
+
+# Intel OneAPI 2022.2
+#INTEL_COMPILER_VERSION=${2:-2022.2.0.262}
+#INTEL_HPC_COMPILER_VERSION=2022.2.0.191
+#INTEL_COMPILER_DL_ID=18673
+#INTEL_HPC_COMPILER_DL_ID=18679
+#https://registrationcenter-download.intel.com/akdlm/irc_nas/18673/l_BaseKit_p_2022.2.0.262_offline.sh
+#https://registrationcenter-download.intel.com/akdlm/irc_nas/18679/l_BaseKit_p_2022.2.0.191_offline.sh
+
+# Intel OneAPI 2022.3
+INTEL_COMPILER_VERSION=${2:-2022.3.0.8767}
+INTEL_HPC_COMPILER_VERSION=2022.3.0.8751
+INTEL_COMPILER_DL_ID=18852
+INTEL_HPC_COMPILER_DL_ID=18679
+#https://registrationcenter-download.intel.com/akdlm/irc_nas/18852/l_BaseKit_p_2022.3.0.8767_offline.sh
+#https://registrationcenter-download.intel.com/akdlm/irc_nas/18679/l_HPCKit_p_2022.3.0.8751_offline.sh
+
+
 INTEL_COMPILER_SRC="l_BaseKit_p_${INTEL_COMPILER_VERSION}_offline.sh"
-INTEL_HPC_COMPILER_VERSION=2022.2.0.191
 INTEL_HPC_COMPILER_SRC="l_HPCKit_p_${INTEL_HPC_COMPILER_VERSION}_offline.sh"
 AMD_COMPILER_SRC=aocc-compiler-${AMD_COMPILER_VERSION}.tar
 AMD_AOCL_SRC=aocl-linux-aocc-${AMD_AOCL_VERSION}.tar.gz
@@ -86,7 +128,7 @@ download_compiler() {
 	then
 	    return
         else
-	    wget "https://registrationcenter-download.intel.com/akdlm/irc_nas/18673/${INTEL_COMPILER_SRC}"
+	    wget "https://registrationcenter-download.intel.com/akdlm/irc_nas/${INTEL_COMPILER_DL_ID}/${INTEL_COMPILER_SRC}"
 	    result=$?
 	    if [ ${result} -ne 0 ]
 	    then
@@ -97,7 +139,7 @@ download_compiler() {
 	then
 	    return
         else
-            wget "https://registrationcenter-download.intel.com/akdlm/irc_nas/18679/${INTEL_HPC_COMPILER_SRC}"
+            wget "https://registrationcenter-download.intel.com/akdlm/irc_nas/${INTEL_HPC_COMPILER_DL_ID}/${INTEL_HPC_COMPILER_SRC}"
 	    return $?
 	fi
     elif [ "${SARCH}" == "amd64" ]
@@ -108,7 +150,7 @@ download_compiler() {
             then
 	        return
             else
-	        wget "https://registrationcenter-download.intel.com/akdlm/irc_nas/18673/${INTEL_COMPILER_SRC}"
+	        wget "https://registrationcenter-download.intel.com/akdlm/irc_nas/${INTEL_COMPILER_DL_ID}/${INTEL_COMPILER_SRC}"
 	        if [ $? -ne 0 ]
 	        then
                     return $?
@@ -118,7 +160,7 @@ download_compiler() {
 	    then
 	        return
             else
-                wget "https://registrationcenter-download.intel.com/akdlm/irc_nas/18679/${INTEL_HPC_COMPILER_SRC}"
+                wget "https://registrationcenter-download.intel.com/akdlm/irc_nas/${INTEL_HPC_COMPILER_DL_ID}/${INTEL_HPC_COMPILER_SRC}"
 	        return $?
             fi
 	fi

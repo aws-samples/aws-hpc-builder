@@ -209,7 +209,24 @@ else
         source /etc/profile.d/modules.sh
         #module load mpi/openmpi-${SARCH}
         export MODULEPATH=${MODULEPATH}:${HPC_PREFIX}/opt/modulefiles
-        module load $(module avail 2>&1 | grep -A1 "${HPC_PREFIX}" | tail -n1)
+	if [ "${HPC_COMPILER}" == "armgcc" ]
+	then
+            module load gnu/$(ls ${HPC_PREFIX}/opt/modulefiles/gnu)
+            module load armpl/$(ls ${HPC_PREFIX}/opt/moduledeps/gnu/[0-9.]*/armpl)
+            #module load $(ls ${HPC_PREFIX}/opt/moduledeps/gnu/[0-9.]*/armpl/[0-9.]*)
+        elif [ "${HPC_COMPILER}" == "armclang" ]
+	then
+            module load acfl/$(ls ${HPC_PREFIX}/opt/modulefiles/acfl)
+            module load armpl/$(ls ${HPC_PREFIX}/opt/moduledeps/acfl/[0-9.]*/armpl)
+            #module load $(module avail 2>&1 | grep -A1 "${HPC_PREFIX}" | tail -n1)
+            #module load $(ls ${HPC_PREFIX}/opt/moduledeps/acfl/[0-9.]*/armpl/[0-9.]*)
+            #echo $(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o")) > /tmp/libarmgcc.conf
+	    #echo $(dirname $(find ${HPC_PREFIX}/opt -iname "libgcc_s.so")) > /tmp/libarmgcclib.conf
+	    #sudo mv /tmp/libarmgcc.conf /tmp/libarmgcclib.conf /etc/ld.so.conf.d/
+	    #sudo ldconfig
+	    #export LD_LIBRARY_PATH=$(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o")):${LD_LIBRARY_PATH}
+	    #export LD_LIBRARY_PATH=$(dirname $(find ${HPC_PREFIX}/opt -iname "libgcc_s.so")):${LD_LIBRARY_PATH}
+	fi
         export HPC_TARGET=$(gcc -dumpmachine)
     elif [ "${SARCH}" == "x86_64" ]
     then

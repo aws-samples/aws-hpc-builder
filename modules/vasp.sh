@@ -6,7 +6,19 @@ DISABLE_COMPILER_ENV=false
 
 install_sys_dependency_for_vasp()
 {
-    return
+    # packages for build vasp
+    if [ ${VERSION_ID} -eq 2 ]
+    then
+        sudo yum -y update
+        sudo yum -y install rsync
+    elif [ ${VERSION_ID} -eq 2022 ]
+    then
+        sudo $(dnf check-release-update 2>&1 | grep "dnf update --releasever" | tail -n1) -y 2> /dev/null
+        sudo dnf -y update
+        sudo dnf -y install rsync
+    else
+        exit 1
+    fi
 }
 
 download_vasp()
