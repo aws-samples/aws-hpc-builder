@@ -82,8 +82,8 @@ build_hpc_module()
 	    source ../modules/${module}.sh updateversion ${MODULE_VERSION}
 	else
             source ../modules/${module}.sh DFAULTVERSION
-	    update_$(echo ${module} | tr '-' '_')_version
 	fi
+	update_$(echo ${module} | tr '-' '_')_version
 
 	# 目标模块完全匹配才不安装，非目标模快，模块名匹配就跳过
 	if [ "${module}" != "${HPC_MODULE}" ]

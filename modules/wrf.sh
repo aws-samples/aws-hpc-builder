@@ -268,7 +268,7 @@ install_wrf()
     sudo install -m 755 -D -t /fsx/scripts ../scripts/env.sh 
     sudo install -m 755 -D -t /fsx/scripts ../scripts/detect_efa.sh
     sudo install -m 755 -D -t /fsx/scripts ../scripts/test.sh
-    sudo install -m 755 -D -t /fsx/scripts ../scripts/submit.sbatch
+    sudo install -m 755 -D -t /fsx/scripts ../scripts/submit_wrf.sbatch
     #if [ ${WRF_MAJOR_VERSION} -lt 4 ]
     #then
     #    ./compile -j 1 em_real >> "${HPC_BUILD_LOG}" 2>&1
