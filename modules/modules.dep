@@ -1,0 +1,56 @@
+# osu's dependencies
+gcc:openmpi,osu
+icc:osu
+clang:openmpi,osu
+armgcc:openmpi,osu
+
+# openmpi's dependencies
+gcc:openmpi
+icc:openmpi
+clang:openmpi
+armgcc:openmpi
+
+# hd5's dependencies
+gcc:openmpi,hdf5
+icc:openmpi,hdf5
+clang:openmpi,hdf5
+armgcc:openmpi,hdf5
+
+# pnetcdf's dependencies
+gcc:openmpi,hdf5,pnetcdf
+icc:openmpi,hdf5,pnetcdf
+clang:openmpi,hdf5,pnetcdf
+armgcc:openmpi,hdf5,pnetcdf
+
+# netcdf-c's dependencies
+gcc:openmpi,hdf5,pnetcdf,netcdf-c
+icc:openmpi,hdf5,pnetcdf,netcdf-c
+clang:openmpi,hdf5,pnetcdf,netcdf-c
+armgcc:openmpi,hdf5,pnetcdf,netcdf-c
+
+# netcdf-fortran's dependencies
+gcc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+icc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+clang:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+armgcc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+
+# WRF's dependencies
+gcc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+icc:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+clang:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+armgcc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+
+# WPS's dependencies
+gcc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+icc:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+clang:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+armgcc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+
+# vasp's dependencies
+gcc:openmpi,aocl,vasp
+gcc:openmpi,fftw,openblas,scalpack,vasp
+icc:vasp
+clang:openmpi,vasp
+armgcc:vasp
+
+

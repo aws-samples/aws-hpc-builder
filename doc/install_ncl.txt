@@ -1,0 +1,21 @@
+1.install conda
+
+wget https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh
+sh Miniconda2-latest-Linux-x86_64.sh
+
+2.install ncl
+
+conda create -n ncl_stable -c conda-forge ncl
+source activate ncl_stable
+
+3.download ncl script
+wget http://www.ncl.ucar.edu/Training/Tutorials/WRF_Users_Workshop/Scripts/wrf_demo_getvar_all.ncl
+
+put ncl script into the wrfout_ folder, change change f = addfile("wrfout_d01_2008-09-29_16:30:00","r") with your wrfout file name
+
+4.run the ncl script
+ncl -f wrf_demo_getvar_all.ncl > wrf_demo_getvar_all.result
+
+5.check and compare the result:
+grep wind wrf_demo_getvar_all.result
+

@@ -1,0 +1,14 @@
+diff -urN WRF-3.x.orig/arch/configure_new.defaults WRF-3.x/arch/configure_new.defaults
+--- WRF-3.x.orig/arch/configure_new.defaults	2017-08-17 01:21:45.000000000 +0000
++++ WRF-3.x/arch/configure_new.defaults	2022-09-19 02:43:42.249538289 +0000
+@@ -296,8 +296,8 @@
+ DESCRIPTION     =       INTEL ($SFC/$SCC)
+ DMPARALLEL      =       # 1
+ OMPCPP          =       # -D_OPENMP
+-OMP             =       # -openmp -fpp -auto
+-OMPCC           =       # -openmp -fpp -auto
++OMP             =       # -qopenmp -fpp -auto
++OMPCC           =       # -qopenmp -fpp -auto
+ SFC             =       ifort
+ SCC             =       icc
+ CCOMP           =       icc

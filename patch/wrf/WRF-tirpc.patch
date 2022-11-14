@@ -1,0 +1,22 @@
+diff --color -urN WRF-3.x.orig/configure WRF-3.x/configure
+--- WRF-3.x.orig/configure	2017-08-17 09:21:45.000000000 +0800
++++ WRF-3.x/configure	2022-09-22 01:38:09.515652650 +0800
+@@ -1093,6 +1093,18 @@
+   echo "*****************************************************************************"
+ fi
+ 
++# testing for location of rpc/types.h file, used in landuse
++# issue https://forum.mmm.ucar.edu/threads/resolved-problem-compiling-wrfv4-0-on-fedora-28-landread-error.61/
++sed -e '/^CFLAGS /s/=/& -DLANDREAD_STUB/' configure.wrf > configure.wrf.edit
++mv configure.wrf.edit configure.wrf
++echo newer location of RPC
++echo "************************** W A R N I N G ************************************"
++echo " "
++echo "The moving nest option is not available due to missing rpc/types.h file."
++echo "Copy landread.c.dist to landread.c in share directory to bypass compile error."
++echo " "
++echo "*****************************************************************************"
++
+ # testing for netcdf4 IO features
+ if [ -n "$NETCDF4" ] ; then
+   if [ $NETCDF4 -eq 1 ] ; then

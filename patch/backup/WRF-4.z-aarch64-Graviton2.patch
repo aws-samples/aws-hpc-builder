@@ -1,0 +1,12 @@
+diff --color -urN WRF-4.z.orig/arch/configure.defaults WRF-4.z/arch/configure.defaults
+--- WRF-4.z.orig/arch/configure.defaults	2021-01-16 01:21:58.000000000 +0800
++++ WRF-4.z/arch/configure.defaults	2022-09-20 23:42:57.282260800 +0800
+@@ -66,7 +66,7 @@
+ LDFLAGS_LOCAL   =
+ CPLUSPLUSLIB    =       
+ ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
+-FCOPTIM         =       -O2 -ftree-vectorize -funroll-loops
++FCOPTIM         =       -Ofast -march=armv8.2-a+fp16+rcpc+dotprod -funroll-loops -fno-expensive-optimizations -fno-reciprocal-math -fsigned-zeros -fno-unsafe-math-optimizations
+ FCREDUCEDOPT	=       $(FCOPTIM)
+ FCNOOPT         =       -O0
+ FCDEBUG         =       # -g $(FCNOOPT)  # -fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow

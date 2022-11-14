@@ -1,0 +1,28 @@
+diff -urN WRF-3.x.orig/arch/configure_new.defaults WRF-3.x/arch/configure_new.defaults
+--- WRF-3.x.orig/arch/configure_new.defaults	2017-08-17 01:21:45.000000000 +0000
++++ WRF-3.x/arch/configure_new.defaults	2022-09-30 14:36:43.227894203 +0000
+@@ -756,18 +756,18 @@
+ CC_TOOLS        =      $(SCC) 
+ 
+ ###########################################################
+-#ARCH    Linux x86_64 ppc64le, gfortran compiler with gcc  #serial smpar dmpar dm+sm
++#ARCH    Linux x86_64 ppc64le, gfortran compiler with clang  #serial smpar dmpar dm+sm
+ #
+-DESCRIPTION     =       GNU ($SFC/$SCC)
++DESCRIPTION     =       BSD ($SFC/$SCC)
+ DMPARALLEL      =       # 1
+ OMPCPP          =       # -D_OPENMP
+ OMP             =       # -fopenmp
+ OMPCC           =       # -fopenmp
+-SFC             =       gfortran
+-SCC             =       gcc
+-CCOMP           =       gcc
++SFC             =       flang
++SCC             =       clang
++CCOMP           =       clang
+ DM_FC           =       mpif90 -f90=$(SFC)
+-DM_CC           =       mpicc -cc=$(SCC)
++DM_CC           =       mpicc -cc=$(SCC) -DMPI2_SUPPORT
+ FC              =       CONFIGURE_FC
+ CC              =       CONFIGURE_CC
+ LD              =       $(FC)

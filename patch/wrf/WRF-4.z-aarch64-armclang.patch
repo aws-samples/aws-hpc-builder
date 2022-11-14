@@ -1,0 +1,52 @@
+diff -urN WRF-4.z.orig/arch/configure.defaults WRF-4.z/arch/configure.defaults
+--- WRF-4.z.orig/arch/configure.defaults	2021-01-15 17:21:58.000000000 +0000
++++ WRF-4.z/arch/configure.defaults	2022-10-01 13:25:06.547306236 +0000
+@@ -44,18 +44,18 @@
+ CC_TOOLS        =      cc 
+ 
+ ###########################################################
+-#ARCH    Linux i486 i586 i686 armv7l aarch64, gfortran compiler with gcc #serial smpar dmpar dm+sm
++#ARCH    Linux i486 i586 i686 armv7l aarch64, flang compiler with clang #serial smpar dmpar dm+sm
+ #
+-DESCRIPTION     =       GNU ($SFC/$SCC)
++DESCRIPTION     =       BSD ($SFC/$SCC)
+ DMPARALLEL      =       # 1
+ OMPCPP          =       # -D_OPENMP
+ OMP             =       # -fopenmp
+ OMPCC           =       # -fopenmp
+-SFC             =       gfortran
+-SCC             =       gcc
+-CCOMP           =       gcc
++SFC             =       flang
++SCC             =       clang
++CCOMP           =       clang
+ DM_FC           =       mpif90 -f90=$(SFC)
+-DM_CC           =       mpicc -cc=$(SCC)
++DM_CC           =       mpicc
+ FC              =       CONFIGURE_FC
+ CC              =       CONFIGURE_CC
+ LD              =       $(FC)
+@@ -66,7 +66,7 @@
+ LDFLAGS_LOCAL   =
+ CPLUSPLUSLIB    =       
+ ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
+-FCOPTIM         =       -O2 -ftree-vectorize -funroll-loops
++FCOPTIM         =       -O3 -ftree-vectorize -funroll-loops
+ FCREDUCEDOPT	=       $(FCOPTIM)
+ FCNOOPT         =       -O0
+ FCDEBUG         =       # -g $(FCNOOPT)  # -fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow
+@@ -79,11 +79,11 @@
+ FCBASEOPTS      =       $(FCBASEOPTS_NO_G) $(FCDEBUG)
+ MODULE_SRCH_FLAG =
+ TRADFLAG        =      CONFIGURE_TRADFLAG
+-CPP             =      /lib/cpp CONFIGURE_CPPFLAGS
+-AR              =      ar
++CPP             =      cpp CONFIGURE_CPPFLAGS
++AR              =      armllvm-ar
+ ARFLAGS         =      ru
+ M4              =      m4 -B 14000
+-RANLIB          =      ranlib
++RANLIB          =      armllvm-ranlib
+ RLFLAGS		=	
+ CC_TOOLS        =      $(SCC) 
+ 

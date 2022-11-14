@@ -1,0 +1,23 @@
+diff -urN WRF-3.x.orig/arch/configure_new.defaults WRF-3.x/arch/configure_new.defaults
+--- WRF-3.x.orig/arch/configure_new.defaults	2017-08-17 01:21:45.000000000 +0000
++++ WRF-3.x/arch/configure_new.defaults	2022-09-30 06:29:04.964189265 +0000
+@@ -767,7 +767,7 @@
+ SCC             =       gcc
+ CCOMP           =       gcc
+ DM_FC           =       mpif90 -f90=$(SFC)
+-DM_CC           =       mpicc -cc=$(SCC)
++DM_CC           =       mpicc -DMPI2_SUPPORT
+ FC              =       CONFIGURE_FC
+ CC              =       CONFIGURE_CC
+ LD              =       $(FC)
+@@ -782,8 +782,8 @@
+ FCREDUCEDOPT	=       $(FCOPTIM)
+ FCNOOPT		=       -O0
+ FCDEBUG         =       # -g $(FCNOOPT) # -ggdb -fbacktrace -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow
+-FORMAT_FIXED    =       -ffixed-form
+-FORMAT_FREE     =       -ffree-form -ffree-line-length-none
++FORMAT_FIXED    =       -ffixed-form -fallow-argument-mismatch -fallow-invalid-boz
++FORMAT_FREE     =       -ffree-form -ffree-line-length-none -fallow-argument-mismatch -fallow-invalid-boz
+ FCSUFFIX        =       
+ BYTESWAPIO      =       -fconvert=big-endian -frecord-marker=4
+ FCBASEOPTS_NO_G =       -w $(FORMAT_FREE) $(BYTESWAPIO)

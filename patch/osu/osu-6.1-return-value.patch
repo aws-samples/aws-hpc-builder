@@ -1,0 +1,33 @@
+diff --color -urN osu-micro-benchmarks-6.1.orig/c/util/osu_util.h osu-micro-benchmarks-6.1/c/util/osu_util.h
+--- osu-micro-benchmarks-6.1.orig/c/util/osu_util.h	2022-09-19 21:48:03.000000000 +0800
++++ osu-micro-benchmarks-6.1/c/util/osu_util.h	2022-10-07 23:06:00.159449806 +0800
+@@ -367,7 +367,7 @@
+ extern int process_one_sided_options (int opt, char *arg);
+ int process_options (int argc, char *argv[]);
+ int setAccel(char);
+-void omb_ddt_process_options(char *optarg);
++int omb_ddt_process_options(char *optarg);
+
+ /*
+  * Set Benchmark Properties
+diff --color -urN osu-micro-benchmarks-6.1.orig/c/util/osu_util_mpi.c osu-micro-benchmarks-6.1/c/util/osu_util_mpi.c
+--- osu-micro-benchmarks-6.1.orig/c/util/osu_util_mpi.c	2022-09-19 21:48:03.000000000 +0800
++++ osu-micro-benchmarks-6.1/c/util/osu_util_mpi.c	2022-10-07 23:09:09.434085734 +0800
+@@ -204,7 +204,7 @@
+     fflush(stdout);
+ }
+
+-void omb_ddt_process_options(char *optarg)
++int omb_ddt_process_options(char *optarg)
+ {
+     char *option;
+     if (NULL == optarg) {
+@@ -2006,7 +2006,7 @@
+     int displacements[OMB_DDT_INDEXED_MAX_LENGTH] = {0};
+
+     if (0 == options.omb_enable_ddt) {
+-        return;
++        return 0;
+     }
+     switch (options.ddt_type) {
+         case OMB_DDT_CONTIGUOUS:
