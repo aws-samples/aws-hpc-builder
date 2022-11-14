@@ -36,7 +36,7 @@ armgcc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
 
 # WRF's dependencies
 gcc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-icc:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+icc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 clang:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 armgcc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 
