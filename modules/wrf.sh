@@ -250,14 +250,16 @@ install_wrf()
 
     if [ "${WRF_CONFIG+set}" == "set" ]
     then
-        echo -e "${WRF_CONFIG}\n1\n" | ./configure
+        echo -e "${WRF_CONFIG}\n1\n" | ./configure || exit 1
     else 
 	echo "unsupported platform"
 	exit 1
     fi
 
     # 默认是 -j 2, 如果有问题,尝试改成 -j 1
-    ./compile em_real >> "${HPC_BUILD_LOG}" 2>&1 && cd ..
+    ./compile em_real >> "${HPC_BUILD_LOG}" 2>&1 || exit 2
+    cd ..
+
     if [ "${WRF_VERSION}" == "git" ]
     then
 	sudo mv WRF "${HPC_PREFIX}/${HPC_COMPILER}/WRF-${WRF_VERSION}"
