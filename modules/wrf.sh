@@ -78,7 +78,7 @@ check_wrf_config()
     if [ "${SARCH}" == "aarch64" ]
     then
 	export WRF_CONFIG=4
-    elif [ "${SARCH}" == "x86_64" ] && [ "${HPC_COMPILER}" == "icc" ]
+    elif [ "${HPC_COMPILER}" == "icc" ]
     then
     	export WRF_CONFIG=16
     else
