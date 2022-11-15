@@ -37,9 +37,17 @@ fix_lib_missing()
         sudo ldconfig
     elif [ "${SARCH}" == "amd64" ]
     then
-        echo "${HPC_PREFIX}/opt/aocc-compiler-${AMD_COMPILER_VERSION}/lib" > /tmp/libomp.conf
-        sudo mv /tmp/libomp.conf /etc/ld.so.conf.d/
-        sudo ldconfig
+	if [ "${HPC_COMPILER}" == "icc" ]
+	then
+            INTEL_ICC_VERSION=$(ls -lhd ${HPC_PREFIX}/opt/intel/oneapi/compiler/latest | awk '{print $NF}')
+	    echo "${HPC_PREFIX}/opt/intel/oneapi/compiler/${INTEL_ICC_VERSION}/linux/compiler/lib/intel64_lin/" > /tmp/libimf.conf
+	    sudo mv /tmp/libimf.conf /etc/ld.so.conf.d/
+	    sudo ldconfig
+	else
+	    echo "${HPC_PREFIX}/opt/aocc-compiler-${AMD_COMPILER_VERSION}/lib" > /tmp/libomp.conf
+	    sudo mv /tmp/libomp.conf /etc/ld.so.conf.d/
+	    sudo ldconfig
+	fi
     fi
 }
 
