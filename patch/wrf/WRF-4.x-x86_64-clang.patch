@@ -1,12 +1,12 @@
 diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
---- WRF-4.x.orig/arch/configure.defaults	2017-08-17 01:21:45.000000000 +0000
-+++ WRF-4.x/arch/configure.defaults	2022-09-30 22:24:11.729864978 +0000
-@@ -756,18 +756,18 @@
+--- WRF-4.x.orig/arch/configure.defaults	2021-01-15 17:21:58.000000000 +0000
++++ WRF-4.x/arch/configure.defaults	2022-11-14 23:50:46.658836696 +0000
+@@ -757,18 +757,18 @@
  CC_TOOLS        =      $(SCC) 
  
  ###########################################################
 -#ARCH    Linux x86_64 ppc64le, gfortran compiler with gcc  #serial smpar dmpar dm+sm
-+#ARCH    Linux x86_64 ppc64le, gfortran compiler with clang  #serial smpar dmpar dm+sm
++#ARCH    Linux x86_64 ppc64le, flang compiler with clang  #serial smpar dmpar dm+sm
  #
 -DESCRIPTION     =       GNU ($SFC/$SCC)
 +DESCRIPTION     =       BSD ($SFC/$SCC)
@@ -26,7 +26,7 @@ diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
  FC              =       CONFIGURE_FC
  CC              =       CONFIGURE_CC
  LD              =       $(FC)
-@@ -791,10 +791,10 @@
+@@ -793,10 +793,10 @@
  MODULE_SRCH_FLAG =     
  TRADFLAG        =      CONFIGURE_TRADFLAG
  CPP             =      /lib/cpp CONFIGURE_CPPFLAGS
@@ -39,3 +39,15 @@ diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
  RLFLAGS		=	
  CC_TOOLS        =      $(SCC) 
  
+diff -urN WRF-4.x.orig/configure WRF-4.x/configure
+--- WRF-4.x.orig/configure	2021-01-15 17:21:58.000000000 +0000
++++ WRF-4.x/configure	2022-11-14 23:49:51.673961645 +0000
+@@ -686,7 +686,7 @@
+   foo=foo_$$
+ 
+   grep '^SFC' configure.wrf | grep -i 'gfortran' > /dev/null
+-  if [ $? ]
++  if [ $? -eq 0 ]
+   then
+ 
+     cat > ${foo}.F << EOF
