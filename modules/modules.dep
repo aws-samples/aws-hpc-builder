@@ -1,14 +1,23 @@
 # osu's dependencies
 gcc:openmpi,osu
+gcc:mpich,osu
 icc:osu
 clang:openmpi,osu
+clang:mpich,osu
 armgcc:openmpi,osu
+armgcc:mpich,osu
 
 # openmpi's dependencies
 gcc:openmpi
 icc:openmpi
 clang:openmpi
 armgcc:openmpi
+
+# mpich's dependencies
+gcc:mpich
+icc:mpich
+clang:mpich
+armgcc:mpich
 
 # hd5's dependencies
 gcc:openmpi,hdf5
