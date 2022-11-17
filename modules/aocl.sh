@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
-AMD_AOCL_VERSION=${2:-3.2.0}
+AMD_AOCL_VERSION=${2:-4.0}
 # to build the packages in the smame host, the first part of the TARGET much compatible(identical)
 TARGET=$(uname -m)-bing-linux
 #HOST=$(gcc -dumpmachine)
@@ -18,7 +18,7 @@ install_sys_dependency_for_aocl()
 }
 
 download_aocl() {
-    if [ -f ${AMD_AOCL_SRC} ] && [ ${USE_GNU} -eq 1 ]
+    if [ -f ${AMD_AOCL_SRC} ]
     then
         return
     else

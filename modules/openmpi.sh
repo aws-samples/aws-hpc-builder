@@ -56,6 +56,12 @@ download_openmpi() {
 
 install_openmpi()
 {
+    if [ ${HPC_MPI} != "openmpi" ]
+    then
+	echo "Current MPI is not openmpi, installation stopped" 1>&2
+	return 1
+    fi
+    
     sudo rm -rf "${OPENMPI_SRC%.tar.gz}"
     tar xf "${OPENMPI_SRC}"
     cd "${OPENMPI_SRC%.tar.gz}"
@@ -66,13 +72,13 @@ install_openmpi()
 	    #--build=${WRF_TARGET} \
 	    #--host=${WRF_TARGET} \
 	    #--target=${WRF_TARGET} \
-	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER} \
+	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --with-ofi=/opt/amazon/efa
     else
 	    #--build=${WRF_TARGET} \
 	    #--host=${WRF_TARGET} \
 	    #--target=${WRF_TARGET}
-	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}
+	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
     fi
     result=$?
     if [ $result -ne 0 ]

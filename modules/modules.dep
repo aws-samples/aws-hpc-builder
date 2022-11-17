@@ -1,64 +1,187 @@
 # osu's dependencies
-gcc:openmpi,osu
-gcc:mpich,osu
-icc:osu
-clang:openmpi,osu
-clang:mpich,osu
-armgcc:openmpi,osu
-armgcc:mpich,osu
+amdclang-openmpi:openmpi,osu
+amdclang-mpich:mpich,osu
+armgcc-opempi:openmpi,osu
+armgcc-mpich:mpich,osu
+armclang-openmpi:openmpi,osu
+armclang-mpich:mpich,osu
+clang-openmpi:openmpi,osu
+clang-mpich:mpich,osu
+gcc-openmpi:openmpi,osu
+gcc-mpich:mpich,osu
+icc-openmpi:openmpi,osu
+icc-mpich:mpich,osu
+icc-intelmpi:osu
+icx-openmpi:openmpi,osu
+icx-mpich:mpich,osu
+icx-intelmpi:osu
 
 # openmpi's dependencies
-gcc:openmpi
-icc:openmpi
-clang:openmpi
-armgcc:openmpi
+armclang-openmpi:openmpi
+armgcc-openmpi:openmpi
+clang-openmpi:openmpi
+gcc-openmpi:openmpi
+icc-openmpi:openmpi
+icx-openmpi:openmpi
 
 # mpich's dependencies
-gcc:mpich
-icc:mpich
-clang:mpich
-armgcc:mpich
+armclang-mpich:mpich
+armgcc-mpich:mpich
+gcc-mpich:mpich
+icc-mpich:mpich
+icx-mpich:mpich
+clang-mpich:mpich
 
-# hd5's dependencies
-gcc:openmpi,hdf5
-icc:openmpi,hdf5
-clang:openmpi,hdf5
-armgcc:openmpi,hdf5
+# hdf5's dependencies
+amdclang-openmpi:openmpi,hdf5
+amdclang-mpich:mpich,hdf5
+armgcc-opempi:openmpi,hdf5
+armgcc-mpich:mpich,hdf5
+armclang-openmpi:openmpi,hdf5
+armclang-mpich:mpich,hdf5
+clang-openmpi:openmpi,hdf5
+clang-mpich:mpich,hdf5
+gcc-openmpi:openmpi,hdf5
+gcc-mpich:mpich,hdf5
+icc-openmpi:openmpi,hdf5
+icc-mpich:mpich,hdf5
+icc-intelmpi:hdf5
+icx-openmpi:openmpi,hdf5
+icx-mpich:mpich,hdf5
+icx-intelmpi:hdf5
 
 # pnetcdf's dependencies
-gcc:openmpi,hdf5,pnetcdf
-icc:openmpi,hdf5,pnetcdf
-clang:openmpi,hdf5,pnetcdf
-armgcc:openmpi,hdf5,pnetcdf
+amdclang-openmpi:openmpi,hdf5,pnetcdf
+amdclang-mpich:mpich,hdf5,pnetcdf
+armgcc-opempi:openmpi,hdf5,pnetcdf
+armgcc-mpich:mpich,hdf5,pnetcdf
+armclang-openmpi:openmpi,hdf5,pnetcdf
+armclang-mpich:mpich,hdf5,pnetcdf
+clang-openmpi:openmpi,hdf5,pnetcdf
+clang-mpich:mpich,hdf5,pnetcdf
+gcc-openmpi:openmpi,hdf5,pnetcdf
+gcc-mpich:mpich,hdf5,pnetcdf
+icc-openmpi:openmpi,hdf5,pnetcdf
+icc-mpich:mpich,hdf5,pnetcdf
+icc-intelmpi:hdf5,pnetcdf
+icx-openmpi:openmpi,hdf5,pnetcdf
+icx-mpich:mpich,hdf5,pnetcdf
+icx-intelmpi:hdf5,pnetcdf
 
 # netcdf-c's dependencies
-gcc:openmpi,hdf5,pnetcdf,netcdf-c
-icc:openmpi,hdf5,pnetcdf,netcdf-c
-clang:openmpi,hdf5,pnetcdf,netcdf-c
-armgcc:openmpi,hdf5,pnetcdf,netcdf-c
+amdclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c
+amdclang-mpich:mpich,hdf5,pnetcdf,netcdf-c
+armgcc-opempi:openmpi,hdf5,pnetcdf,netcdf-c
+armgcc-mpich:mpich,hdf5,pnetcdf,netcdf-c
+armclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c
+armclang-mpich:mpich,hdf5,pnetcdf,netcdf-c
+clang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c
+clang-mpich:mpich,hdf5,pnetcdf,netcdf-c
+gcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c
+gcc-mpich:mpich,hdf5,pnetcdf,netcdf-c
+icc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c
+icc-mpich:mpich,hdf5,pnetcdf,netcdf-c
+icc-intelmpi:hdf5,pnetcdf,netcdf-c
+icx-openmpi:openmpi,hdf5,pnetcdf,netcdf-c
+icx-mpich:mpich,hdf5,pnetcdf,netcdf-c
+icx-intelmpi:hdf5,pnetcdf,netcdf-c
 
 # netcdf-fortran's dependencies
-gcc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
-icc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
-clang:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
-armgcc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+amdclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+amdclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+armgcc-opempi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+armgcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+armclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+armclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+clang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+clang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+gcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+gcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+icc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+icc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+icc-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran
+icx-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+icx-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+icx-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran
 
 # WRF's dependencies
-gcc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-icc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-clang:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-armgcc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+amdclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+amdclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+armgcc-opempi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+armgcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+armclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+armclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+clang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+clang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+gcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+gcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+icc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+icc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+icc-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+icx-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+icx-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+icx-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 
 # WPS's dependencies
-gcc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
-icc:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
-clang:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
-armgcc:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+amdclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+amdclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+armgcc-opempi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+armgcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+armclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+armclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+clang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+clang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+gcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+gcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+icc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+icc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+icc-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+icx-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+icx-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+icx-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 
 # vasp's dependencies
-armgcc:openmpi,scalapack,vasp
-armclang:openmpi,scalapack,vasp
-gcc:openmpi,aocl,vasp
-gcc:openmpi,fftw,openblas,scalpack,vasp
-icc:vasp
-clang:openmpi,vasp
+amdclang-openmpi:openmpi,vasp
+amdclang-mpich:mpich,vasp
+armgcc-opempi:openmpi,scalapack,vasp
+armgcc-mpich:mpich,scalapack,vasp
+armclang-openmpi:openmpi,scalapack,vasp
+armclang-mpich:mpich,scalapack,vasp
+clang-openmpi:openmpi,fftw,lapack,openblas,scalapack,vasp
+clang-mpich:mpich,fftw,lapack,openblas,scalapack,vasp
+gcc-openmpi:openmpi,fftw,lapack,openblas,scalapack,vasp
+gcc-mpich:mpich,fftw,lapack,openblas,scalapack,vasp
+icc-openmpi:openmpi,vasp
+icc-mpich:mpich,vasp
+icc-intelmpi:vasp
+icx-openmpi:openmpi,vasp
+icx-mpich:mpich,vasp
+icx-intelmpi:vasp
+
+# fftw's dependencies
+clang-openmpi:openmpi,fftw
+clang-mpich:mpich,fftw
+gcc-openmpi:openmpi,fftw
+gcc-mpich:mpich,fftw
+
+# lapack's dependencies
+clang-openmpi:openmpi,fftw,lapack
+clang-mpich:mpich,fftw,lapack
+gcc-openmpi:openmpi,fftw,lapack
+gcc-mpich:mpich,fftw,lapack
+
+# openblas's dependencies
+clang-openmpi:openmpi,fftw,lapack,openblas
+clang-mpich:mpich,fftw,lapack,openblas
+gcc-openmpi:openmpi,fftw,lapack,openblas
+gcc-mpich:mpich,fftw,lapack,openblas
+
+# scalapack's dependencies
+clang-openmpi:openmpi,fftw,lapack,openblas,scalapack
+clang-mpich:mpich,fftw,lapack,openblas,scalapack
+gcc-openmpi:openmpi,fftw,lapack,openblas,scalapack
+gcc-mpich:mpich,fftw,lapack,openblas,scalapack
+armgcc-opempi:openmpi,scalapack
+armgcc-mpich:mpich,scalapack
+armclang-openmpi:openmpi,scalapack
+armclang-mpich:mpich,scalapack

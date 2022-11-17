@@ -13,41 +13,30 @@ fix_clang_ld()
 
 fix_lib_missing()
 {
-    if [ ${USE_GNU} -eq 1 ]
+    if [ "${HPC_COMPILER}" == "gcc" ]
     then
         echo "${HPC_PREFIX}/opt/gnu/lib64" > /tmp/libgfortran.conf
         sudo mv /tmp/libgfortran.conf /etc/ld.so.conf.d/
         sudo ldconfig
-        return
-    fi
-
-    # Intel 编译器找不到 libimf 的问题: https://stackoverflow.com/questions/70687930/intel-oneapi-2022-libimf-so-no-such-file-or-directory-during-openmpi-compila
-    if [ "${SARCH}" == "x86_64" ]
+    elif [ "${HPC_COMPILER}" == "icc" ]
     then
+        # Intel 编译器找不到 libimf 的问题: https://stackoverflow.com/questions/70687930/intel-oneapi-2022-libimf-so-no-such-file-or-directory-during-openmpi-compila
         INTEL_ICC_VERSION=$(ls -lhd ${HPC_PREFIX}/opt/intel/oneapi/compiler/latest | awk '{print $NF}')
         echo "${HPC_PREFIX}/opt/intel/oneapi/compiler/${INTEL_ICC_VERSION}/linux/compiler/lib/intel64_lin/" > /tmp/libimf.conf
         sudo mv /tmp/libimf.conf /etc/ld.so.conf.d/
         sudo ldconfig
-    # ARM 编译器找不到 libgfortran 的问题
-    elif [ "${SARCH}" == "aarch64" ]
+    elif [ "${HPC_COMPILER}" == "armgcc" ]
     then
+        # ARM 编译器找不到 libgfortran 的问题
         ARM_GCC_VERSION=$(module avail 2>&1 | grep -A1 "${HPC_PREFIX}" | tail -n1 | awk '{print $3}' | sed s"%gnu/%%g")
         echo "${HPC_PREFIX}/opt/gcc-${ARM_GCC_VERSION}_Generic-AArch64_RHEL-${S_VERSION_ID}_aarch64-linux/lib64/" > /tmp/libgfortran.conf
         sudo mv /tmp/libgfortran.conf /etc/ld.so.conf.d/
         sudo ldconfig
-    elif [ "${SARCH}" == "amd64" ]
+    elif [ "${HPC_COMPILER}" == "amdclang" ]
     then
-	if [ "${HPC_COMPILER}" == "icc" ]
-	then
-            INTEL_ICC_VERSION=$(ls -lhd ${HPC_PREFIX}/opt/intel/oneapi/compiler/latest | awk '{print $NF}')
-	    echo "${HPC_PREFIX}/opt/intel/oneapi/compiler/${INTEL_ICC_VERSION}/linux/compiler/lib/intel64_lin/" > /tmp/libimf.conf
-	    sudo mv /tmp/libimf.conf /etc/ld.so.conf.d/
-	    sudo ldconfig
-	else
-	    echo "${HPC_PREFIX}/opt/aocc-compiler-${AMD_COMPILER_VERSION}/lib" > /tmp/libomp.conf
-	    sudo mv /tmp/libomp.conf /etc/ld.so.conf.d/
-	    sudo ldconfig
-	fi
+	echo "${HPC_PREFIX}/opt/aocc-compiler-${AMD_COMPILER_VERSION}/lib" > /tmp/libomp.conf
+	sudo mv /tmp/libomp.conf /etc/ld.so.conf.d/
+	sudo ldconfig
     fi
 }
 
@@ -67,78 +56,141 @@ check_and_install_gcc10()
     fi
 }
 
-# openmpi 找不到编译器, 使用全路径
-set_compiler_env()
+validate_compiler()
 {
-    if [ ${USE_GNU} -eq 1 ]
+    if [ "${SARCH}" == "x86_64" ] || [ "${SARCH}" == "amd64" ]
+    then
+	if [ "${HPC_COMPILER}" == "icc" ] || [ "${HPC_COMPILER}" == "icx" ] || [ "${HPC_COMPILER}" == "gcc" ] || [ "${HPC_COMPILER}" == "clang" ] || [ "${HPC_COMPILER}" == "amdclang" ]
+	then
+	    return
+	fi
+    elif [ "${SARCH}" == "aarch64" ]
+    then
+	if [ "${HPC_COMPILER}" == "armgcc" ] || [ "${HPC_COMPILER}" == "armclang" ] || [ "${HPC_COMPILER}" == "gcc" ] || [ "${HPC_COMPILER}" == "clang" ] 
+	then
+	    return
+	fi
+    fi
+    return 1
+}
+
+# openmpi 找不到编译器, 使用全路径
+use_vendor_compiler()
+{
+    if [ "${SARCH}" == "x86_64" ]
+    then
+        export FC=$(which ifort)
+        export F77=$(which ifort)
+        export CC=$(which icc)
+        export CXX=$(which icpc)
+        export AR=$(which xiar)
+        #export OMPI_CC=icc
+        #export OMPI_CXX=icpc
+        #export OMPI_FC=ifort
+    elif [ "${SARCH}" == "amd64" ]
+    then
+	export FC=$(which flang)
+	export F77=$(which flang)
+	export CC=$(which clang)
+	export CXX=$(which clang++)
+	export AR=$(which llvm-ar)
+	export RANLIB=$(which llvm-ranlib)
+	#export OMPI_CC=$(which clang)
+	##export OMPI_CXX=$(which clang++)
+	##export OMPI_FC=$(which flang)
+    elif [ "${SARCH}" == "aarch64" ]
     then
 	export FC=$(which gfortran)
 	export F77=$(which gfortran)
 	export CC=$(which gcc)
 	export CXX=$(which g++)
-	export AR=$(which $(${CC} -dumpmachine)-ar)
-	export NM=$(which $(${CC} -dumpmachine)-nm)
-	export RANLIB=$(which $(${CC} -dumpmachine)-ranlib)
-	return
+	export AR=$(which $(${CC} -dumpmachine)-gcc-ar)
+	export NM=$(which $(${CC} -dumpmachine)-gcc-nm)
+	export RANLIB=$(which $(${CC} -dumpmachine)-gcc-ranlib)
+	#export OMPI_CC=gcc
+	##export OMPI_CXX=g++
+	##export OMPI_FC=gfortran
+    fi
+}
+
+set_compiler_env()
+{
+    if (! validate_compiler)
+    then
+	echo "Unknown compiler or unsupported compiler, please check the compiler settings"
+	exit 1
     fi
 
-    if [ "${SARCH}" == "x86_64" ]
+    if [ "${HPC_USE_VENDOR_COMPILER}" == "false"  ]
     then
-	export FC=$(which ifort)
-	export F77=$(which ifort)
-	export CC=$(which icc)
-	export CXX=$(which icpc)
-	#export OMPI_CC=icc
-	#export OMPI_CXX=icpc
-	#export OMPI_FC=ifort
-    elif [ "${SARCH}" == "amd64" ]
-    then
-	if [ ${USE_INTEL_ICC} -eq 1 ]
-	then
-	    export FC=$(which ifort)
-	    export F77=$(which ifort)
-	    export CC=$(which icc)
-	    export CXX=$(which icpc)
-	    #export OMPI_CC=icc
-	    #export OMPI_CXX=icpc
-	    #export OMPI_FC=ifort
-	else
-	    export FC=$(which flang)
-	    export F77=$(which flang)
-	    export CC=$(which clang)
-	    export CXX=$(which clang++)
-	    export AR=$(which llvm-ar)
-	    export RANLIB=$(which llvm-ranlib)
-	    #export OMPI_CC=$(which clang)
-	    #export OMPI_CXX=$(which clang++)
-	    #export OMPI_FC=$(which flang)
-	fi
-    elif [ "${SARCH}" == "aarch64" ]
-    then
-	if [ ${USE_ARM_CLANG} -eq 1 ]
-	then
-	    export FC=$(which armflang)
-	    export F77=$(which armflang)
-	    export CC=$(which armclang)
-	    export CXX=$(which armclang++)
-	    export AR=$(which armllvm-ar)
-	    export RANLIB=$(which armllvm-ranlib)
-	    #export OMPI_CC=gcc
-	    #export OMPI_CXX=g++
-	    #export OMPI_FC=gfortran
-        else
-	    export FC=$(which gfortran)
-	    export F77=$(which gfortran)
-	    export CC=$(which gcc)
-	    export CXX=$(which g++)
-	    export AR=$(which $(${CC} -dumpmachine)-gcc-ar)
-	    export NM=$(which $(${CC} -dumpmachine)-gcc-nm)
-	    export RANLIB=$(which $(${CC} -dumpmachine)-gcc-ranlib)
-	    #export OMPI_CC=gcc
-	    #export OMPI_CXX=g++
-	    #export OMPI_FC=gfortran
-	fi
+	case ${HPC_COMPILER} in
+	    "gcc")
+		export FC=$(which gfortran)
+		export F77=$(which gfortran)
+		export CC=$(which gcc)
+		export CXX=$(which g++)
+		export AR=$(which $(${CC} -dumpmachine)-ar)
+		export NM=$(which $(${CC} -dumpmachine)-nm)
+		export RANLIB=$(which $(${CC} -dumpmachine)-ranlib)
+		;;
+	    "clang"|"amdclang")
+		export FC=$(which flang)
+		export F77=$(which flang)
+		export CC=$(which clang)
+		export CXX=$(which clang++)
+		export AR=$(which llvm-ar)
+		export RANLIB=$(which llvm-ranlib)
+		#export OMPI_CC=$(which clang)
+		##export OMPI_CXX=$(which clang++)
+		#export OMPI_FC=$(which flang)
+		;;
+	    "icc")
+		export FC=$(which ifort)
+		export F77=$(which ifort)
+		export CC=$(which icc)
+		export CXX=$(which icpc)
+		export AR=$(which xiar)
+		#export OMPI_CC=icc
+		##export OMPI_CXX=icpc
+		##export OMPI_FC=ifort
+		;;
+	    "icx")
+		export FC=$(which ifx)
+		export F77=$(which ifx)
+		export CC=$(which icx)
+		export CXX=$(which icpx)
+		#export AR=$(which xiar)
+		#export OMPI_CC=icc
+		##export OMPI_CXX=icpc
+		##export OMPI_FC=ifort
+		;;
+	    "armgcc")
+		export FC=$(which gfortran)
+		export F77=$(which gfortran)
+		export CC=$(which gcc)
+		export CXX=$(which g++)
+		export AR=$(which $(${CC} -dumpmachine)-gcc-ar)
+		export NM=$(which $(${CC} -dumpmachine)-gcc-nm)
+		export RANLIB=$(which $(${CC} -dumpmachine)-gcc-ranlib)
+		#export OMPI_CC=gcc
+		##export OMPI_CXX=g++
+		##export OMPI_FC=gfortran
+		;;
+	    "armclang")
+		export FC=$(which armflang)
+		export F77=$(which armflang)
+		export CC=$(which armclang)
+		export CXX=$(which armclang++)
+		export AR=$(which armllvm-ar)
+		export RANLIB=$(which armllvm-ranlib)
+		#export OMPI_CC=gcc
+		##export OMPI_CXX=g++
+		##export OMPI_FC=gfortran
+		;;
+	esac
+	return
     fi
+    use_vendor_compiler
 }
 
 unset_compiler_env()
@@ -157,9 +209,8 @@ unset_compiler_env()
 
 get_compiler()
 {
-    if [ ${USE_GNU} -eq 1 ]
+    if [ "${HPC_USE_VENDOR_COMPILER}" == "false" ]
     then
-        export HPC_COMPILER=gcc
         return
     fi
 
@@ -168,20 +219,10 @@ get_compiler()
         export HPC_COMPILER=icc
     elif [ "${SARCH}" == "amd64" ]
     then
-	if [ ${USE_INTEL_ICC} -eq 1 ]
-	then
-            export HPC_COMPILER=icc
-	else
-	    export HPC_COMPILER=clang
-	fi
+	export HPC_COMPILER=amdclang
     elif [ "${SARCH}" == "aarch64" ]
     then
-        if [ ${USE_ARM_CLANG} -eq 1 ]
-        then
-            export HPC_COMPILER=armclang
-        else
-            export HPC_COMPILER=armgcc
-        fi
+	export HPC_COMPILER=armgcc
     fi
 }
 
@@ -202,64 +243,51 @@ then
     return
 fi
 
-if [ ${USE_GNU} -eq 1 ]
-then
-    if [ -f ${HPC_PREFIX}/opt/[0-9.]*/amd-libs.cfg ]
-    then
-        source $(ls ${HPC_PREFIX}/opt/[0-9.]*/amd-libs.cfg)
-    fi
-    export HPC_TARGET=$(${HPC_PREFIX}/opt/gnu/bin/gcc -dumpmachine)
-    export LD_LIBRARY_PATH=${HPC_PREFIX}/opt/gnu/lib64:${HPC_PREFIX}/opt/gnu/lib:${LD_LIBRARY_PATH}
-    export PATH=${HPC_PREFIX}/opt/gnu/${HPC_TARGET}/bin:${HPC_PREFIX}/opt/gnu/bin:${HPC_PREFIX}/${HPC_COMPILER}/bin:${PATH}
-else
-    if [ "${SARCH}" == "aarch64" ]
-    then
+
+case ${HPC_COMPILER} in
+    "gcc"|"clang")
+	export HPC_TARGET=$(${HPC_PREFIX}/opt/gnu/bin/${HPC_COMPILER} -dumpmachine)
+	export LD_LIBRARY_PATH=${HPC_PREFIX}/opt/gnu/lib64:${HPC_PREFIX}/opt/gnu/lib:${LD_LIBRARY_PATH}
+	export PATH=${HPC_PREFIX}/opt/gnu/${HPC_TARGET}/bin:${HPC_PREFIX}/opt/gnu/bin:${HPC_PREFIX}/${HPC_COMPILER}/bin:${PATH}
+	;;
+    "armgcc")
         source /etc/profile.d/modules.sh
         #module load mpi/openmpi-${SARCH}
         export MODULEPATH=${MODULEPATH}:${HPC_PREFIX}/opt/modulefiles
-	if [ "${HPC_COMPILER}" == "armgcc" ]
-	then
-            module load gnu/$(ls ${HPC_PREFIX}/opt/modulefiles/gnu)
-            module load armpl/$(ls ${HPC_PREFIX}/opt/moduledeps/gnu/[0-9.]*/armpl)
-            #module load $(ls ${HPC_PREFIX}/opt/moduledeps/gnu/[0-9.]*/armpl/[0-9.]*)
-        elif [ "${HPC_COMPILER}" == "armclang" ]
-	then
-            module load acfl/$(ls ${HPC_PREFIX}/opt/modulefiles/acfl)
-            module load armpl/$(ls ${HPC_PREFIX}/opt/moduledeps/acfl/[0-9.]*/armpl)
-            #module load $(module avail 2>&1 | grep -A1 "${HPC_PREFIX}" | tail -n1)
-            #module load $(ls ${HPC_PREFIX}/opt/moduledeps/acfl/[0-9.]*/armpl/[0-9.]*)
-            #echo $(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o")) > /tmp/libarmgcc.conf
-	    #echo $(dirname $(find ${HPC_PREFIX}/opt -iname "libgcc_s.so")) > /tmp/libarmgcclib.conf
-	    #sudo mv /tmp/libarmgcc.conf /tmp/libarmgcclib.conf /etc/ld.so.conf.d/
-	    #sudo ldconfig
-	    #export LD_LIBRARY_PATH=$(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o")):${LD_LIBRARY_PATH}
-	    #export LD_LIBRARY_PATH=$(dirname $(find ${HPC_PREFIX}/opt -iname "libgcc_s.so")):${LD_LIBRARY_PATH}
-	fi
+        module load gnu/$(ls ${HPC_PREFIX}/opt/modulefiles/gnu)
+        module load armpl/$(ls ${HPC_PREFIX}/opt/moduledeps/gnu/[0-9.]*/armpl)
+        #module load $(ls ${HPC_PREFIX}/opt/moduledeps/gnu/[0-9.]*/armpl/[0-9.]*)
         export HPC_TARGET=$(gcc -dumpmachine)
-    elif [ "${SARCH}" == "x86_64" ]
-    then
-	if [ ${USE_INTEL_MPI} -eq 1 ]
+	;;
+    "armclang")
+        source /etc/profile.d/modules.sh
+        #module load mpi/openmpi-${SARCH}
+        export MODULEPATH=${MODULEPATH}:${HPC_PREFIX}/opt/modulefiles
+	module load acfl/$(ls ${HPC_PREFIX}/opt/modulefiles/acfl)
+	module load armpl/$(ls ${HPC_PREFIX}/opt/moduledeps/acfl/[0-9.]*/armpl)
+	#module load $(module avail 2>&1 | grep -A1 "${HPC_PREFIX}" | tail -n1)
+	#module load $(ls ${HPC_PREFIX}/opt/moduledeps/acfl/[0-9.]*/armpl/[0-9.]*)
+	#echo $(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o")) > /tmp/libarmgcc.conf
+	#echo $(dirname $(find ${HPC_PREFIX}/opt -iname "libgcc_s.so")) > /tmp/libarmgcclib.conf
+	#sudo mv /tmp/libarmgcc.conf /tmp/libarmgcclib.conf /etc/ld.so.conf.d/
+	#sudo ldconfig
+	#export LD_LIBRARY_PATH=$(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o")):${LD_LIBRARY_PATH}
+	#export LD_LIBRARY_PATH=$(dirname $(find ${HPC_PREFIX}/opt -iname "libgcc_s.so")):${LD_LIBRARY_PATH}
+        export HPC_TARGET=$(gcc -dumpmachine)
+	;;
+    "icc"|"icx")
+	if [ "${HPC_MPI}" == "intelmpi" ]
 	then
 	    source ${HPC_PREFIX}/opt/intel/oneapi/setvars.sh
 	else
 	    source ${HPC_PREFIX}/opt/intel/oneapi/compiler/latest/env/vars.sh
 	fi
-        export HPC_TARGET=$(icc -dumpmachine)
-    elif [ "${SARCH}" == "amd64" ]
-    then
-	if [ ${USE_INTEL_ICC} -eq 1 ]
-	then
-	    if [ ${USE_INTEL_MPI} -eq 1 ]
-	    then
-	        source ${HPC_PREFIX}/opt/intel/oneapi/setvars.sh
-	    else
-	        source ${HPC_PREFIX}/opt/intel/oneapi/compiler/latest/env/vars.sh
-	    fi
-            export HPC_TARGET=$(icc -dumpmachine)
-	else
-	    source ${HPC_PREFIX}/opt/setenv_AOCC.sh
-	    source $(ls ${HPC_PREFIX}/opt/[0-9.]*/amd-libs.cfg)
-	fi
-    fi
-    export LD_LIBRARY_PATH=${LIBRARY_PATH}:${LD_LIBRARY_PATH}
-fi
+        export HPC_TARGET=$(${HPC_COMPILER} -dumpmachine)
+	;;
+    "amdclang")
+	source ${HPC_PREFIX}/opt/setenv_AOCC.sh
+	source $(ls ${HPC_PREFIX}/opt/[0-9.]*/amd-libs.cfg)
+	;;
+esac
+
+export LD_LIBRARY_PATH=${LIBRARY_PATH}:${LD_LIBRARY_PATH}

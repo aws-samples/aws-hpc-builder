@@ -236,7 +236,7 @@ install_amd_compiler()
     cd ..
 }
 
-install_gnu_compiler()
+install_gcc_compiler()
 {   
     build_elfutils_stage_one
     # after build binutils, use it for gcc build
@@ -262,28 +262,24 @@ install_gnu_compiler()
 
 install_compiler()
 {
-    echo "zzz *** $(date) *** Install vendor compiler"
-    if [ ${USE_GNU} -eq 1 ]
-    then
-	install_gnu_compiler
-	return
-    fi
-
-    if [ "${SARCH}" == "aarch64" ]
-    then
+    case ${HPC_COMPILER} in
+    "gcc")
+	install_gcc_compiler
+	;;
+    "clang")
+	install_clang_compiler
+	;;
+    "armgcc"|"armclang")
         install_arm_compiler
-    elif [ "${SARCH}" == "x86_64" ]
-    then
-        install_intel_compiler
-    elif [ "${SARCH}" == "amd64" ]
-    then
-	if [ ${USE_INTEL_ICC} -eq 1 ]
-	then
-            install_intel_compiler
-	else
-	    install_amd_compiler
-	fi
-    fi
+	;;
+    "icc"|"icx")
+	install_intel_compiler
+	;;
+    "amdclang")
+	install_amd_compiler
+	;;
+esac
+
 }
 
 	    #--enable-interwork --disable-multilib \
@@ -477,25 +473,21 @@ build_gcc()
 
 update_compiler_version()
 {
-    if [ ${USE_GNU} -eq 1 ]
-    then
+    case ${HPC_COMPILER} in
+    "gcc")
 	MODULE_VERSION=${GCC_VERSION}
-	return
-    fi
-
-    if [ "${SARCH}" == "aarch64" ]
-    then
+	;;
+    "clang")
+	MODULE_VERSION=${CLANG_VERSION}
+	;;
+    "armgcc"|"armclang")
 	MODULE_VERSION=${ARM_COMPILER_VERSION}
-    elif [ "${SARCH}" == "x86_64" ]
-    then
+	;;
+    "icc"|"icx")
 	MODULE_VERSION=${INTEL_COMPILER_VERSION}
-    elif [ "${SARCH}" == "amd64" ]
-    then
-	if [ ${USE_INTEL_ICC} -eq 1 ]
-	then
-	    MODULE_VERSION=${INTEL_COMPILER_VERSION}
-	else
-	    MODULE_VERSION=${AMD_COMPILER_VERSION}
-	fi
-    fi
+	;;
+    "amdclang")
+	MODULE_VERSION=${AMD_COMPILER_VERSION}
+	;;
+esac
 }

@@ -3,26 +3,82 @@
 # SPDX-License-Identifier: MIT
 
 PREFIX=XXPREFIXXX
-# compiler selection
-# env.sh 1     ## select GNU/GCC/gfortran
-# env.sh       ## select vendor's native compliers(Intel=icc, AMD=clang, ARM=armgcc)
-# env.sh 0     ## select vendor's native compliers(Intel=icc, AMD=clang, ARM=armgcc)
-# env.sh 0 1   ## select Intel icc on AMD64 and armclang on AArch64
-# env.sh 0 1 1 ## select Intell icc and Intel MPI
+# compiler & MPI selection
+# compiler table:
+# ---------------
+# 0 VENDOR's compiler, Intel=icc, AMD=armclang, ARM=armgcc
+# 1 GNU/GCC compiler
+# 1 GNU/CLANG compiler
+# 2 INTEL/ICC compiler
+# 3 INTEL/ICX compiler
+# 4 AMD/CLANG compiler
+# 5 ARM/GCC compiler
+# 6 ARM/CLANG compiler
+#
+# 
+# MPI table:
+# ----------
+# 0 openmpi
+# 1 mpich
+# 2 intelmpi
+#
+# usage: env.sh <compiler> <MPI>
+#        C M
+# env.sh 0 0   ## select vendor's native compilers with openmpi
+# env.sh 0 1   ## select vendor's native compilers with mpich
+# env.sh 0 2   ## select vendor's native compilers with intelmpi
+# env.sh 1 0   ## select GNU/GCC compilers with openmpi
+# env.sh ...
+
+export HPC_USE_VENDOR_COMPILER=false
 
 # default settings
-USE_GNU=${1:-0}
-USE_INTEL_ICC=${2:-0}
-USE_INTEL_MPI=${3:-0}
-USE_ARM_CLANG=${2:-0}
+case $1 in 
+    0)
+	HPC_USE_VENDOR_COMPILER=true
+	;;
+    1)
+	HPC_COMPILER=gcc
+	;;
+    2)
+	HPC_COMPILER=clang
+	;;
+    3)
+	HPC_COMPILER=icc
+	;;
+    4)
+	HPC_COMPILER=icx
+	;;
+    5)
+	HPC_COMPILER=amdclang
+	;;
+    6)
+	HPC_COMPILER=armgcc
+	;;
+    7)
+	HPC_COMPILER=armclang
+	;;
+    *)
+	echo "unknown compiler"
+esac
 
+case $2 in 
+    0)
+	HPC_MPI=openmpi
+	;;
+    1)
+	HPC_MPI=mpich
+	;;
+    2)
+	HPC_MPI=intelmpi
+	;;
+    *)
+	echo "unknown MPI"
+esac
 
 source ${PREFIX}/scripts/compiler.sh
 
-if [ ${USE_INTEL_MPI} -ne 1 ]
-then
-    export PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_TARGET}/bin:${HPC_PREFIX}/${HPC_COMPILER}/bin:${PATH}
-    export LD_LIBRARY_PATH=${HPC_PREFIX}/${HPC_COMPILER}/lib64:${HPC_PREFIX}/${HPC_COMPILER}/lib:${LD_LIBRARY_PATH}
-fi
+export PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_TARGET}/${HPC_MPI}/bin:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin:${PATH}
+export LD_LIBRARY_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib64:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib:${LD_LIBRARY_PATH}
 
 export OMP_STACKSIZE=128M

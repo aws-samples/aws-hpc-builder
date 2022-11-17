@@ -94,10 +94,10 @@ check_wps_config()
 set_wrf_build_env()
 {
     echo "zzz *** $(date) *** Setup build env"
-    export NETCDF=${HPC_PREFIX}/${HPC_COMPILER}
-    export PNETCDF=${HPC_PREFIX}/${HPC_COMPILER}
-    export HDF5=${HPC_PREFIX}/${HPC_COMPILER}
-    export PHDF5=${HPC_PREFIX}/${HPC_COMPILER}
+    export NETCDF=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
+    export PNETCDF=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
+    export HDF5=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
+    export PHDF5=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
     export JASPERLIB=/usr/lib64
     export JASPERINC=/usr/include
     export WRFIO_NCD_LARGE_FILE_SUPPORT=1
@@ -227,7 +227,7 @@ install_wrf()
 {
     build_wrf_dependency  >> "${HPC_BUILD_LOG}" 2>&1
     # 如果设置了 WPS 版本，并且指定的 WRF 已经编译好, 只编译WPS
-    if [ "${WPS_VERSION+set}" == "set" ] && [ -f ${HPC_PREFIX}/${HPC_COMPILER}/WRF-${WRF_VERSION}/main/wrf.exe ]
+    if [ "${WPS_VERSION+set}" == "set" ] && [ -f ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/main/wrf.exe ]
     then
 	return
     fi
@@ -236,10 +236,10 @@ install_wrf()
     echo "zzz *** $(date) *** Build WRF-${WRF_VERSION}"
     if [ "${WRF_VERSION}" == "git" ]
     then
-       	sudo rm -rf "${HPC_PREFIX}/${HPC_COMPILER}/WRF-${WRF_VERSION}"
+       	sudo rm -rf "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}"
         cd WRF
     else
-       	sudo rm -rf "${WRF_SRC%.tar.gz}" "${HPC_PREFIX}/${HPC_COMPILER}/${WRF_SRC%.tar.gz}"
+       	sudo rm -rf "${WRF_SRC%.tar.gz}" "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/${WRF_SRC%.tar.gz}"
         tar xf "${WRF_SRC}"
        	cd "${WRF_SRC%.tar.gz}"
     fi
@@ -262,9 +262,9 @@ install_wrf()
 
     if [ "${WRF_VERSION}" == "git" ]
     then
-	sudo mv WRF "${HPC_PREFIX}/${HPC_COMPILER}/WRF-${WRF_VERSION}"
+	sudo mv WRF "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}"
     else 
-	sudo mv "${WRF_SRC%.tar.gz}" "${HPC_PREFIX}/${HPC_COMPILER}/"
+	sudo mv "${WRF_SRC%.tar.gz}" "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/"
     fi
     sudo mkdir -p /fsx/scripts
     sudo install -m 755 -D -t /fsx/scripts ../scripts/env.sh 

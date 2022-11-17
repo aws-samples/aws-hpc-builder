@@ -17,53 +17,70 @@ $ ./hpc_build.sh -l
 aocl
 compiler
 hdf5
+mpich
 netcdf-c
 netcdf-fortran
 openmpi
 osu
 pnetcdf
+scalapack
 vasp
 wps
-wrf
 ```
 
 List installed modules
 
 ```
-$ ./hpc_build.sh -p /fsx -L
-clang-compiler-3.2.0
-clang-openmpi-4.1.0
-clang-osu-5.9
-clang-osu-6.1
-clang-hdf5-1.12.2
-clang-pnetcdf-1.12.3
-clang-netcdf-c-1.12.3
-clang-netcdf-fortran-4.5.4
-clang-wrf-4.2.2
-icc-compiler-2022.2.0.262
+$ ./hpc_build.sh -p /data -L
+icc-openmpi-compiler-2022.2.0.262
+icx-openmpi-compiler-2022.2.0.262
+icc-mpich-compiler-2022.2.0.262
+icx-mpich-compiler-2022.2.0.262
+icc-intelmpi-compiler-2022.2.0.262
+icx-intelmpi-compiler-2022.2.0.262
+icc-openmpi-openmpi-4.1.4
+icc-openmpi-osu-6.1
 ```
 
 Build application and its dependencies with vendor's compilers(ARM's gcc/g++/gfortran on aarch64, AMD's AOCC(clang/flang/ on amd64, Intel's OneAPI(icc/ipsc/ifort), i.e build WRF version 4.2.2.
 
 ```
-$ ./hpc_build.sh -p /fsx -m wrf -M 4.2.2
+$ ./hpc_build.sh -p /data -m wrf -M 4.2.2
 ```
 
 Build application and its dependencies with GNU/gcc/g++/gfortran compilers
 
 ```
-$ ./hpc_build.sh -p /fsx -g -m wrf -M 4.2.2
+$ ./hpc_build.sh -p /data -c gcc -m wrf -M 4.2.2
 ```
 Build application and its dependencies with Intel compilers and Intel MPI, i.e build VASP 6.3.0 on AMD machine with Intel compilers and Intel MPI
 
 ```
-$ ./hpc_build.sh -p /fsx -m vasp -M 6.3.0 -i -I
+$ ./hpc_build.sh -p /fsx -m vasp -M 6.3.0 -i intelmpi
 ```
 
 More options see:
 
 ```
 $ ./hpc_build.sh -h
+Usage: hpc_build.sh [-p PREFIX] [-c COMPILER] [-m MODULE] [-i MPI] [-M MOD_VERSION] [-l] [-L]
+Description:
+  -p PREFIX
+     specify installation prefix(default /fsx)
+  -c COMPILER
+     specify HPC compilers(icc|icx|amdclang|armgcc|armclang|gcc|clang, default vendor's)
+  -i MPI
+     specify mpi(supported MPIs: openmpi|intelmpi|mpich, default=openmpi)
+  -m MODULE
+     specify module(default compiler)
+  -M MODULE_VERSION
+  -l
+     list all available modules
+     specify module version
+  -L
+     List installed modules
+  -h
+     display this page
 ```
 
 

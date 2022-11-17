@@ -110,15 +110,15 @@ install_wps()
     echo "zzz *** $(date) *** Build WPS-${WPS_VERSION}"
     if [ "${WPS_VERSION}" == "git" ]
     then
-       	sudo rm -rf "${HPC_PREFIX}/${HPC_COMPILER}/WRF-${WRF_VERSION}/WPS-${WPS_VERSION}"
+       	sudo rm -rf "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/WPS-${WPS_VERSION}"
         cd WPS
     else
-       	sudo rm -rf "${WPS_SRC%.tar.gz}" "${HPC_PREFIX}/${HPC_COMPILER}/WRF-${WRF_VERSION}/${WPS_SRC%.tar.gz}"
+       	sudo rm -rf "${WPS_SRC%.tar.gz}" "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/${WPS_SRC%.tar.gz}"
         tar xf "${WPS_SRC}"
        	cd "${WPS_SRC%.tar.gz}"
     fi
 
-    export WRF_DIR=${HPC_PREFIX}/${HPC_COMPILER}/WRF-${WRF_VERSION}
+    export WRF_DIR=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}
 
     patch_wps
     check_wps_config
@@ -149,9 +149,9 @@ install_wps()
 
     if [ "${WPS_VERSION}" == "git" ]
     then
-	sudo mv WPS "${HPC_PREFIX}/${HPC_COMPILER}/WRF-${WRF_VERSION}/WPS-${WPS_VERSION}"
+	sudo mv WPS "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/WPS-${WPS_VERSION}"
     else 
-	sudo mv "${WPS_SRC%.tar.gz}" "${HPC_PREFIX}/${HPC_COMPILER}/WRF-${WRF_VERSION}/"
+	sudo mv "${WPS_SRC%.tar.gz}" "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/"
     fi
 }
 

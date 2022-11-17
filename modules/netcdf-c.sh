@@ -29,12 +29,12 @@ install_netcdf_c()
     cd "${NETCDF_C_SRC%.tar.gz}"
     mkdir build
     cd build
-    #cmake3 -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER} -DCMAKE_INSTALL_LIBDIR=${HPC_PREFIX}/${HPC_COMPILER}/lib ..
+    #cmake3 -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} -DCMAKE_INSTALL_LIBDIR=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib ..
 	    #--build=${WRF_TARGET} \
 	    #--host=${WRF_TARGET} \
 	    #--target=${WRF_TARGET} \
-    CPPFLAGS=-I${HPC_PREFIX}/${HPC_COMPILER}/include LDFLAGS=-L${HPC_PREFIX}/${HPC_COMPILER}/lib  ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER} \
-	    --libdir=${HPC_PREFIX}/${HPC_COMPILER}/lib \
+    CPPFLAGS=-I${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include LDFLAGS=-L${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib  ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+	    --libdir=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib \
 	    --enable-shared \
 	    --enable-pnetcdf \
 	    --enable-large-file-tests \

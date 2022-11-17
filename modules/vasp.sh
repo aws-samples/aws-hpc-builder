@@ -38,7 +38,7 @@ install_vasp()
     tar xf ${VASP_SRC}
     cd ${VASP_SRC%.tgz}
     cp ../../patch/vasp/makefile.include.${SARCH}.${HPC_COMPILER} makefile.include
-    make && cd .. && sudo mv "${VASP_SRC%.tgz}" "${HPC_PREFIX}/${HPC_COMPILER}/"
+    make && cd .. && sudo mv "${VASP_SRC%.tgz}" "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/"
 }
 
 update_vasp_version()

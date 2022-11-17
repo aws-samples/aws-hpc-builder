@@ -56,6 +56,12 @@ download_mpich() {
 
 install_mpich()
 {
+    if [ ${HPC_MPI} != "mpich" ]
+    then
+        echo "Current MPI is not mpich, installation stopped" 1>&2
+        return 1
+    fi
+
     sudo rm -rf "${MPICH_SRC%.tar.gz}"
     tar xf "${MPICH_SRC}"
     cd "${MPICH_SRC%.tar.gz}"
@@ -66,14 +72,14 @@ install_mpich()
 	    #--build=${WRF_TARGET} \
 	    #--host=${WRF_TARGET} \
 	    #--target=${WRF_TARGET} \
-	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER} \
+	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --with-device=ch4:ofi:efa
 	    --with-ofi=/opt/amazon/efa
     else
 	    #--build=${WRF_TARGET} \
 	    #--host=${WRF_TARGET} \
 	    #--target=${WRF_TARGET}
-	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}
+	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
     fi
     result=$?
     if [ $result -ne 0 ]

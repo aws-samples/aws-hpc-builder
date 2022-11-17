@@ -103,3 +103,5 @@ Add Intel compilers support on AMD platform
 Rename project from WRF Builder to HPC builder, standardizes and modularizes the build procedure, add osu support
 ## * Version 9.1 *
 Support build VASP on Aarch64(with new module scalapack) and update Intel compiler to 2022.4, AMD compiler to 4.0.0
+## * Version 10.0 *
+Refactor the application to support various MPI implementations, all new program are installed into ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} now

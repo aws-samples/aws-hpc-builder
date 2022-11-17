@@ -75,7 +75,7 @@ install_pnetcdf()
 	    #--build=${HPC_TARGET} \
 	    #--host=${HPC_TARGET} \
 	    #--target=${HPC_TARGET} \
-    ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER} \
+    ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --enable-fortran \
             --enable-shared && fix_clang_ld 
     make && sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install && cd ../..

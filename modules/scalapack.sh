@@ -64,10 +64,10 @@ install_scalapack()
     cd build
     if [ "${HPC_COMPILER}" == "armgcc" ]
     then
-	CC=mpicc FC=mpif90 cmake3 .. -DMPIEXEC=mpirun -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER} -DBUILD_SHARED_LIBS=ON -DCMAKE_Fortran_FLAGS="-fallow-argument-mismatch -fallow-invalid-boz" -DLAPACK_LIBRARIES=${ARMPL_DIR}/lib/libarmpl.so -DBLAS_LIBRARIES=${ARMPL_DIR}/lib/libarmpl.so
+	CC=mpicc FC=mpif90 cmake3 .. -DMPIEXEC=mpirun -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} -DBUILD_SHARED_LIBS=ON -DCMAKE_Fortran_FLAGS="-fallow-argument-mismatch -fallow-invalid-boz" -DLAPACK_LIBRARIES=${ARMPL_DIR}/lib/libarmpl.so -DBLAS_LIBRARIES=${ARMPL_DIR}/lib/libarmpl.so
     elif [ "${HPC_COMPILER}" == "armclang" ]
     then
-	CC=mpicc FC=mpif90 cmake3 .. -DMPIEXEC=mpirun -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER} -DBUILD_SHARED_LIBS=ON -DLAPACK_LIBRARIES=${ARMPL_DIR}/lib/libarmpl.so -DBLAS_LIBRARIES=${ARMPL_DIR}/lib/libarmpl.so
+	CC=mpicc FC=mpif90 cmake3 .. -DMPIEXEC=mpirun -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} -DBUILD_SHARED_LIBS=ON -DLAPACK_LIBRARIES=${ARMPL_DIR}/lib/libarmpl.so -DBLAS_LIBRARIES=${ARMPL_DIR}/lib/libarmpl.so
     else
         echo "Not supported compiler"
         exit 1

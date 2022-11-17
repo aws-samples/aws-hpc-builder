@@ -67,9 +67,9 @@ install_hdf5()
 	    #--build=${WRF_TARGET} \
 	    #--host=${WRF_TARGET} \
 	    #--target=${WRF_TARGET} \
-    #CC=${HPC_PREFIX}/${HPC_COMPILER}/bin/mpicc FC=${HPC_PREFIX}/${HPC_COMPILER}/bin/mpif90 ./configure --prefix=${HPC_PREFIX}/${HPC_COMPILER} \
-    ./configure --prefix=${HPC_PREFIX}/${HPC_COMPILER} \
-	    --libdir=${HPC_PREFIX}/${HPC_COMPILER}/lib \
+    #CC=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/mpicc FC=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/mpif90 ./configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+    ./configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+	    --libdir=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib \
 	    --enable-fortran \
 	    --enable-shared \
 	    --enable-hl \

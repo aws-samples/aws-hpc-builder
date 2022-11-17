@@ -64,10 +64,10 @@ install_netcdf_fortran()
 	    #--build=${WRF_TARGET} \
 	    #--host=${WRF_TARGET} \
 	    #--target=${WRF_TARGET} \
-    #CC=${HPC_PREFIX}/${HPC_COMPILER}/bin/mpicc FC=${HPC_PREFIX}/${HPC_COMPILER}/bin/mpif90 F77=${HPC_PREFIX}/${HPC_COMPILER}/bin/mpif77 \
-    CPPFLAGS=-I${HPC_PREFIX}/${HPC_COMPILER}/include LDFLAGS=-L${HPC_PREFIX}/${HPC_COMPILER}/lib \
-    ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER} \
-            --libdir=${HPC_PREFIX}/${HPC_COMPILER}/lib \
+    #CC=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/mpicc FC=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/mpif90 F77=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/mpif77 \
+    CPPFLAGS=-I${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include LDFLAGS=-L${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib \
+    ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+            --libdir=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib \
             --enable-shared
     fix_clang_ld
     make check

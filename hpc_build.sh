@@ -27,9 +27,8 @@ change_workdir()
 
 get_compiler()
 {
-    if [ ${USE_GNU} -eq 1 ]
+    if [ "${HPC_USE_VENDOR_COMPILER}" == "false" ]
     then
-        export HPC_COMPILER=gcc
         return
     fi
 
@@ -38,20 +37,10 @@ get_compiler()
         export HPC_COMPILER=icc
     elif [ "${SARCH}" == "amd64" ]
     then
-	if [ ${USE_INTEL_ICC} -eq 1 ]
-	then
-            export HPC_COMPILER=icc
-	else
-	    export HPC_COMPILER=clang
-	fi
+        export HPC_COMPILER=amdclang
     elif [ "${SARCH}" == "aarch64" ]
     then
-        if [ ${USE_ARM_CLANG} -eq 1 ]
-        then
-            export HPC_COMPILER=armclang
-        else
-            export HPC_COMPILER=armgcc
-        fi
+         export HPC_COMPILER=armgcc
     fi
 }
 
@@ -81,19 +70,19 @@ build_hpc_module()
             MODULE_VERSION=${TARGET_MODULE_VERSION}
 	    source ../modules/${module}.sh updateversion ${MODULE_VERSION}
 	else
-            source ../modules/${module}.sh DFAULTVERSION
+            source ../modules/${module}.sh DEFAULTVERSION
 	fi
 	update_$(echo ${module} | tr '-' '_')_version
 
 	# 目标模块完全匹配才不安装，非目标模快，模块名匹配就跳过
 	if [ "${module}" != "${HPC_MODULE}" ]
 	then
-	    if (search_world ${HPC_COMPILER}-${module})
+	    if (search_world ${HPC_COMPILER}-${HPC_MPI}-${module})
 	    then
                 continue 
 	    fi
         else
-	    if (search_world ${HPC_COMPILER}-${module}-${MODULE_VERSION})
+	    if (search_world ${HPC_COMPILER}-${HPC_MPI}-${module}-${MODULE_VERSION})
 	    then
                 return
 	    fi
@@ -101,22 +90,50 @@ build_hpc_module()
         
 	if [ "${module}" == "compiler" ]
 	then
-            echo "zzz *** $(date) *** Install system dependency for ${HPC_COMPILER}-${MODULE_VERSION}" | tee -a ${HPC_BUILD_LOG}
+            echo "zzz *** $(date) *** Install system dependency for ${HPC_COMPILER}-${HPC_MPI}-${module}-${MODULE_VERSION}" | tee -a ${HPC_BUILD_LOG}
 	else
-            echo "zzz *** $(date) *** Install system dependency for ${module}-${MODULE_VERSION}" | tee -a ${HPC_BUILD_LOG}
+            echo "zzz *** $(date) *** Install system dependency for ${HPC_MPI}-${module}-${MODULE_VERSION}" | tee -a ${HPC_BUILD_LOG}
 	fi
 	install_sys_dependency_for_$(echo ${module} | tr '-' '_') >> ${HPC_BUILD_LOG} 2>&1
 	if [ "${module}" == "compiler" ]
 	then
-	    echo "zzz *** $(date) *** Install ${HPC_COMPILER}-${MODULE_VERSION}" | tee -a ${HPC_BUILD_LOG}
+	    echo "zzz *** $(date) *** Install ${HPC_COMPILER}-${HPC_MPI}-${module}-${MODULE_VERSION}" | tee -a ${HPC_BUILD_LOG}
 	else
-	    echo "zzz *** $(date) *** Build ${module}-${MODULE_VERSION} with ${HPC_COMPILER}" | tee -a ${HPC_BUILD_LOG}
+	    echo "zzz *** $(date) *** Build ${HPC_MPI}-${module}-${MODULE_VERSION} with ${HPC_COMPILER}" | tee -a ${HPC_BUILD_LOG}
 	fi
 	if [ "${DISABLE_COMPILER_ENV}" == "true" ]
 	then
 	    unset_compiler_env
 	fi
-	download_$(echo ${module} | tr '-' '_')  && install_$(echo ${module} | tr '-' '_') >> ${HPC_BUILD_LOG} 2>&1 && update_world ${HPC_COMPILER}-${module}-${MODULE_VERSION}
+	download_$(echo ${module} | tr '-' '_')  && install_$(echo ${module} | tr '-' '_') >> ${HPC_BUILD_LOG} 2>&1 
+	if [ $? -eq 0 ] 
+	then
+	    if [ ${module} == "compiler" ]
+	    then
+		if [ "${HPC_COMPILER}" == "icc" ] || [ "${HPC_COMPILER}" == "icc" ]
+		then
+		    update_world icc-openmpi-${module}-${MODULE_VERSION}
+		    update_world icx-openmpi-${module}-${MODULE_VERSION}
+		    update_world icc-mpich-${module}-${MODULE_VERSION}
+		    update_world icx-mpich-${module}-${MODULE_VERSION}
+		    update_world icc-intelmpi-${module}-${MODULE_VERSION}
+		    update_world icx-intelmpi-${module}-${MODULE_VERSION}
+		elif [ "${HPC_COMPILER}" == "armgcc" ] || [ "${HPC_COMPILER}" == "armclang" ]
+		then
+		    update_world amrgcc-openmpi-${module}-${MODULE_VERSION}
+		    update_world amrclang-openmpi-${module}-${MODULE_VERSION}
+		    update_world amrgcc-mpich-${module}-${MODULE_VERSION}
+		    update_world amrclang-mpich-${module}-${MODULE_VERSION}
+		else
+		    update_world ${HPC_COMPILER}-openmpi-${module}-${MODULE_VERSION}
+		    update_world ${HPC_COMPILER}-mpich-${module}-${MODULE_VERSION}
+		fi
+	    else
+		update_world ${HPC_COMPILER}-${HPC_MPI}-${module}-${MODULE_VERSION}
+		   
+	    fi
+	fi
+
 	if [ "${DISABLE_COMPILER_ENV}" == "true" ]
 	then
 	    set_compiler_env
@@ -138,7 +155,7 @@ install_scripts()
 
 check_and_uninstall_gcc10()
 {
-    if [ ${GCC10_INSTALLED} -eq 1 ] && ([ "${HPC_COMPILER}" == "clang" ] ||  [ "${HPC_COMPILER}" == "armclang" ])
+    if [ ${GCC10_INSTALLED} -eq 1 ] && ([ "${HPC_COMPILER}" == "clang" ] ||  [ "${HPC_COMPILER}" == "armclang" ] || [ "${HPC_COMPILER}" == "amdclang" ])
     then
 	sudo rpm -e --nodeps gcc10
     fi
@@ -146,7 +163,7 @@ check_and_uninstall_gcc10()
 
 check_and_install_gcc10()
 {
-    if [ ${GCC10_INSTALLED} -eq 1 ] && ([ "${HPC_COMPILER}" == "clang" ] ||  [ "${HPC_COMPILER}" == "armclang" ])
+    if [ ${GCC10_INSTALLED} -eq 1 ] && ([ "${HPC_COMPILER}" == "clang" ] ||  [ "${HPC_COMPILER}" == "armclang" ] || [ "${HPC_COMPILER}" == "amdclang" ])
     then
 	sudo yum install -y gcc10
     fi
@@ -171,7 +188,7 @@ main()
     sudo mkdir -p ${HPC_PREFIX}
 
     get_compiler
-    sudo mkdir -p ${HPC_PREFIX}/${HPC_COMPILER}
+    sudo mkdir -p ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
     list_installed_module
 
     check_os_version
@@ -179,7 +196,7 @@ main()
     WORKDIR=hpc_build
     GCC10_INSTALLED=0
     rpm -q gcc10 > /dev/null 2>&1 && GCC10_INSTALLED=1
-    HPC_BUILD_LOG="$(pwd)/${WORKDIR}/.hpc_build-${HPC_COMPILER}.log"
+    HPC_BUILD_LOG="$(pwd)/${WORKDIR}/.hpc_build-${HPC_COMPILER}-${HPC_MPI}.log"
 
     change_workdir
 
@@ -199,13 +216,13 @@ main()
     then
 	build_hpc_module compiler ${MODULE_VERSION}
     else
-	MODULES=$(grep "^${HPC_COMPILER}:.*${HPC_MODULE}$" ../modules/modules.dep | head -n1 | awk -F':' '{print $NF}')
+	MODULES=$(grep "^${HPC_COMPILER}-${HPC_MPI}:.*${HPC_MODULE}$" ../modules/modules.dep | head -n1 | awk -F':' '{print $NF}')
 	build_hpc_module compiler
 	source ../scripts/compiler.sh
 	set_compiler_env
 	fix_lib_missing
-	export PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_TARGET}/bin:${HPC_PREFIX}/${HPC_COMPILER}/bin:${PATH}
-        export LD_LIBRARY_PATH=${HPC_PREFIX}/${HPC_COMPILER}/lib64:${HPC_PREFIX}/${HPC_COMPILER}/lib:${LD_LIBRARY_PATH}
+	export PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/${HPC_TARGET}/bin:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin:${PATH}
+        export LD_LIBRARY_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib64:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib:${LD_LIBRARY_PATH}
 	build_hpc_module ${MODULES} ${TARGET_MODULE_VERSION}
     fi
 
@@ -223,26 +240,22 @@ list_installed_module()
 
 hpc_builder_help()
 {
-    echo "Usage: hpc_build.sh [-p PREFIX] [-m MODULE] [-M MOD_VERSION] [-l] [-g] [-a] [-i] [-L] [-I]"
+    echo "Usage: hpc_build.sh [-p PREFIX] [-c COMPILER] [-m MODULE] [-i MPI] [-M MOD_VERSION] [-l] [-L]"
     echo "Description:"
     echo "  -p PREFIX"
     echo "     specify installation prefix(default ${PREFIX})"
-    echo "  -l"
-    echo "     list all available modules"
+    echo "  -c COMPILER"
+    echo "     specify HPC compilers(icc|icx|amdclang|armgcc|armclang|gcc|clang, default vendor's)"
+    echo "  -i MPI"
+    echo "     specify mpi(supported MPIs: openmpi|intelmpi|mpich, default=openmpi)"
     echo "  -m MODULE"
     echo "     specify module(default compiler)"
     echo "  -M MODULE_VERSION"
+    echo "  -l"
+    echo "     list all available modules"
     echo "     specify module version"
-    echo "  -g"
-    echo "     use gnu/gcc compiler and toolchains(default=0, false)"
-    echo "  -a"
-    echo "     use ARM clang compiler and toolchains(default=0, false)"
-    echo "  -i"
-    echo "     use INTEL compilers and toolchains for AMD platform(default=0, false)"
     echo "  -L"
     echo "     List installed modules"
-    echo "  -I"
-    echo "     use INTEL MPI(default=0, false)"
     echo "  -h"
     echo "     display this page"
     exit -1
@@ -250,28 +263,31 @@ hpc_builder_help()
 
 # default settings
 PREFIX=/fsx
-USE_GNU=0
-USE_INTEL_ICC=0
-USE_INTEL_MPI=0
+HPC_MPI=openmpi
 USE_ARM_CLANG=0
 LIST_MODULE=0
 LIST_INSTALLED=0
 HPC_MODULE=compiler
-while getopts 'aghIiLlm:p:M:' OPT; do
+HPC_USE_VENDOR_COMPILER=true
+
+while getopts 'p:c:m:M:i:lLh' OPT; do
     case $OPT in
         p) PREFIX="$OPTARG";;
-	l) LIST_MODULE=1;;
+	c) HPC_USE_VENDOR_COMPILER=false; HPC_COMPILER="$OPTARG";;
+        i) HPC_MPI="$OPTARG";;
         m) HPC_MODULE="$OPTARG";;
         M) MODULE_VERSION="$OPTARG";;
-        a) USE_ARM_CLANG=1;;
-        g) USE_GNU=1;;
-        i) USE_INTEL_ICC=1;;
-        I) USE_INTEL_MPI=1;;
+	l) LIST_MODULE=1;;
 	L) LIST_INSTALLED=1;;
         h) hpc_builder_help;;
         ?) hpc_builder_help;;
     esac
 done
+
+if [ "${HPC_MPI}" != "openmpi" ] && [ "${HPC_MPI}" != "mpich" ] && [ "${HPC_MPI}" != "intelmpi" ]
+then
+    HPC_MPI=openmpi
+fi
 
 main
  
@@ -330,3 +346,4 @@ main
 # * Version 8.3 * Add Intel compilers support on AMD platform
 # * Version 9.0 * Rename project from WRF Builder to HPC builder, standardizes and modularizes the build procedure, add osu support
 # * Version 9.1 * Support build VASP on Aarch64(with new module scalapack) and update Intel compiler to 2022.4, AMD compiler to 4.0.0
+# * Version 10.0 * Refactor the application to support various MPI implementations, all new program are installed into ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} now

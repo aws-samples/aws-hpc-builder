@@ -31,7 +31,7 @@ install_osu()
 	patch -Np1 < ../../patch/osu/osu-${OSU_VERSION}-return-value.patch
     fi
     ./configure CC=mpicc CXX=mpicxx
-    make && cd .. && sudo mv "${OSU_SRC%.tar.gz}" "${HPC_PREFIX}/${HPC_COMPILER}/"
+    make && cd .. && sudo mv "${OSU_SRC%.tar.gz}" "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/"
 }
 
 update_osu_version()
