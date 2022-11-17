@@ -8,12 +8,12 @@ PREFIX=/fsx
 # ---------------
 # 0 VENDOR's compiler, Intel=icc, AMD=armclang, ARM=armgcc
 # 1 GNU/GCC compiler
-# 1 GNU/CLANG compiler
-# 2 INTEL/ICC compiler
-# 3 INTEL/ICX compiler
-# 4 AMD/CLANG compiler
-# 5 ARM/GCC compiler
-# 6 ARM/CLANG compiler
+# 2 GNU/CLANG compiler
+# 3 INTEL/ICC compiler
+# 4 INTEL/ICX compiler
+# 5 AMD/CLANG compiler
+# 6 ARM/GCC compiler
+# 7 ARM/CLANG compiler
 #
 # 
 # MPI table:

@@ -74,9 +74,9 @@ Description:
   -m MODULE
      specify module(default compiler)
   -M MODULE_VERSION
+     specify module version
   -l
      list all available modules
-     specify module version
   -L
      List installed modules
   -h
