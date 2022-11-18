@@ -120,10 +120,10 @@ build_hpc_module()
 		    update_world icx-intelmpi-${module}-${MODULE_VERSION}
 		elif [ "${HPC_COMPILER}" == "armgcc" ] || [ "${HPC_COMPILER}" == "armclang" ]
 		then
-		    update_world amrgcc-openmpi-${module}-${MODULE_VERSION}
-		    update_world amrclang-openmpi-${module}-${MODULE_VERSION}
-		    update_world amrgcc-mpich-${module}-${MODULE_VERSION}
-		    update_world amrclang-mpich-${module}-${MODULE_VERSION}
+		    update_world armgcc-openmpi-${module}-${MODULE_VERSION}
+		    update_world armclang-openmpi-${module}-${MODULE_VERSION}
+		    update_world armgcc-mpich-${module}-${MODULE_VERSION}
+		    update_world armclang-mpich-${module}-${MODULE_VERSION}
 		else
 		    update_world ${HPC_COMPILER}-openmpi-${module}-${MODULE_VERSION}
 		    update_world ${HPC_COMPILER}-mpich-${module}-${MODULE_VERSION}
