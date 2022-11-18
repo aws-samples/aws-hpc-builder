@@ -10,14 +10,33 @@ export JOB_DIR=/fsx/spooler/${JOB_ID:-06-opt_blind6_22_exp}
 #ENV VARIABLES#
 
 #------------------------------- Run-time env -------------------------------
-# compiler selection
-# env.sh 1     ## select GNU/GCC/gfortran
-# env.sh       ## select vendor's native compliers(Intel=icc, AMD=clang, ARM=armgcc)
-# env.sh 0     ## select vendor's native compliers(Intel=icc, AMD=clang, ARM=armgcc)
-# env.sh 0 1   ## select Intel icc on AMD64 and armclang on AArch64
-# env.sh 0 1 1 ## select Intell icc and Intel MPI
+# compiler table:
+# ---------------
+# 0 VENDOR's compiler, Intel=icc, AMD=armclang, ARM=armgcc
+# 1 GNU/GCC compiler
+# 2 GNU/CLANG compiler
+# 3 INTEL/ICC compiler
+# 4 INTEL/ICX compiler
+# 5 AMD/CLANG compiler
+# 6 ARM/GCC compiler
+# 7 ARM/CLANG compiler
+#
+#
+# MPI table:
+# ----------
+# 0 openmpi
+# 1 mpich
+# 2 intelmpi
+#
+# usage: env.sh <compiler> <MPI>
+#        C M
+# env.sh 0 0   ## select vendor's native compilers with openmpi
+# env.sh 0 1   ## select vendor's native compilers with mpich
+# env.sh 0 2   ## select vendor's native compilers with intelmpi
+# env.sh 1 0   ## select GNU/GCC compilers with openmpi
+# env.sh ...
 
-source /fsx/scripts/env.sh
+source /fsx/scripts/env.sh 0 0
 
 #----------------------------------------------------------------------------
 
