@@ -1,7 +1,7 @@
 # osu's dependencies
 amdclang-openmpi:openmpi,osu
 amdclang-mpich:mpich,osu
-armgcc-opempi:openmpi,osu
+armgcc-openmpi:openmpi,osu
 armgcc-mpich:mpich,osu
 armclang-openmpi:openmpi,osu
 armclang-mpich:mpich,osu
@@ -19,7 +19,7 @@ icx-intelmpi:osu
 # mt-dgemm's dependencies
 amdclang-openmpi:mt-dgemm
 amdclang-mpich:mt-dgemm
-armgcc-opempi:mt-dgemm
+armgcc-openmpi:mt-dgemm
 armgcc-mpich:mt-dgemm
 armclang-openmpi:mt-dgemm
 armclang-mpich:mt-dgemm
@@ -53,7 +53,7 @@ clang-mpich:mpich
 # hdf5's dependencies
 amdclang-openmpi:openmpi,hdf5
 amdclang-mpich:mpich,hdf5
-armgcc-opempi:openmpi,hdf5
+armgcc-openmpi:openmpi,hdf5
 armgcc-mpich:mpich,hdf5
 armclang-openmpi:openmpi,hdf5
 armclang-mpich:mpich,hdf5
@@ -71,7 +71,7 @@ icx-intelmpi:hdf5
 # pnetcdf's dependencies
 amdclang-openmpi:openmpi,hdf5,pnetcdf
 amdclang-mpich:mpich,hdf5,pnetcdf
-armgcc-opempi:openmpi,hdf5,pnetcdf
+armgcc-openmpi:openmpi,hdf5,pnetcdf
 armgcc-mpich:mpich,hdf5,pnetcdf
 armclang-openmpi:openmpi,hdf5,pnetcdf
 armclang-mpich:mpich,hdf5,pnetcdf
@@ -89,7 +89,7 @@ icx-intelmpi:hdf5,pnetcdf
 # netcdf-c's dependencies
 amdclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c
 amdclang-mpich:mpich,hdf5,pnetcdf,netcdf-c
-armgcc-opempi:openmpi,hdf5,pnetcdf,netcdf-c
+armgcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c
 armgcc-mpich:mpich,hdf5,pnetcdf,netcdf-c
 armclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c
 armclang-mpich:mpich,hdf5,pnetcdf,netcdf-c
@@ -107,7 +107,7 @@ icx-intelmpi:hdf5,pnetcdf,netcdf-c
 # netcdf-fortran's dependencies
 amdclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
 amdclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran
-armgcc-opempi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+armgcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
 armgcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran
 armclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
 armclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran
@@ -125,7 +125,7 @@ icx-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran
 # WRF's dependencies
 amdclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 amdclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-armgcc-opempi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+armgcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 armgcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 armclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 armclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
@@ -143,7 +143,7 @@ icx-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 # WPS's dependencies
 amdclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 amdclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-armgcc-opempi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+armgcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 armgcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 armclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 armclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
@@ -161,7 +161,7 @@ icx-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 # vasp's dependencies
 amdclang-openmpi:openmpi,vasp
 amdclang-mpich:mpich,vasp
-armgcc-opempi:openmpi,scalapack,vasp
+armgcc-openmpi:openmpi,scalapack,vasp
 armgcc-mpich:mpich,scalapack,vasp
 armclang-openmpi:openmpi,scalapack,vasp
 armclang-mpich:mpich,scalapack,vasp
@@ -199,7 +199,7 @@ clang-openmpi:openmpi,fftw,lapack,openblas,scalapack
 clang-mpich:mpich,fftw,lapack,openblas,scalapack
 gcc-openmpi:openmpi,fftw,lapack,openblas,scalapack
 gcc-mpich:mpich,fftw,lapack,openblas,scalapack
-armgcc-opempi:openmpi,scalapack
+armgcc-openmpi:openmpi,scalapack
 armgcc-mpich:mpich,scalapack
 armclang-openmpi:openmpi,scalapack
 armclang-mpich:mpich,scalapack
