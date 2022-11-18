@@ -23,8 +23,8 @@ diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
 +RWORDSIZE       =       CONFIGURE_RWORDSIZE
 +PROMOTION       =       #-fdefault-real-8
 +ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_SUBR  -DWRF_USE_CLM
-+CFLAGS_LOCAL    =       -w -O3 -c  # -DRSL0_ONLY
-+LDFLAGS_LOCAL   =
++CFLAGS_LOCAL    =       -w -O3 -c  # -DRSL0_ONLY -I$(ARMPL_INCLUDES_LP64_MP)
++LDFLAGS_LOCAL   =       -larmpl_lp64_mp -lgfortran -lamath -lm -lastring
 +CPLUSPLUSLIB    =       
 +ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
 +FCOPTIM         =       -O3 -ftree-vectorize -funroll-loops
