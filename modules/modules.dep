@@ -16,6 +16,24 @@ icx-openmpi:openmpi,osu
 icx-mpich:mpich,osu
 icx-intelmpi:osu
 
+# mt-dgemm's dependencies
+amdclang-openmpi:mt-dgemm
+amdclang-mpich:mt-dgemm
+armgcc-opempi:mt-dgemm
+armgcc-mpich:mt-dgemm
+armclang-openmpi:mt-dgemm
+armclang-mpich:mt-dgemm
+clang-openmpi:mt-dgemm
+clang-mpich:mt-dgemm
+gcc-openmpi:mt-dgemm
+gcc-mpich:mt-dgemm
+icc-openmpi:mt-dgemm
+icc-mpich:mt-dgemm
+icc-intelmpi:mt-dgemm
+icx-openmpi:mt-dgemm
+icx-mpich:mpich,mt-dgemm
+icx-intelmpi:mt-dgemm
+
 # openmpi's dependencies
 armclang-openmpi:openmpi
 armgcc-openmpi:openmpi
