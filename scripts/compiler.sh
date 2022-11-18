@@ -279,6 +279,14 @@ case ${HPC_COMPILER} in
 	if [ "${HPC_MPI}" == "intelmpi" ]
 	then
 	    source ${HPC_PREFIX}/opt/intel/oneapi/setvars.sh
+	    if [ "${HPC_COMPILER}" == "icx" ]
+	    then
+		export I_MPI_CC=icx
+		export I_MPI_FC=ifx
+		export I_MPI_CXX=ipcx
+		export I_MPI_F90=ifx
+		export I_MPI_F77=ifx
+	    fi
 	else
 	    source ${HPC_PREFIX}/opt/intel/oneapi/compiler/latest/env/vars.sh
 	fi
