@@ -51,10 +51,11 @@ export OMP_NUM_THREADS=1
 #    MVAPICH2: MV2_SHOW_CPU_BINDING=1
 #    OpenMPI: --report-bindings
 
-if [ "${HPC_COMPILER}" == "icc" ]
+if [ "${HPC_MPI}" == "intelmpi" ]
 then
     SHOW_BIND_OPTS="-print-rank-map"
-else
+elif ["${HPC_MPI}" == "openmpi" ]
+then
     SHOW_BIND_OPTS="--report-bindings"
 fi
 
@@ -63,12 +64,12 @@ cd ${JOB_DIR}
 NPROCS=$(cat /sys/devices/system/cpu/cpu*/topology/thread_siblings_list | cut -d, -f1 | sort -u | wc -l)
 
 START_DATE=$(date)
-echo "${START_DATE} - JobStart - $(basename ${JOB_DIR}) - ${HPC_COMPILER}" >> vasp_$(uname -m).time
+echo "${START_DATE} - JobStart - $(basename ${JOB_DIR}) - ${HPC_COMPILER} - ${HPC_MPI}" >> vasp_$(uname -m).time
 
-mpiexec -np ${NPROCS} --bind-to hwthread --map-by core ${SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/vasp.${VASP_VERSION}/bin/vasp_std >> mpiexe_${SARCH}_${HPC_COMPILER}.log 2>&1
+mpiexec -np ${NPROCS} --bind-to hwthread --map-by core ${SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/vasp.${VASP_VERSION}/bin/vasp_std >> mpiexe_${SARCH}_${HPC_COMPILER}_${HPC_MPI}.log 2>&1
 
 END_DATE=$(date)
-echo "${END_DATE} - JobEnd - $(basename ${JOB_DIR}) - ${HPC_COMPILER}" >> vasp_$(uname -m).time
+echo "${END_DATE} - JobEnd - $(basename ${JOB_DIR}) - ${HPC_COMPILER} - ${HPC_MPI}" >> vasp_$(uname -m).time
 
 JOB_FINISH_TIME=$(($(date -d "${END_DATE}" +%s)-$(date -d "${START_DATE}" +%s)))
 echo "$(date) - Job ${JOB_DIR} took ${JOB_FINISH_TIME} seconds($(echo "scale=5;${JOB_FINISH_TIME}/3600" | bc) hours)." >> vasp_$(uname -m).time

@@ -28,25 +28,57 @@ export JOB_DIR=/fsx/spooler/run
 #ENV VARIABLES#
 
 #------------------------------- Run-time env -------------------------------
-# compiler selection
-# env.sh 1     ## select GNU/GCC/gfortran
-# env.sh       ## select vendor's native compliers(Intel=icc, AMD=clang, ARM=armgcc)
-# env.sh 0     ## select vendor's native compliers(Intel=icc, AMD=clang, ARM=armgcc)
-# env.sh 0 1   ## select Intel icc on AMD64 and armclang on AArch64
-# env.sh 0 1 1 ## select Intell icc and Intel MPI
+# compiler & MPI selection
+# compiler table:
+# ---------------
+# 0 VENDOR's compiler, Intel=icc, AMD=armclang, ARM=armgcc
+# 1 GNU/GCC compiler
+# 2 GNU/CLANG compiler
+# 3 INTEL/ICC compiler
+# 4 INTEL/ICX compiler
+# 5 AMD/CLANG compiler
+# 6 ARM/GCC compiler
+# 7 ARM/CLANG compiler
+#
+#
+# MPI table:
+# ----------
+# 0 openmpi
+# 1 mpich
+# 2 intelmpi
+#
+# usage: env.sh <compiler> <MPI>
+#        C M
+# env.sh 0 0   ## select vendor's native compilers with openmpi
+# env.sh 0 1   ## select vendor's native compilers with mpich
+# env.sh 0 2   ## select vendor's native compilers with intelmpi
+# env.sh 1 0   ## select GNU/GCC compilers with openmpi
+# env.sh ...
 
-source /fsx/scripts/env.sh
+source /fsx/scripts/env.sh 0 0
 #----------------------------------------------------------------------------
 
 ulimit -s unlimited
+#Report bindings
+#    Intel MPI: -print-rank-map
+#    MVAPICH2: MV2_SHOW_CPU_BINDING=1
+#    OpenMPI: --report-bindings
+
+if [ "${HPC_MPI}" == "intelmpi" ]
+then
+    SHOW_BIND_OPTS="-print-rank-map"
+elif ["${HPC_MPI}" == "openmpi" ]
+then
+    SHOW_BIND_OPTS="--report-bindings"
+fi
 
 echo "Running WRF on $(date)"
 cd ${JOB_DIR}
-ln -sf /fsx/wrf-${WARCH}/${WRF_COMPILER}/WRF-${WRF_VERSION}/main/wrf.exe  .
+ln -sf /fsx/wrf-${WARCH}/${WRF_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/main/wrf.exe  .
 
-echo "$(date +"%Y%m%d-%H:%M:%S")[$(date "+%s"]: StartJob - $(basename ${JOB_DIR}) - ${WRF_COMPILER}" >> wrf_$(uname -m).times
-#mpirun --report-bindings ./wrf.exe >> mpirun_${WARCH}_${WRF_COMPILER}_debug.log 2>&1
-mpirun --mca pml cm --mca mtl ofi --mca pml_base_verbose 10 --mca mtl_base_verbose 10 ./wrf.exe >> mpirun_${WARCH}_${WRF_COMPILER}_debug.log 2>&1
-#mpirun --mca pml cm --mca mtl ofi --report-bindings ./wrf.exe > mpirun_${WARCH}_${WRF_COMPILER}.log 2>&1
+echo "$(date +"%Y%m%d-%H:%M:%S")[$(date "+%s"]: StartJob - $(basename ${JOB_DIR}) - ${WRF_COMPILER} - ${HPC_MPI}" >> wrf_$(uname -m).times
+#mpirun ${SHOW_BIND_OPTS} ./wrf.exe >> mpirun_${WARCH}_${WRF_COMPILER}_${HPC_MPI}_debug.log 2>&1
+mpirun --mca pml cm --mca mtl ofi --mca pml_base_verbose 10 --mca mtl_base_verbose 10 ./wrf.exe >> mpirun_${WARCH}_${WRF_COMPILER}_${HPC_MPI}_debug.log 2>&1
+#mpirun --mca pml cm --mca mtl ofi ${SHOW_BIND_OPTS} ./wrf.exe > mpirun_${WARCH}_${WRF_COMPILER}_${HPC_MPI}.log 2>&1
 echo nstasks=$SLURM_NTASKS
-echo "$(date +"%Y%m%d-%H:%M:%S"): JobEnd - $(basename ${JOB_DIR}) - ${WRF_COMPILER}" >> wrf_$(uname -m).times
+echo "$(date +"%Y%m%d-%H:%M:%S"): JobEnd - $(basename ${JOB_DIR}) - ${WRF_COMPILER} - ${HPC_MPI}" >> wrf_$(uname -m).times

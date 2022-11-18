@@ -65,17 +65,30 @@ source /fsx/scripts/detect_efa.sh
 
 ulimit -s unlimited
 
+#Report bindings
+#    Intel MPI: -print-rank-map
+#    MVAPICH2: MV2_SHOW_CPU_BINDING=1
+#    OpenMPI: --report-bindings
+
+if [ "${HPC_MPI}" == "intelmpi" ]
+then
+    SHOW_BIND_OPTS="-print-rank-map"
+elif ["${HPC_MPI}" == "openmpi" ]
+then
+    SHOW_BIND_OPTS="--report-bindings"
+fi
+
 echo "Running WRF on $(date)"
 cd ${JOB_DIR}
 ln -sf /fsx/wrf-${WARCH}/${WRF_COMPILER}/WRF-${WRF_VERSION}/main/wrf.exe  .
 
 START_DATE=$(date)
-echo "${START_DATE} - JobStart - $(basename ${JOB_DIR}) - ${WRF_COMPILER}" >> wrf_$(uname -m).time
+echo "${START_DATE} - JobStart - $(basename ${JOB_DIR}) - ${WRF_COMPILER} - ${HPC_MPI}" >> wrf_$(uname -m).time
 
-mpirun --report-bindings ./wrf.exe >> mpirun_${WARCH}_${WRF_COMPILER}.log 2>&1
+mpirun ${SHOW_BIND_OPTS} ./wrf.exe >> mpirun_${WARCH}_${WRF_COMPILER}_${HPC_MPI}.log 2>&1
 
 END_DATE=$(date)
-echo "${END_DATE} - JobEnd - $(basename ${JOB_DIR}) - ${WRF_COMPILER}" >> wrf_$(uname -m).time
+echo "${END_DATE} - JobEnd - $(basename ${JOB_DIR}) - ${WRF_COMPILER} - ${HPC_MPI}" >> wrf_$(uname -m).time
 
 JOB_FINISH_TIME=$(($(date -d "${END_DATE}" +%s)-$(date -d "${START_DATE}" +%s)))
 echo "$(date) - Job ${JOB_DIR} took ${JOB_FINISH_TIME} seconds($(echo "scale=2;${JOB_FINISH_TIME}/3600" | bc) hours)." >> wrf_$(uname -m).time
