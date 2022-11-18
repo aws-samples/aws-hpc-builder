@@ -1,0 +1,10 @@
+
+CC=gcc
+CFLAGS=-O3 -fopenmp -DUSE_CBLAS -I$(ARMPL_DIR)/include -L$(ARMPL_DIR)/lib -larmpl
+LDFLAGS=
+
+mt-dgemm-icc: mt-dgemm.c
+        $(CC) $(CFLAGS) -o mt-dgemm mt-dgemm.c
+
+clean:
+	rm mt-dgemm *.o
