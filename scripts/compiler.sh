@@ -268,9 +268,11 @@ case ${HPC_COMPILER} in
 	module load armpl/$(ls ${HPC_PREFIX}/opt/moduledeps/acfl/[0-9.]*/armpl)
         export HPC_TARGET=$(armclang -dumpmachine)
 
-	gcc_lib_search_loc=$(dirname $(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o")))
-	sudo ln -sf ${gcc_lib_search_loc} $(dirname ${gcc_lib_search_loc})/${HPC_TARGET}
-	sudo ln -sf ${gcc_lib_search_loc} $(dirname ${gcc_lib_search_loc})/${HPC_HOST_TARGET}
+	# fix system /usr/bin/ls coudn't find crtbeginS.o etc.
+	armgcc_lib_search_loc=$(dirname $(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o")))
+	sysgcc_lib_search_loc=$(dirname $(dirname $(sudo find /usr -iname "crtbeginS.o")))
+	sudo ln -sf ${armgcc_lib_search_loc} $(dirname ${armgcc_lib_search_loc})/${HPC_TARGET}
+	sudo ln -sf ${armgcc_lib_search_loc} $(dirname ${sysgcc_lib_search_loc})/${HPC_TARGET}
 	;;
     "icc"|"icx")
 	if [ "${HPC_MPI}" == "intelmpi" ]
