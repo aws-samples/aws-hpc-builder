@@ -6,6 +6,8 @@
 # 修改下面的版本号可以编译不同的版本组合
 # **************************************
 GCC_VERSION=${2:-12.2.0}
+CMAKE_VERSION=${2:-3.25.0}
+CLANG_VERSION=${2:-15.0.2}
 ARM_COMPILER_VERSION=${2:-22.1}
 AMD_COMPILER_VERSION=${2:-4.0.0}
 #AMD_COMPILER_VERSION=${2:-3.2.0}
@@ -70,12 +72,15 @@ INTEL_HPC_COMPILER_SRC="l_HPCKit_p_${INTEL_HPC_COMPILER_VERSION}_offline.sh"
 AMD_COMPILER_SRC=aocc-compiler-${AMD_COMPILER_VERSION}.tar
 AMD_AOCL_SRC=aocl-linux-aocc-${AMD_AOCL_VERSION}.tar.gz
 GCC_SRC="gcc-${GCC_VERSION}.tar.gz"
+CMAKE_SRC=cmake-${CMAKE_VERSION}.tar.gz
+CLANG_SRC="llvmorg-${LLVM_VERSION}.tar.gz"
 BINUTILS_SRC="binutils-${BINUTILS_VERSION}.tar.gz"
 ELFUTILS_SRC="elfutils-${ELFUTILS_VERSION}.tar.bz2"
 
 install_sys_dependency_for_compiler()
 {
     # packages for build gcc/binutils ref: https://wiki.osdev.org/Building_GCC
+    # packages for build llvm/clang 
     # packages for armclang(libtinfo.so.5)
     # packages for build elfutils ref: https://github.com/iovisor/bcc/issues/3601  sqlite-devel, libcurl-devel libmicrohttpd-devel and libarchive-devel
     # packages for build wrf
@@ -87,6 +92,7 @@ install_sys_dependency_for_compiler()
 	#sudo yum -y install hdf5-devel zlib-devel libcurl-devel cmake3 m4 openmpi-devel libxml2-devel libtirpc-devel bzip2-devel jasper-devel libpng-devel zlib-devel libjpeg-turbo-devel tmux patch git
 	sudo yum -y install \
 		gcc gcc-c++ gcc-gfortran make bison flex gmp-devel libmpc-devel mpfr-devel texinfo isl-devel \
+		openssl-devel ninja-build \
 		ncurses-compat-libs \
 		sqlite-devel libarchive-devel libmicrohttpd-devel libcurl-devel \
 		wget time dmidecode tcsh libtirpc-devel \
@@ -99,6 +105,7 @@ install_sys_dependency_for_compiler()
        	sudo dnf -y update
        	sudo dnf -y install \
 		gcc gcc-c++ gcc-gfortran make bison flex gmp-devel libmpc-devel mpfr-devel texinfo isl-devel \
+		ninja-build \
 		ncurses-compat-libs \
 		sqlite-devel libarchive-devel libmicrohttpd-devel libcurl-devel \
 	       	wget time dmidecode tcsh libtirpc-devel \
@@ -203,6 +210,20 @@ download_compiler() {
 	wget "https://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/${GCC_SRC}"
 	return $?
     fi
+    if [ -f ${CMAKE_SRC} ]
+    then
+	return
+    else
+	wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/${CMAKE_SRC}
+	return $?
+    fi
+    if [ -f ${CLANG_SRC} ]
+    then
+	return
+    else
+	wget "https://github.com/llvm/llvm-project/archive/refs/tags/${CLANG_SRC}"
+	return $?
+    fi
 }
 
 
@@ -258,6 +279,56 @@ install_gcc_compiler()
     export LD_LIBRARY_PATH=${OLD_LIBRARY_PATH}
     unset OPATH
     unset OLD_LIBRARY_PATH
+}
+
+build_cmake()
+{
+    echo "zzz *** $(date) *** Build ${CMAKE_SRC%.tar.gz}"
+    sudo rm -rf "${CMAKE_SRC%.tar.gz}"
+    tar xf "${CMAKE_SRC}"
+    cd "${CMAKE_SRC%.tar.gz}"
+    ./bootstrap --prefix=${HPC_PREFIX}/opt/gnu --parallel=$(($(nproc) / 2)) -- -DCMAKE_BUILD_TYPE:STRING=Release
+    make
+    sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install
+    cd ..
+}
+
+build_clang()
+{
+    if [ ${S_VERSION_ID} -eq 7 ]
+    then
+	build_cmake
+	sudo ln -s /usr/bin/ninja-build /usr/local/bin/ninja
+    fi
+
+    echo "zzz *** $(date) *** Build ${CLANG_SRC%.tar.gz}"
+    sudo rm -rf "${CLANG_SRC%.tar.gz}"
+    tar xf "${CLANG_SRC}"
+    BUILDDIR=llvm/build
+    mkdir -p ${BUILDDIR}
+    cmake -DLLVM_DEFAULT_TARGET_TRIPLE=${HPC_HOST_TARGET} \
+	-DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD="" \
+        -DLLVM_PARALLEL_COMPILE_JOBS=$(($(nproc) / 2)) \
+        -G Ninja -S llvm-project-llvmorg-${LLVM_VERSION}/llvm -B ${BUILDDIR} \
+	-DLLVM_INSTALL_UTILS=ON \
+	-DCMAKE_BUILD_TYPE=Release \
+	-DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/opt/gnu \
+	-DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;flang;lldb'
+
+    ninja -C llvm-project-llvmorg-${LLVM_VERSION}/llvm -B ${BUILDDIR} install
+
+    cmake -G Ninja -S llvm-project-llvmorg-${LLVM_VERSION}/llvm  -B $buildir \
+      -DLLVM_EXTERNAL_LIT=./llvm-project-llvmorg-${LLVM_VERSION}/llvm/utils/lit/lit.py
+      -DLLVM_ROOT=${HPC_PREFIX}/opt/gnu
+
+}
+
+install_clang_compiler()
+{
+    sudo ln -s ${HPC_PREFIX}/opt/gnu/bin/{clang-new,clang}
+    export PATH=${HPC_PREFIX}/opt/gnu/bin:${PATH}
+    export LD_LIBRARY_PATH=${HPC_PREFIX}/opt/gnu/lib:${LD_LIBRARY_PATH}
+    build_clang
 }
 
 install_compiler()

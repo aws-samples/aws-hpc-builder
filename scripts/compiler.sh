@@ -227,6 +227,7 @@ get_compiler()
 }
 
 export SARCH=$(uname -m)
+export HPC_HOST_TARGET=$(/usr/bin/gcc -dumpmachine)
 
 #if [ "${SARCH}" == "x86_64" ] && (sudo dmidecode -t processor | grep AMD > /dev/null)
 if [ "${SARCH}" == "x86_64" ] && (grep AMD /proc/cpuinfo > /dev/null)
