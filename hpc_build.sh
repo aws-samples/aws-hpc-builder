@@ -217,6 +217,8 @@ main()
 	build_hpc_module compiler ${MODULE_VERSION}
     else
 	MODULES=$(grep "^${HPC_COMPILER}-${HPC_MPI}:.*${HPC_MODULE}$" ../modules/modules.dep | head -n1 | awk -F':' '{print $NF}')
+	# the HPC_HOST_TARGET is not set yet, set if for building compiler
+        export HPC_HOST_TARGET=${/usr/bin/gcc -dumpmachine}
 	build_hpc_module compiler
 	source ../scripts/compiler.sh
 	set_compiler_env
