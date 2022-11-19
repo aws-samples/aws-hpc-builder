@@ -316,7 +316,7 @@ install_clang_compiler()
     export PATH=${HPC_PREFIX}/opt/gnu/bin:${PATH}
     export LD_LIBRARY_PATH=${HPC_PREFIX}/opt/gnu/lib:${LD_LIBRARY_PATH}
     build_clang
-    sudo ln -s ${HPC_PREFIX}/opt/gnu/bin/{clang-new,clang}
+    sudo ln -sf ${HPC_PREFIX}/opt/gnu/bin/{flang-new,flang}
 }
 
 install_compiler()
