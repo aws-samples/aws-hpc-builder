@@ -118,112 +118,99 @@ install_sys_dependency_for_compiler()
 }
 
 download_compiler() {
-    if [ "${SARCH}" == "aarch64" ]
-    then
-	if [ -f arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}_${SARCH}.tar ]
-	then
-            return
-        else
-	    # 22.02
-            #wget "https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-allinea-studio/$(echo ${ARM_COMPILER_VERSION} | tr '.' '-')/arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}_${SARCH}.tar"
-            # 22.1
-            #wget https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/22-1/arm-compiler-for-linux_22.1_RHEL-7_aarch64.tar
-            wget "https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/$(echo ${ARM_COMPILER_VERSION} | tr '.' '-')/arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}_${SARCH}.tar"
-	    return $?
-	fi
-    elif [ "${SARCH}" == "x86_64" ]
-    then
-	if [ -f ${INTEL_COMPILER_SRC} ]
-	then
-	    return
-        else
-	    wget "https://registrationcenter-download.intel.com/akdlm/irc_nas/${INTEL_COMPILER_DL_ID}/${INTEL_COMPILER_SRC}"
-	    result=$?
-	    if [ ${result} -ne 0 ]
+
+    case "${HPC_COMPILER}" in
+	"armgcc" | "armclang")
+	    if [ -f arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}_${SARCH}.tar ]
 	    then
-		return ${result}
+		return
+	    else
+		# 22.02
+		# #wget "https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-allinea-studio/$(echo ${ARM_COMPILER_VERSION} | tr '.' '-')/arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}_${SARCH}.tar"
+		# # 22.1
+		# #wget https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/22-1/arm-compiler-for-linux_22.1_RHEL-7_aarch64.tar
+		wget "https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/$(echo ${ARM_COMPILER_VERSION} | tr '.' '-')/arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}_${SARCH}.tar"
+		return $?
 	    fi
-	fi
-	if [ -f ${INTEL_HPC_COMPILER_SRC} ]
-	then
-	    return
-        else
-            wget "https://registrationcenter-download.intel.com/akdlm/irc_nas/${INTEL_HPC_COMPILER_DL_ID}/${INTEL_HPC_COMPILER_SRC}"
-	    return $?
-	fi
-    elif [ "${SARCH}" == "amd64" ]
-    then
-	if [ ${USE_INTEL_ICC} -eq 1 ]
-	then
-            if [ -f ${INTEL_COMPILER_SRC} ]
+	    ;;
+	"icc" | "icx")
+	    if [ ! -f ${INTEL_COMPILER_SRC} ]
             then
-	        return
-            else
-	        wget "https://registrationcenter-download.intel.com/akdlm/irc_nas/${INTEL_COMPILER_DL_ID}/${INTEL_COMPILER_SRC}"
-	        if [ $? -ne 0 ]
-	        then
-                    return $?
-	        fi
+		wget "https://registrationcenter-download.intel.com/akdlm/irc_nas/${INTEL_COMPILER_DL_ID}/${INTEL_COMPILER_SRC}"
+		result=$?
+		if [ ${result} -ne 0 ]
+		then
+		    return ${result}
+		fi
 	    fi
 	    if [ -f ${INTEL_HPC_COMPILER_SRC} ]
 	    then
-	        return
-            else
-                wget "https://registrationcenter-download.intel.com/akdlm/irc_nas/${INTEL_HPC_COMPILER_DL_ID}/${INTEL_HPC_COMPILER_SRC}"
-	        return $?
-            fi
-	fi
-
-	if [ ! -f ${AMD_COMPILER_SRC} ] && [ ${USE_GNU} -eq 0 ]
-	then
-	    echo "Please go to https://developer.amd.com/amd-aocc/#downloads , download ${AMD_COMPILER_SRC} to $(pwd)/ and run the installation again" >&2
-	    echo "Please go to https://developer.amd.com/amd-aocl/#downloads , download ${AMD_AOCL_SRC} to $(pwd)/ and run the installation again" >&2
-	    exit 1
-	fi
-	if [ -f ${AMD_AOCL_SRC} ] && [ ${USE_GNU} -eq 0 ]
-	then
+		return
+	    else
+		wget "https://registrationcenter-download.intel.com/akdlm/irc_nas/${INTEL_HPC_COMPILER_DL_ID}/${INTEL_HPC_COMPILER_SRC}"
+		return $?
+	    fi
+	    ;;
+	"amdclang")
+	    if [ ! -f ${AMD_COMPILER_SRC} ]
+	    then
+		echo "Please go to https://developer.amd.com/amd-aocc/#downloads , download ${AMD_COMPILER_SRC} to $(pwd)/ and run the installation again" >&2
+		echo "Please go to https://developer.amd.com/amd-aocl/#downloads , download ${AMD_AOCL_SRC} to $(pwd)/ and run the installation again" >&2
+		exit 1
+	    fi
+	    if [ ! -f ${AMD_AOCL_SRC} ]
+	    then
+		echo "Please go to https://developer.amd.com/amd-aocl/#downloads , download ${AMD_AOCL_SRC} to $(pwd)/ and run the installation again" >&2
+		exit 1
+	    fi
 	    return
-	fi
-    fi
-    if [ ! -f ${BINUTILS_SRC} ]
-    then
-	wget "https://ftp.gnu.org/gnu/binutils/${BINUTILS_SRC}"
-	result=$?
-        if [ ${result} -ne 0 ]
-        then
-            return ${result}
-	fi
-    fi
-    if [ ! -f ${ELFUTILS_SRC} ]
-    then
-	wget "https://sourceware.org/elfutils/ftp/${ELFUTILS_VERSION}/${ELFUTILS_SRC}"
-	result=$?
-        if [ ${result} -ne 0 ]
-        then
-            return ${result}
-	fi
-    fi
-    if [ -f ${GCC_SRC} ]
-    then
-	return
-    else
-	wget "https://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/${GCC_SRC}"
-	return $?
-    fi
-    if [ -f ${CMAKE_SRC} ]
-    then
-	return
-    else
-	wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/${CMAKE_SRC}
-	return $?
-    fi
-    if [ -f ${CLANG_SRC} ]
-    then
-	return
-    else
-	wget "https://github.com/llvm/llvm-project/archive/refs/tags/${CLANG_SRC}"
-	return $?
-    fi
+	    ;;
+	"gcc")
+	    if [ ! -f ${BINUTILS_SRC} ]
+	    then
+		wget "https://ftp.gnu.org/gnu/binutils/${BINUTILS_SRC}"
+		result=$?
+		if [ ${result} -ne 0 ]
+		then
+		    return ${result}
+		fi
+	    fi
+	    if [ ! -f ${ELFUTILS_SRC} ]
+	    then
+		wget "https://sourceware.org/elfutils/ftp/${ELFUTILS_VERSION}/${ELFUTILS_SRC}"
+		result=$?
+		if [ ${result} -ne 0 ]
+		then
+		    return ${result}
+		fi
+	    fi
+	    if [ -f ${GCC_SRC} ]
+	    then
+		return
+	    else
+		wget "https://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/${GCC_SRC}"
+		return $?
+	    fi
+	    ;;
+	"clang")
+	    if [ ! -f ${CMAKE_SRC} ]
+	    then
+		wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/${CMAKE_SRC}
+		result=$?
+		if [ ${result} -ne 0 ]
+		then
+		    return ${result}
+		fi
+	    fi
+	    if [ -f ${CLANG_SRC} ]
+	    then
+		return
+	    else
+		wget "https://github.com/llvm/llvm-project/archive/refs/tags/${CLANG_SRC}"
+		return $?
+	    fi
+	    ;;
+    esac
 }
 
 
@@ -309,16 +296,16 @@ build_clang()
     cmake -DLLVM_DEFAULT_TARGET_TRIPLE=${HPC_HOST_TARGET} \
 	-DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD="" \
         -DLLVM_PARALLEL_COMPILE_JOBS=$(($(nproc) / 2)) \
-        -G Ninja -S llvm-project-llvmorg-${LLVM_VERSION}/llvm -B ${BUILDDIR} \
+        -G Ninja -S llvm-project-llvmorg-${CLANG_VERSION}/llvm -B ${BUILDDIR} \
 	-DLLVM_INSTALL_UTILS=ON \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/opt/gnu \
 	-DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;flang;lldb'
 
-    ninja -C llvm-project-llvmorg-${LLVM_VERSION}/llvm -B ${BUILDDIR} install
+    ninja -C llvm-project-llvmorg-${CLANG_VERSION}/llvm -B ${BUILDDIR} install
 
-    cmake -G Ninja -S llvm-project-llvmorg-${LLVM_VERSION}/llvm  -B $buildir \
-      -DLLVM_EXTERNAL_LIT=./llvm-project-llvmorg-${LLVM_VERSION}/llvm/utils/lit/lit.py
+    cmake -G Ninja -S llvm-project-llvmorg-${CLANG_VERSION}/llvm  -B $buildir \
+      -DLLVM_EXTERNAL_LIT=./llvm-project-llvmorg-${CLANG_VERSION}/llvm/utils/lit/lit.py
       -DLLVM_ROOT=${HPC_PREFIX}/opt/gnu
 
 }
@@ -340,10 +327,10 @@ install_compiler()
     "clang")
 	install_clang_compiler
 	;;
-    "armgcc"|"armclang")
+    "armgcc" | "armclang")
         install_arm_compiler
 	;;
-    "icc"|"icx")
+    "icc" | "icx")
 	install_intel_compiler
 	;;
     "amdclang")
