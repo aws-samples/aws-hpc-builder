@@ -73,14 +73,12 @@ install_openmpi()
 	    #--host=${WRF_TARGET} \
 	    #--target=${WRF_TARGET} \
 	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
-	    --with-ofi=/opt/amazon/efa \
-	    --target=${HPC_HOST_TARGET}
+	    --with-ofi=/opt/amazon/efa
     else
 	    #--build=${WRF_TARGET} \
 	    #--host=${WRF_TARGET} \
 	    #--target=${WRF_TARGET}
-	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
-	    --target=${HPC_HOST_TARGET} 
+	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
     fi
     result=$?
     if [ $result -ne 0 ]

@@ -266,15 +266,11 @@ case ${HPC_COMPILER} in
         export MODULEPATH=${MODULEPATH}:${HPC_PREFIX}/opt/modulefiles
 	module load acfl/$(ls ${HPC_PREFIX}/opt/modulefiles/acfl)
 	module load armpl/$(ls ${HPC_PREFIX}/opt/moduledeps/acfl/[0-9.]*/armpl)
-	#module load $(module avail 2>&1 | grep -A1 "${HPC_PREFIX}" | tail -n1)
-	#module load $(ls ${HPC_PREFIX}/opt/moduledeps/acfl/[0-9.]*/armpl/[0-9.]*)
-	#echo $(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o")) > /tmp/libarmgcc.conf
-	#echo $(dirname $(find ${HPC_PREFIX}/opt -iname "libgcc_s.so")) > /tmp/libarmgcclib.conf
-	#sudo mv /tmp/libarmgcc.conf /tmp/libarmgcclib.conf /etc/ld.so.conf.d/
-	#sudo ldconfig
-	#export LD_LIBRARY_PATH=$(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o")):${LD_LIBRARY_PATH}
-	#export LD_LIBRARY_PATH=$(dirname $(find ${HPC_PREFIX}/opt -iname "libgcc_s.so")):${LD_LIBRARY_PATH}
-        export HPC_TARGET=$(gcc -dumpmachine)
+        export HPC_TARGET=$(armclang -dumpmachine)
+
+	gcc_lib_search_loc=$(dirname $(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o")))
+	sudo ln -sf ${gcc_lib_search_loc} $(dirname ${gcc_lib_search_loc})/${HPC_TARGET}
+	sudo ln -sf ${gcc_lib_search_loc} $(dirname ${gcc_lib_search_loc})/${HPC_HOST_TARGET}
 	;;
     "icc"|"icx")
 	if [ "${HPC_MPI}" == "intelmpi" ]
@@ -296,6 +292,7 @@ case ${HPC_COMPILER} in
     "amdclang")
 	source ${HPC_PREFIX}/opt/setenv_AOCC.sh
 	source $(ls ${HPC_PREFIX}/opt/[0-9.]*/amd-libs.cfg)
+        export HPC_TARGET=$(clang -dumpmachine)
 	;;
 esac
 
