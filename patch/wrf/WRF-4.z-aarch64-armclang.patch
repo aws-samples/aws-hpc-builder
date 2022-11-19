@@ -49,4 +49,16 @@ diff -urN WRF-4.z.orig/arch/configure.defaults WRF-4.z/arch/configure.defaults
 +RANLIB          =      armllvm-ranlib
  RLFLAGS		=	
  CC_TOOLS        =      $(SCC) 
- 
+
+diff -urN WRF-4.z.orig/configure WRF-4.z/configure
+--- WRF-4.z.orig/configure      2021-01-15 17:21:58.000000000 +0000
++++ WRF-4.z/configure   2022-11-19 12:36:24.911340657 +0000
+@@ -686,7 +686,7 @@
+   foo=foo_$$
+
+   grep '^SFC' configure.wrf | grep -i 'gfortran' > /dev/null
+-  if [ $? ]
++  if [ $? -eq 0 ]
+   then
+
+     cat > ${foo}.F << EOF 
