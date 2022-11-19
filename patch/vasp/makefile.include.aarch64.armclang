@@ -49,7 +49,7 @@ LLIBS       = -lstdc++
 
 # When compiling on the target machine itself, change this to the
 # relevant target when cross-compiling for another architecture
-FFLAGS     += -Ofast -mcpu=neoverse-512tvb -ffast-math -fno-math-errno
+FFLAGS     += -Ofast -mcpu=native -ffast-math -fno-math-errno
 
 # For gcc-10 and higher (comment out for older versions)
 #FFLAGS     += -fallow-argument-mismatch

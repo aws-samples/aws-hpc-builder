@@ -54,7 +54,7 @@ export OMP_NUM_THREADS=1
 if [ "${HPC_MPI}" == "intelmpi" ]
 then
     SHOW_BIND_OPTS="-print-rank-map"
-elif ["${HPC_MPI}" == "openmpi" ]
+elif [ "${HPC_MPI}" == "openmpi" ]
 then
     SHOW_BIND_OPTS="--report-bindings"
 fi
