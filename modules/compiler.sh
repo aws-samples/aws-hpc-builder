@@ -302,9 +302,9 @@ build_clang()
 	-DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/opt/gnu \
 	-DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;flang;lldb'
 
-    ninja -C llvm-project-llvmorg-${CLANG_VERSION}/llvm -B ${BUILDDIR} install
+    ninja -C ${BUILDDIR} install
 
-    cmake -G Ninja -S llvm-project-llvmorg-${CLANG_VERSION}/llvm  -B $buildir \
+    cmake -G Ninja -S llvm-project-llvmorg-${CLANG_VERSION}/llvm  -B ${BUILDDIR} \
       -DLLVM_EXTERNAL_LIT=./llvm-project-llvmorg-${CLANG_VERSION}/llvm/utils/lit/lit.py
       -DLLVM_ROOT=${HPC_PREFIX}/opt/gnu
 
