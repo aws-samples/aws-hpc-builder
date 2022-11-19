@@ -163,8 +163,8 @@ amdclang-openmpi:openmpi,vasp
 amdclang-mpich:mpich,vasp
 armgcc-openmpi:openmpi,scalapack,vasp
 armgcc-mpich:mpich,scalapack,vasp
-armclang-openmpi:openmpi,scalapack,vasp
-armclang-mpich:mpich,scalapack,vasp
+armclang-openmpi:openmpi,scalapack,qd,vasp
+armclang-mpich:mpich,scalapack,qd,vasp
 clang-openmpi:openmpi,fftw,lapack,openblas,scalapack,vasp
 clang-mpich:mpich,fftw,lapack,openblas,scalapack,vasp
 gcc-openmpi:openmpi,fftw,lapack,openblas,scalapack,vasp

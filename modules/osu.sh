@@ -1,4 +1,6 @@
 #!/bin/sh
+# SPDX-License-Identifier: MIT
+# Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
 OSU_VERSION=${2:-6.1}
 OSU_SRC=osu-micro-benchmarks-${OSU_VERSION}.tar.gz
