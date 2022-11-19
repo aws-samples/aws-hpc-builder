@@ -271,8 +271,13 @@ case ${HPC_COMPILER} in
 	# fix system /usr/bin/ls coudn't find crtbeginS.o etc.
 	armgcc_lib_search_loc=$(dirname $(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o")))
 	sysgcc_lib_search_loc=$(dirname $(dirname $(sudo find /usr -iname "crtbeginS.o")))
-	sudo ln -sf ${armgcc_lib_search_loc} $(dirname ${armgcc_lib_search_loc})/${HPC_TARGET}
+	#sudo ln -sf ${armgcc_lib_search_loc} $(dirname ${armgcc_lib_search_loc})/${HPC_TARGET}
 	sudo ln -sf ${armgcc_lib_search_loc} $(dirname ${sysgcc_lib_search_loc})/${HPC_TARGET}
+	# add armgcc headers to search path
+        for armgcc_dtarget in $(find ${HPC_PREFIX}/opt -iname aarch64-linux-gnu)
+        do
+            sudo ln -sf ${armgcc_dtarget} $(dirname ${armgcc_dtarget})/${HPC_TARGET}
+        done
 	;;
     "icc"|"icx")
 	if [ "${HPC_MPI}" == "intelmpi" ]
