@@ -18,8 +18,7 @@ download_qd()
     then
         return
     else
-         wget https://www.davidhbailey.com/dhbsoftware/qd-2.3.23.tar.gz
-	 ${QD_SRC}
+         wget https://www.davidhbailey.com/dhbsoftware/${QD_SRC}
          return $?
     fi
 }
