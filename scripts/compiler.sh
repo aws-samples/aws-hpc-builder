@@ -239,7 +239,7 @@ get_compiler
 
 export HPC_PREFIX="${PREFIX}/${SARCH}"
 
-if [ ! -f ${PREFIX}/${SARCH}/.world ] || (! grep -q "${HPC_COMPILER}" ${PREFIX}/${SARCH}/.world)
+if [ ! -f ${PREFIX}/${SARCH}/.world ] || (! grep -q "^${HPC_COMPILER}" ${PREFIX}/${SARCH}/.world)
 then
     return
 fi
