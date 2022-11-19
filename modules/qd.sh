@@ -30,6 +30,7 @@ install_qd()
     cd ${QD_SRC%.tar.gz}
     ./configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
     make && sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install
+    cd ..
 
 }
 
