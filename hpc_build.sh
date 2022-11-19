@@ -55,7 +55,7 @@ search_world()
     then
 	return -1
     fi
-    grep -q "${1}" ${HPC_PREFIX}/.world > /dev/null 2>&1
+    grep -q "^${1}" ${HPC_PREFIX}/.world > /dev/null 2>&1
     return $?
 }
 
