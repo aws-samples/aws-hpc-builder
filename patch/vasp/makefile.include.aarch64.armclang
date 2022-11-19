@@ -56,7 +56,7 @@ FFLAGS     += -Ofast -mcpu=neoverse-512tvb -ffast-math -fno-math-errno
 
 # ARMPL (mandatory)
 ARMPL_DIR ?= /path/to/your/amdblis/installation
-ARMPL        = -L$(ARMPL_DIR)/lib -armpl -amath -astring
+ARMPL        = -L$(ARMPL_DIR)/lib -armpl -lamath -lastring
 
 # scaLAPACK (mandatory)
 SCALAPACK_ROOT ?= /path/to/your/armscalapack/installation
@@ -90,5 +90,5 @@ LLIBS      += -ldl
 CPP_OPTIONS += -Dqd_emulate
 # Software emulation of quadruple precsion
 QD_ROOT ?= /path/to/your/armscalapack/installation
-QDLIB   =  -L$(HPC_PREFIX)/$(HPC_COMPILER)/$(HPC_MPI)/lib -lqdmod -lqd
+QDLIB   =  -L$(HPC_PREFIX)/$(HPC_COMPILER)/$(HPC_MPI)/lib -lqd -lamath
 LLIBS      += $(QDLIB)
