@@ -89,6 +89,7 @@ LLIBS      += -ldl
 #switch on qd-emulation using qd-lib
 CPP_OPTIONS += -Dqd_emulate
 # Software emulation of quadruple precsion
-QD_ROOT ?= /path/to/your/armscalapack/installation
-QDLIB   =  -L$(HPC_PREFIX)/$(HPC_COMPILER)/$(HPC_MPI)/lib -lqd -lamath
+QD ?= $(HPC_PREFIX)/$(HPC_COMPILER)/$(HPC_MPI)
+QDLIB   =  -L$(QD)/lib -lqdmod -lqd -lamath
 LLIBS      += $(QDLIB)
+INCS       += -I$(QD)/include/qd
