@@ -73,7 +73,7 @@ AMD_COMPILER_SRC=aocc-compiler-${AMD_COMPILER_VERSION}.tar
 AMD_AOCL_SRC=aocl-linux-aocc-${AMD_AOCL_VERSION}.tar.gz
 GCC_SRC="gcc-${GCC_VERSION}.tar.gz"
 CMAKE_SRC=cmake-${CMAKE_VERSION}.tar.gz
-CLANG_SRC="llvmorg-${LLVM_VERSION}.tar.gz"
+CLANG_SRC="llvmorg-${CLANG_VERSION}.tar.gz"
 BINUTILS_SRC="binutils-${BINUTILS_VERSION}.tar.gz"
 ELFUTILS_SRC="elfutils-${ELFUTILS_VERSION}.tar.bz2"
 
@@ -325,10 +325,10 @@ build_clang()
 
 install_clang_compiler()
 {
-    sudo ln -s ${HPC_PREFIX}/opt/gnu/bin/{clang-new,clang}
     export PATH=${HPC_PREFIX}/opt/gnu/bin:${PATH}
     export LD_LIBRARY_PATH=${HPC_PREFIX}/opt/gnu/lib:${LD_LIBRARY_PATH}
     build_clang
+    sudo ln -s ${HPC_PREFIX}/opt/gnu/bin/{clang-new,clang}
 }
 
 install_compiler()
