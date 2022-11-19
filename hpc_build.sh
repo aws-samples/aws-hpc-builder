@@ -289,6 +289,9 @@ then
     HPC_MPI=openmpi
 fi
 
+export HPC_MPI
+export HPC_COMPILER
+
 main
  
 # Changelog
