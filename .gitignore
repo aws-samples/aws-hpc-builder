@@ -1,4 +1,5 @@
 # Prerequisites
+.gitignore
 *.d
 
 # Object files

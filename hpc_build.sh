@@ -217,7 +217,12 @@ main()
 	build_hpc_module compiler ${MODULE_VERSION}
     else
 	MODULES=$(grep "^${HPC_COMPILER}-${HPC_MPI}:.*${HPC_MODULE}$" ../modules/modules.dep | head -n1 | awk -F':' '{print $NF}')
-	# the HPC_HOST_TARGET is not set yet, set if for building compiler
+	# the HPC_HOST_TARGET is not set yet, set if for install/building compilers
+	if [ ! -f /usr/bin/gcc ]
+	then
+            echo "zzz *** $(date) *** Install system gcc to identify target machine"  | tee -a ${HPC_BUILD_LOG}
+	    sudo yum install -y gcc 2> /dev/null || sudo dnf -y install gcc 2> /dev/null || sudo apt-get install -y gcc 2> /dev/null
+	fi
 	export HPC_HOST_TARGET=$(/usr/bin/gcc -dumpmachine)
 	build_hpc_module compiler
 	source ../scripts/compiler.sh
