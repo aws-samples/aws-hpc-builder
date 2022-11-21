@@ -72,7 +72,7 @@ install_mpich()
 	    #--build=${HPC_TARGET} \
 	    #--host=${HPC_TARGET} \
 	    #--target=${HPC_TARGET} \
-	if [ "$(basename $FC)" == "gfortran" ]
+	if [ "$(basename ${FC})" == "gfortran" ]
 	then
 	    FFLAGS=-fallow-argument-mismatch FCFLAGS=-fallow-argument-mismatch ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 		--with-device=ch4:ofi:efa \
@@ -83,9 +83,9 @@ install_mpich()
 		--with-ofi=/opt/amazon/efa
 	fi
     else
-	if [ "$(basename $FC)" == "gfortran" ]
+	if [ "$(basename ${FC})" == "gfortran" ]
 	then
-	    FFLAGS=-fallow-argument-mismatch FCFLAGS=-fallow-argument-mismatch ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+	    FFLAGS=-fallow-argument-mismatch FCFLAGS=-fallow-argument-mismatch ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
 	else
 	    ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
 	fi
