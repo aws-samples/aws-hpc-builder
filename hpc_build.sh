@@ -229,7 +229,7 @@ main()
 	set_compiler_env
 	fix_lib_missing
 	export PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/${HPC_TARGET}/bin:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin:${PATH}
-        export LD_LIBRARY_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib64:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib:${LD_LIBRARY_PATH}
+	export LD_LIBRARY_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib64:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib:${LD_LIBRARY_PATH}
 	build_hpc_module ${MODULES} ${TARGET_MODULE_VERSION}
     fi
 
@@ -271,7 +271,6 @@ hpc_builder_help()
 # default settings
 PREFIX=/fsx
 HPC_MPI=openmpi
-USE_ARM_CLANG=0
 LIST_MODULE=0
 LIST_INSTALLED=0
 HPC_MODULE=compiler
