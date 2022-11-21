@@ -221,7 +221,7 @@ main()
 	if [ ! -f /usr/bin/gcc ]
 	then
             echo "zzz *** $(date) *** Install system gcc to identify target machine"  | tee -a ${HPC_BUILD_LOG}
-	    sudo yum install -y gcc 2> /dev/null || sudo dnf -y install gcc 2> /dev/null || sudo apt-get install -y gcc 2> /dev/null
+	    sudo yum install -y gcc >> ${HPC_BUILD_LOG} 2>&1 || sudo dnf -y install gcc >> ${HPC_BUILD_LOG} 2>&1 || sudo apt-get install -y gcc >> ${HPC_BUILD_LOG} 2>&1
 	fi
 	export HPC_HOST_TARGET=$(/usr/bin/gcc -dumpmachine)
 	build_hpc_module compiler
