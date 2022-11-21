@@ -69,17 +69,26 @@ install_mpich()
     cd build
     if [ -d /opt/amazon/efa ]
     then
-	    #--build=${WRF_TARGET} \
-	    #--host=${WRF_TARGET} \
-	    #--target=${WRF_TARGET} \
-	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
-	    --with-device=ch4:ofi:efa
-	    --with-ofi=/opt/amazon/efa
+	    #--build=${HPC_TARGET} \
+	    #--host=${HPC_TARGET} \
+	    #--target=${HPC_TARGET} \
+	if [ "$(basename $FC)" == "gfortran" ]
+	then
+	    FFLAGS=-fallow-argument-mismatch FCFLAGS=-fallow-argument-mismatch ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+		--with-device=ch4:ofi:efa \
+		--with-ofi=/opt/amazon/efa
+        else
+	    ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+		--with-device=ch4:ofi:efa \
+		--with-ofi=/opt/amazon/efa
+	fi
     else
-	    #--build=${WRF_TARGET} \
-	    #--host=${WRF_TARGET} \
-	    #--target=${WRF_TARGET}
-	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
+	if [ "$(basename $FC)" == "gfortran" ]
+	then
+	    FFLAGS=-fallow-argument-mismatch FCFLAGS=-fallow-argument-mismatch ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+	else
+	    ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
+	fi
     fi
     result=$?
     if [ $result -ne 0 ]
