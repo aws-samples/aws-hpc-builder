@@ -95,7 +95,7 @@ install_sys_dependency_for_compiler()
 		openssl-devel ninja-build \
 		ncurses-compat-libs \
 		sqlite-devel libarchive-devel libmicrohttpd-devel libcurl-devel \
-		wget time dmidecode tcsh libtirpc-devel \
+		bzip2 wget time dmidecode tcsh libtirpc-devel \
 	       	mesa-libgbm at-spi gtk3 xdg-utils libnotify libxcb environment-modules \
 		libXrender-devel expat-devel libX11-devel freetype-devel fontconfig-devel expat-devel libXext-devel pixman-devel cairo-devel \
 	       	zlib-devel libcurl-devel cmake3 m4 libxml2-devel bzip2-devel jasper-devel libpng-devel zlib-devel libjpeg-turbo-devel tmux patch git   
@@ -108,7 +108,7 @@ install_sys_dependency_for_compiler()
 		ninja-build \
 		ncurses-compat-libs \
 		sqlite-devel libarchive-devel libmicrohttpd-devel libcurl-devel \
-	       	wget time dmidecode tcsh libtirpc-devel \
+	       	bzip2 wget time dmidecode tcsh libtirpc-devel \
 		mesa-libgbm gtk3 xdg-utils libnotify libxcb libxcrypt-compat environment-modules \
 		libXrender-devel expat-devel libX11-devel freetype-devel fontconfig-devel expat-devel libXext-devel pixman-devel cairo-devel \
 		zlib-devel libcurl-devel cmake m4 libxml2-devel bzip2-devel jasper-devel libpng-devel zlib-devel libjpeg-turbo-devel tmux patch git
@@ -324,18 +324,23 @@ install_compiler()
     case ${HPC_COMPILER} in
     "gcc")
 	install_gcc_compiler
+	return $?
 	;;
     "clang")
 	install_clang_compiler
+	return $?
 	;;
     "armgcc" | "armclang")
         install_arm_compiler
+	return $?
 	;;
     "icc" | "icx")
 	install_intel_compiler
+	return $?
 	;;
     "amdclang")
 	install_amd_compiler
+	return $?
 	;;
 esac
 
