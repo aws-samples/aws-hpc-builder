@@ -12,10 +12,10 @@ check_os_version()
     fi
     if [ ${VERSION_ID} -eq 2 ]
     then
-	export S_VERSION_ID=7
+	S_VERSION_ID=7
     elif [ ${VERSION_ID} -eq 2022 ]
     then
-	export S_VERSION_ID=8
+	S_VERSION_ID=8
     fi
 }
 

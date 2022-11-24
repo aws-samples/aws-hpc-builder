@@ -246,7 +246,7 @@ install_amd_compiler()
 
 install_gcc_compiler()
 {   
-    if [ $S_VERSION_ID} -eq 7 ]
+    if [ ${S_VERSION_ID} -eq 7 ]
     then
 	build_elfutils_stage_one
     fi
@@ -257,7 +257,7 @@ install_gcc_compiler()
     export LD_LIBRARY_PATH=${HPC_PREFIX}/tmp/${HPC_COMPILER}/lib64:${HPC_PREFIX}/${HPC_COMPILER}/tmp/lib:${LD_LIBRARY_PATH}
     build_binutils_stage_one
     build_gcc_stage_one
-    if [ $S_VERSION_ID} -eq 7 ]
+    if [ ${S_VERSION_ID} -eq 7 ]
     then
 	build_elfutils
     fi
