@@ -246,7 +246,10 @@ install_amd_compiler()
 
 install_gcc_compiler()
 {   
-    build_elfutils_stage_one
+    if [ $S_VERSION_ID} -eq 7 ]
+    then
+	build_elfutils_stage_one
+    fi
     # after build binutils, use it for gcc build
     export OPATH=${PATH}
     export PATH=${HPC_PREFIX}/tmp/${HPC_COMPILER}/${TARGET}/bin:${HPC_PREFIX}/tmp/${HPC_COMPILER}/bin:${PATH}
@@ -254,7 +257,10 @@ install_gcc_compiler()
     export LD_LIBRARY_PATH=${HPC_PREFIX}/tmp/${HPC_COMPILER}/lib64:${HPC_PREFIX}/${HPC_COMPILER}/tmp/lib:${LD_LIBRARY_PATH}
     build_binutils_stage_one
     build_gcc_stage_one
-    build_elfutils
+    if [ $S_VERSION_ID} -eq 7 ]
+    then
+	build_elfutils
+    fi
     export PATH=${HPC_PREFIX}/opt/gnu/${TARGET}/bin:${HPC_PREFIX}/opt/gnu/bin:${HPC_PREFIX}/tmp/${HPC_COMPILER}/${TARGET}/bin:${HPC_PREFIX}/tmp/${HPC_COMPILER}/bin:${PATH}
     export LD_LIBRARY_PATH=${HPC_PREFIX}/opt/gnu/lib64:${HPC_PREFIX}/opt/gnu/lib:${LD_LIBRARY_PATH}
     build_binutils
