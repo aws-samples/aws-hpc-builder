@@ -242,6 +242,14 @@ install_wrf()
        	sudo rm -rf "${WRF_SRC%.tar.gz}" "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/${WRF_SRC%.tar.gz}"
         tar xf "${WRF_SRC}"
        	cd "${WRF_SRC%.tar.gz}"
+	# since 4.4, the NoahMP code has been moved to an external repository
+	# https://github.com/wrf-model/WRF/releases/tag/v4.4
+	if [ ${WRF_ARM_VERSION} -eq 44 ]
+	then
+	    cd phys
+	    git clone https://github.com/NCAR/noahmp.git
+	    cd ..
+	fi
     fi
 
     patch_wrf
