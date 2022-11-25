@@ -79,9 +79,9 @@ echo "zzz *** ${START_DATE} *** - JobStart - osu - ${HPC_COMPILER} - ${HPC_MPI}"
 
 #export OMPI_MCA_coll_tuned_use_dynamic_rules=1
 ##export OMPI_MCA_coll_tuned_bcast_algorithm=1
-mpirun ${SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/${OSU_VERSION}/c/mpi/pt2pt/osu_latency >> ${OSU_LOG} 2>&1
-#mpirun ${SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/${OSU_VERSION}/c/mpi/pt2pt/osu_bcast >> ${OSU_LOG} 2>&1
-#mpirun ${SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/${OSU_VERSION}/c/mpi/pt2pt/osu_scatter >> ${OSU_LOG} 2>&1
+mpirun ${SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/osu-micro-benchmarks-${OSU_VERSION}/c/mpi/pt2pt/osu_latency >> ${OSU_LOG} 2>&1
+#mpirun ${SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/osu-micro-benchmarks-${OSU_VERSION}/c/mpi/pt2pt/osu_bcast >> ${OSU_LOG} 2>&1
+#mpirun ${SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/osu-micro-benchmarks-${OSU_VERSION}/c/mpi/pt2pt/osu_scatter >> ${OSU_LOG} 2>&1
 
 END_DATE=$(date)
 echo "zzz *** ${END_DATE} *** - JobEnd - osu - ${HPC_COMPILER} - ${HPC_MPI}" >> ${OSU_LOG} 2>&1
