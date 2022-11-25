@@ -130,16 +130,15 @@ build_hpc_module()
 		fi
 	    else
 		update_world ${HPC_COMPILER}-${HPC_MPI}-${module}-${MODULE_VERSION}
-		   
 	    fi
-	fi
-
-	if [ -f ../scripts/submit_${module}_template.sbatch ]
-	then 
-	    install_module_script sbatch
-	elif [ -f ../scripts/submit_${module}_template.sh ]
-	then
-	    install_module_script sh
+	
+	    if [ -f ../scripts/submit_${module}_template.sbatch ]
+	    then 
+		install_module_script sbatch
+	    elif [ -f ../scripts/submit_${module}_template.sh ]
+	    then
+		install_module_script sh
+	    fi
 	fi
 
 	if [ "${DISABLE_COMPILER_ENV}" == "true" ]
