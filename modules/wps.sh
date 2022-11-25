@@ -54,6 +54,18 @@ install_sys_dependency_for_wps()
     fi
 }
 
+set_wps_build_env()
+{
+    export NETCDF=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
+    #export PNETCDF=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
+    #export HDF5=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
+    #export PHDF5=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
+    #export JASPERLIB=/usr/lib64
+    #export JASPERINC=/usr/include
+    #export WRFIO_NCD_LARGE_FILE_SUPPORT=1
+    #export NETCDF_classic=1
+}
+
 download_wps() {
     if [ "${WPS_VERSION+set}" == "set" ]
     then
@@ -122,6 +134,7 @@ install_wps()
 
     patch_wps
     check_wps_config
+    set_wps_build_env
 
     # 由于MPI_LIB 与 openmpi 环境变量冲突，取消此环境变量再编译
     unset MPI_LIB
