@@ -141,22 +141,22 @@ icx-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 icx-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 
 # WPS's dependencies
-amdclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-amdclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-armgcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-armgcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-armclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-armclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-clang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-clang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-gcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-gcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-icc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-icc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-icc-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-icx-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-icx-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
-icx-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+amdclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+amdclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+armgcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+armgcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+armclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+armclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+clang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+clang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+gcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+gcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+icc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+icc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+icc-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+icx-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+icx-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+icx-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
 
 # vasp's dependencies
 amdclang-openmpi:openmpi,vasp
