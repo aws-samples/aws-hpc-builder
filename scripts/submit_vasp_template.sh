@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-PREFIX=/fsx
+PREFIX=XXPREFIXXX
 export VASP_VERSION=6.3.0
 export JOB_DIR=${PREFIX}/spooler/${JOB_ID:-06-opt_blind6_22_exp}
 #export JOB_DIR=${PREFIX}/spooler/07-opt_blind6_26_exp

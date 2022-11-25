@@ -134,6 +134,13 @@ build_hpc_module()
 	    fi
 	fi
 
+	if [ -f ../scripts/submit_${module}_template.sbatch ]
+	then 
+	    install_module_script sbatch
+	elif [ -f ../scripts/submit_${module}_template.sh ]
+	    install_module_script sh
+	fi
+
 	if [ "${DISABLE_COMPILER_ENV}" == "true" ]
 	then
 	    set_compiler_env
@@ -141,7 +148,7 @@ build_hpc_module()
     done
 }
 
-install_scripts()
+install_sys_scripts()
 {
     sudo mkdir -p ${PREFIX}/scripts
     sed s"%XXPREFIXXX%${PREFIX}%g" ../scripts/env_template.sh > /tmp/env.sh
@@ -149,8 +156,16 @@ install_scripts()
     sudo install -m 755 -D -t ${PREFIX}/scripts ../scripts/compiler.sh
     sudo install -m 755 -D -t ${PREFIX}/scripts ../scripts/detect_efa.sh
     sudo install -m 755 -D -t ${PREFIX}/scripts ../scripts/test.sh
-    sudo install -m 755 -D -t ${PREFIX}/scripts ../scripts/submit_wrf.sbatch
-    sudo install -m 755 -D -t ${PREFIX}/scripts ../scripts/submit_vasp.sh
+    #sudo install -m 755 -D -t ${PREFIX}/scripts ../scripts/submit_wrf.sbatch
+    #sudo install -m 755 -D -t ${PREFIX}/scripts ../scripts/submit_vasp.sh
+}
+
+
+install_module_script()
+{
+    sed s"%XXPREFIXXX%${PREFIX}%g" ../scripts/submit_${module}_template.${1} > /tmp/submit_${module}.${1}
+    sudo install -m 755 -D -t ${PREFIX}/scripts /tmp/submit_${module}.${1}
+
 }
 
 check_and_uninstall_gcc10()
@@ -200,7 +215,7 @@ main()
 
     change_workdir
 
-    install_scripts
+    install_sys_scripts
  
     check_and_uninstall_gcc10
 

@@ -8,13 +8,13 @@
 #SBATCH --ntasks-per-core=1
 #SBATCH --export=ALL
 #SBATCH --exclusive
-#SBATCH -o /fsx/slurm.out
+#SBATCH -o XXPREFIXXX/slurm.out
 
 #--------------------------- customized Job env -----------------------------
 #SBATCH --nodes=6
 #SBATCH --partition=wrfc7g
 
-PREFIX=/fsx
+PREFIX=XXPREFIXXX
 #export WRF_VERSION=4.2.2
 #export JOB_DIR=${PREFIX}/spooler/xxxxxx
 
