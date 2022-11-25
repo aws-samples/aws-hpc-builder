@@ -211,7 +211,7 @@ main()
     WORKDIR=hpc_build
     GCC10_INSTALLED=0
     rpm -q gcc10 > /dev/null 2>&1 && GCC10_INSTALLED=1
-    HPC_BUILD_LOG="$(pwd)/${WORKDIR}/.hpc_build-${HPC_COMPILER}-${HPC_MPI}.log"
+    HPC_BUILD_LOG="$(pwd)/${WORKDIR}/.hpc_build-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.log"
 
     change_workdir
 
