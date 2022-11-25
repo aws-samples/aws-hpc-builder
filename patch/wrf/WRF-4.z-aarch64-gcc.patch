@@ -1,7 +1,7 @@
-diff --color -urN WRF-4.z.orig/arch/configure.defaults WRF-4.z/arch/configure.defaults
---- WRF-4.z.orig/arch/configure.defaults	2021-01-16 01:21:58.000000000 +0800
-+++ WRF-4.z/arch/configure.defaults	2022-09-20 23:42:57.282260800 +0800
-@@ -66,7 +66,7 @@
+diff -urN WRF-4.z.orig/arch/configure.defaults WRF-4.z/arch/configure.defaults
+--- WRF-4.z.orig/arch/configure.defaults	2022-08-25 22:42:53.000000000 +0000
++++ WRF-4.z/arch/configure.defaults	2022-11-25 13:00:36.000000000 +0000
+@@ -67,7 +67,7 @@
  LDFLAGS_LOCAL   =
  CPLUSPLUSLIB    =       
  ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
@@ -10,3 +10,21 @@ diff --color -urN WRF-4.z.orig/arch/configure.defaults WRF-4.z/arch/configure.de
  FCREDUCEDOPT	=       $(FCOPTIM)
  FCNOOPT         =       -O0
  FCDEBUG         =       # -g $(FCNOOPT)  # -fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow
+@@ -80,7 +80,7 @@
+ FCBASEOPTS      =       $(FCBASEOPTS_NO_G) $(FCDEBUG)
+ MODULE_SRCH_FLAG =
+ TRADFLAG        =      CONFIGURE_TRADFLAG
+-CPP             =      /lib/cpp CONFIGURE_CPPFLAGS
++CPP             =      cpp CONFIGURE_CPPFLAGS
+ AR              =      ar
+ ARFLAGS         =      ru
+ M4              =      m4 -B 14000
+@@ -2057,7 +2057,7 @@
+ FCBASEOPTS      =       $(FCBASEOPTS_NO_G) $(FCDEBUG)
+ MODULE_SRCH_FLAG =
+ TRADFLAG        =      CONFIGURE_TRADFLAG
+-CPP             =      /lib/cpp CONFIGURE_CPPFLAGS
++CPP             =      cpp CONFIGURE_CPPFLAGS
+ AR              =      ar
+ ARFLAGS         =      ru
+ M4              =      m4 -G

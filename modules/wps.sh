@@ -146,6 +146,9 @@ install_wps()
         rm -f ../WRFV3
     fi
 
+    # disable MAKEFLAGS
+    unset MAKEFLAGS
+
     if [ "${WPS_CONFIG+set}" == "set" ]
     then
         echo -e "${WPS_CONFIG}\n" | ./configure
@@ -154,7 +157,6 @@ install_wps()
 	exit 1
     fi
 
-    # 默认是 -j 2, 如果有问题,尝试改成 -j 1
     ./compile >> "${HPC_BUILD_LOG}" 2>&1
     rm -f ../WRFV3
     cd ..

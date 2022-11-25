@@ -13,7 +13,7 @@ WRF_ARM_VERSION=$(echo ${WRF_VERSION} | awk -F'.' '{print $1$2}')
 
 WRF_SRC="WRF-${WRF_VERSION}.tar.gz"
 
-install_sys_dependency_wrf()
+install_sys_dependency_for_wrf()
 {
     # packages for build gcc/binutils ref: https://wiki.osdev.org/Building_GCC
     # packages for armclang(libtinfo.so.5)
@@ -101,7 +101,7 @@ set_wrf_build_env()
     export JASPERLIB=/usr/lib64
     export JASPERINC=/usr/include
     export WRFIO_NCD_LARGE_FILE_SUPPORT=1
-    export NETCDF_classic=1
+    #export NETCDF_classic=1
 }
 
 build_wrf_dependency()
@@ -255,6 +255,9 @@ install_wrf()
     patch_wrf
 
     check_wrf_config
+
+    # disable MAKEFLAGS
+    unset MAKEFLAGS
 
     if [ "${WRF_CONFIG+set}" == "set" ]
     then
