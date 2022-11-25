@@ -138,6 +138,7 @@ build_hpc_module()
 	then 
 	    install_module_script sbatch
 	elif [ -f ../scripts/submit_${module}_template.sh ]
+	then
 	    install_module_script sh
 	fi
 
