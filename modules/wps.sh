@@ -3,8 +3,8 @@
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
 #WRF_VERSION=git
-WRF_VERSION=4.2.2
-WPS_VERSION=${2:-4.2}
+WRF_VERSION=4.4.1
+WPS_VERSION=${2:-4.4}
 DISABLE_COMPILER_ENV=false
 
 # 读取命令行新的版本信息后再计算WRF的主要版本等信息
@@ -17,7 +17,7 @@ WPS_GNU_VERSION=$(echo ${WPS_VERSION} | awk -F'.' '{print $1$2}')
 WRF_SRC="WRF-${WRF_VERSION}.tar.gz"
 WPS_SRC="WPS-${WPS_VERSION}.tar.gz"
 
-install_sys_dependency_wps()
+install_sys_dependency_for_wps()
 {
     # packages for build gcc/binutils ref: https://wiki.osdev.org/Building_GCC
     # packages for armclang(libtinfo.so.5)
