@@ -225,8 +225,19 @@ install_arm_compiler()
 
 install_intel_compiler()
 {
-    sudo bash ${INTEL_HPC_COMPILER_SRC} -a --action remove -s
-    sudo bash ${INTEL_COMPILER_SRC} -a --action remove -s
+    
+    for product in $(sudo bash ${INTEL_HPC_COMPILER_SRC} -a -c --list-products | grep true | awk '{print $1":"$2}')
+    do
+	product_id=$(echo ${product} | cut -d: -f1)
+	product_ver=$(echo ${product} | cut -d: -f2)
+        sudo bash ${INTEL_HPC_COMPILER_SRC} -a -c -s --action remove --product-id ${product_id} --product-ver ${product_ver}
+    done
+    for product in $(sudo bash ${INTEL_COMPILER_SRC} -a -c --list-products | grep true | awk '{print $1":"$2}')
+    do
+	product_id=$(echo ${product} | cut -d: -f1)
+	product_ver=$(echo ${product} | cut -d: -f2)
+        sudo bash ${INTEL_COMPILER_SRC} -a -c -s --action remove --product-id ${product_id} --product-ver ${product_ver}
+    done
     sudo bash ${INTEL_COMPILER_SRC} -a -s --eula accept --install-dir=${HPC_PREFIX}/opt/intel/oneapi
     sudo bash ${INTEL_HPC_COMPILER_SRC} -a -s --eula accept --install-dir=${HPC_PREFIX}/opt/intel/oneapi
 }
