@@ -81,6 +81,7 @@ use_vendor_compiler()
     then
         export FC=$(which ifort)
         export F77=$(which ifort)
+        export F90=$(which ifort)
         export CC=$(which icc)
         export CXX=$(which icpc)
         export AR=$(which xiar)
@@ -91,6 +92,7 @@ use_vendor_compiler()
     then
 	export FC=$(which flang)
 	export F77=$(which flang)
+	export F90=$(which flang)
 	export CC=$(which clang)
 	export CXX=$(which clang++)
 	export AR=$(which llvm-ar)
@@ -102,6 +104,7 @@ use_vendor_compiler()
     then
 	export FC=$(which gfortran)
 	export F77=$(which gfortran)
+	export F90=$(which gfortran)
 	export CC=$(which gcc)
 	export CXX=$(which g++)
 	export AR=$(which $(${CC} -dumpmachine)-gcc-ar)
@@ -127,6 +130,7 @@ set_compiler_env()
 	    "gcc")
 		export FC=$(which gfortran)
 		export F77=$(which gfortran)
+		export F90=$(which gfortran)
 		export CC=$(which gcc)
 		export CXX=$(which g++)
 		export AR=$(which $(${CC} -dumpmachine)-gcc-ar)
@@ -136,6 +140,7 @@ set_compiler_env()
 	    "clang"|"amdclang")
 		export FC=$(which flang)
 		export F77=$(which flang)
+		export F90=$(which flang)
 		export CC=$(which clang)
 		export CXX=$(which clang++)
 		export AR=$(which llvm-ar)
@@ -147,6 +152,7 @@ set_compiler_env()
 	    "icc")
 		export FC=$(which ifort)
 		export F77=$(which ifort)
+		export F90=$(which ifort)
 		export CC=$(which icc)
 		export CXX=$(which icpc)
 		export AR=$(which xiar)
@@ -157,6 +163,7 @@ set_compiler_env()
 	    "icx")
 		export FC=$(which ifx)
 		export F77=$(which ifx)
+		export F90=$(which ifx)
 		export CC=$(which icx)
 		export CXX=$(which icpx)
 		#export AR=$(which xiar)
@@ -167,6 +174,7 @@ set_compiler_env()
 	    "armgcc")
 		export FC=$(which gfortran)
 		export F77=$(which gfortran)
+		export F90=$(which gfortran)
 		export CC=$(which gcc)
 		export CXX=$(which g++)
 		export AR=$(which $(${CC} -dumpmachine)-gcc-ar)
@@ -179,6 +187,7 @@ set_compiler_env()
 	    "armclang")
 		export FC=$(which armflang)
 		export F77=$(which armflang)
+		export F90=$(which armflang)
 		export CC=$(which armclang)
 		export CXX=$(which armclang++)
 		export AR=$(which armllvm-ar)
@@ -197,6 +206,7 @@ unset_compiler_env()
 {
 	unset FC
 	unset F77
+	unset F90
 	unset CC
 	unset CXX
 	unset AR
@@ -280,20 +290,8 @@ case ${HPC_COMPILER} in
         done
 	;;
     "icc"|"icx")
-	if [ "${HPC_MPI}" == "intelmpi" ]
-	then
-	    source ${HPC_PREFIX}/opt/intel/oneapi/setvars.sh
-	    if [ "${HPC_COMPILER}" == "icx" ]
-	    then
-		export I_MPI_CC=icx
-		export I_MPI_FC=ifx
-		export I_MPI_CXX=ipcx
-		export I_MPI_F90=ifx
-		export I_MPI_F77=ifx
-	    fi
-	else
-	    source ${HPC_PREFIX}/opt/intel/oneapi/compiler/latest/env/vars.sh
-	fi
+	source ${HPC_PREFIX}/opt/intel/oneapi/compiler/latest/env/vars.sh
+	source ${HPC_PREFIX}/opt/intel/oneapi/mkl/latest/env/vars.sh
         export HPC_TARGET=$(${HPC_COMPILER} -dumpmachine)
 	;;
     "amdclang")
@@ -302,5 +300,16 @@ case ${HPC_COMPILER} in
         export HPC_TARGET=$(clang -dumpmachine)
 	;;
 esac
+
+
+if [ "${HPC_MPI}" == "intelmpi" ]
+then
+    source ${HPC_PREFIX}/opt/intel/oneapi/mpi/latest/env/vars.sh
+    export I_MPI_CC=${CC}
+    export I_MPI_FC=${FC}
+    export I_MPI_CXX=${CXX}
+    export I_MPI_F90=${F90}
+    export I_MPI_F77=${F77}
+fi
 
 export LD_LIBRARY_PATH=${LIBRARY_PATH}:${LD_LIBRARY_PATH}
