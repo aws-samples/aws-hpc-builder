@@ -64,9 +64,6 @@ LOGDIR=${PREFIX}/log
 WRF_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_WRF-${WRF_VERSION}.log
 mkdir -p ${LOGDIR}
 
-# detect EFA support
-source ${PREFIX}/scripts/detect_efa.sh
-
 ulimit -s unlimited
 
 HPC_MPI_DEBUG=1
