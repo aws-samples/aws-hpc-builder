@@ -78,7 +78,6 @@ check_and_use_intelmpi()
 {
     if [ "${HPC_MPI}" == "intelmpi" ]
     then
-	source ${HPC_PREFIX}/opt/intel/oneapi/mpi/latest/env/vars.sh
 	export I_MPI_CC=${CC}
 	export I_MPI_FC=${FC}
 	export I_MPI_CXX=${CXX}
@@ -315,5 +314,15 @@ case ${HPC_COMPILER} in
         export HPC_TARGET=$(clang -dumpmachine)
 	;;
 esac
+
+# move intelmpi loading here:
+# 1. It only executes once, so the set_compiler_env is re-usable. 
+# 2. unlike other mpi implementations are built from source, their default compilers are 
+#    the ones built it, intelmpis' have to be specified by environments parameters
+#    when unset_compiler_env, the intelmpi wrappers still uses to the correct compilers
+if [ "${HPC_MPI}" == "intelmpi" ]
+then
+    source ${HPC_PREFIX}/opt/intel/oneapi/mpi/latest/env/vars.sh 
+fi
 
 export LD_LIBRARY_PATH=${LIBRARY_PATH}:${LD_LIBRARY_PATH}
