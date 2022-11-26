@@ -25,6 +25,7 @@ hpc_enable_efa()
 	    ###export FI_PROVIDER=efa
 	    ;;
 	"openmpi")
+	    # more details see: ompi_info
 	    export OMPI_MCA_pml=cm
 	    export OMPI_MCA_mtl=ofi
 	    ;;
@@ -57,6 +58,8 @@ hpc_enable_mpi_debug()
 	    export OMPI_MCA_btl_base_verbose=10
 	    ;;
 	"mpich")
+	    # more details, see README.envvar
+	    export MPIR_CVAR_DEBUG_SUMMARY=1
 	    continue
 	    ;;
 	"mvapich")
