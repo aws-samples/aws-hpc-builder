@@ -110,24 +110,10 @@ build_hpc_module()
 	then
 	    if [ ${module} == "compiler" ]
 	    then
-		if [ "${HPC_COMPILER}" == "icc" ] || [ "${HPC_COMPILER}" == "icx" ]
-		then
-		    update_world icc-openmpi-${module}-${MODULE_VERSION}
-		    update_world icx-openmpi-${module}-${MODULE_VERSION}
-		    update_world icc-mpich-${module}-${MODULE_VERSION}
-		    update_world icx-mpich-${module}-${MODULE_VERSION}
-		    update_world icc-intelmpi-${module}-${MODULE_VERSION}
-		    update_world icx-intelmpi-${module}-${MODULE_VERSION}
-		elif [ "${HPC_COMPILER}" == "armgcc" ] || [ "${HPC_COMPILER}" == "armclang" ]
-		then
-		    update_world armgcc-openmpi-${module}-${MODULE_VERSION}
-		    update_world armclang-openmpi-${module}-${MODULE_VERSION}
-		    update_world armgcc-mpich-${module}-${MODULE_VERSION}
-		    update_world armclang-mpich-${module}-${MODULE_VERSION}
-		else
-		    update_world ${HPC_COMPILER}-openmpi-${module}-${MODULE_VERSION}
-		    update_world ${HPC_COMPILER}-mpich-${module}-${MODULE_VERSION}
-		fi
+		for every_mpi in openmpi mpich intelmpi
+		do
+		    update_world ${HPC_COMPILER}-${every_mpi}-${module}-${MODULE_VERSION}
+		done
 	    else
 		update_world ${HPC_COMPILER}-${HPC_MPI}-${module}-${MODULE_VERSION}
 	    fi
