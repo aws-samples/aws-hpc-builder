@@ -81,7 +81,7 @@ check_and_use_intelmpi()
 	export I_MPI_CC=${CC}
 	export I_MPI_FC=${FC}
 	export I_MPI_CXX=${CXX}
-	export I_MPI_F90=${F90}
+	#export I_MPI_F90=${F90}
 	export I_MPI_F77=${F77}
     fi
 }
@@ -93,7 +93,7 @@ use_vendor_compiler()
     then
         export FC=$(which ifort)
         export F77=$(which ifort)
-        export F90=$(which ifort)
+        #export F90=$(which ifort)
         export CC=$(which icc)
         export CXX=$(which icpc)
         export AR=$(which xiar)
@@ -104,7 +104,7 @@ use_vendor_compiler()
     then
 	export FC=$(which flang)
 	export F77=$(which flang)
-	export F90=$(which flang)
+	#export F90=$(which flang)
 	export CC=$(which clang)
 	export CXX=$(which clang++)
 	export AR=$(which llvm-ar)
@@ -116,7 +116,7 @@ use_vendor_compiler()
     then
 	export FC=$(which gfortran)
 	export F77=$(which gfortran)
-	export F90=$(which gfortran)
+	#export F90=$(which gfortran)
 	export CC=$(which gcc)
 	export CXX=$(which g++)
 	export AR=$(which $(${CC} -dumpmachine)-gcc-ar)
@@ -143,7 +143,7 @@ set_compiler_env()
 	    "gcc")
 		export FC=$(which gfortran)
 		export F77=$(which gfortran)
-		export F90=$(which gfortran)
+		#export F90=$(which gfortran)
 		export CC=$(which gcc)
 		export CXX=$(which g++)
 		export AR=$(which $(${CC} -dumpmachine)-gcc-ar)
@@ -153,7 +153,7 @@ set_compiler_env()
 	    "clang"|"amdclang")
 		export FC=$(which flang)
 		export F77=$(which flang)
-		export F90=$(which flang)
+		#export F90=$(which flang)
 		export CC=$(which clang)
 		export CXX=$(which clang++)
 		export AR=$(which llvm-ar)
@@ -165,7 +165,7 @@ set_compiler_env()
 	    "icc")
 		export FC=$(which ifort)
 		export F77=$(which ifort)
-		export F90=$(which ifort)
+		#export F90=$(which ifort)
 		export CC=$(which icc)
 		export CXX=$(which icpc)
 		export AR=$(which xiar)
@@ -176,7 +176,7 @@ set_compiler_env()
 	    "icx")
 		export FC=$(which ifx)
 		export F77=$(which ifx)
-		export F90=$(which ifx)
+		#export F90=$(which ifx)
 		export CC=$(which icx)
 		export CXX=$(which icpx)
 		#export AR=$(which xiar)
@@ -187,7 +187,7 @@ set_compiler_env()
 	    "armgcc")
 		export FC=$(which gfortran)
 		export F77=$(which gfortran)
-		export F90=$(which gfortran)
+		#export F90=$(which gfortran)
 		export CC=$(which gcc)
 		export CXX=$(which g++)
 		export AR=$(which $(${CC} -dumpmachine)-gcc-ar)
@@ -200,7 +200,7 @@ set_compiler_env()
 	    "armclang")
 		export FC=$(which armflang)
 		export F77=$(which armflang)
-		export F90=$(which armflang)
+		#export F90=$(which armflang)
 		export CC=$(which armclang)
 		export CXX=$(which armclang++)
 		export AR=$(which armllvm-ar)
@@ -220,7 +220,7 @@ unset_compiler_env()
 {
 	unset FC
 	unset F77
-	unset F90
+	#unset F90
 	unset CC
 	unset CXX
 	unset AR
