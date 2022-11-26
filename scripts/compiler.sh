@@ -74,6 +74,19 @@ validate_compiler()
     return 1
 }
 
+check_and_use_intelmpi()
+{
+    if [ "${HPC_MPI}" == "intelmpi" ]
+    then
+	source ${HPC_PREFIX}/opt/intel/oneapi/mpi/latest/env/vars.sh
+	export I_MPI_CC=${CC}
+	export I_MPI_FC=${FC}
+	export I_MPI_CXX=${CXX}
+	export I_MPI_F90=${F90}
+	export I_MPI_F77=${F77}
+    fi
+}
+
 # openmpi 找不到编译器, 使用全路径
 use_vendor_compiler()
 {
@@ -114,6 +127,7 @@ use_vendor_compiler()
 	##export OMPI_CXX=g++
 	##export OMPI_FC=gfortran
     fi
+    check_and_use_intelmpi
 }
 
 set_compiler_env()
@@ -197,6 +211,7 @@ set_compiler_env()
 		##export OMPI_FC=gfortran
 		;;
 	esac
+	check_and_use_intelmpi
 	return
     fi
     use_vendor_compiler
@@ -300,16 +315,5 @@ case ${HPC_COMPILER} in
         export HPC_TARGET=$(clang -dumpmachine)
 	;;
 esac
-
-
-if [ "${HPC_MPI}" == "intelmpi" ]
-then
-    source ${HPC_PREFIX}/opt/intel/oneapi/mpi/latest/env/vars.sh
-    export I_MPI_CC=${CC}
-    export I_MPI_FC=${FC}
-    export I_MPI_CXX=${CXX}
-    export I_MPI_F90=${F90}
-    export I_MPI_F77=${F77}
-fi
 
 export LD_LIBRARY_PATH=${LIBRARY_PATH}:${LD_LIBRARY_PATH}
