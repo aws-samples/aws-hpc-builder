@@ -154,7 +154,7 @@ install_sys_scripts()
     sed s"%XXPREFIXXX%${PREFIX}%g" ../scripts/env_template.sh > /tmp/env.sh
     sudo install -m 755 -D -t ${PREFIX}/scripts /tmp/env.sh
     sudo install -m 755 -D -t ${PREFIX}/scripts ../scripts/compiler.sh
-    sudo install -m 755 -D -t ${PREFIX}/scripts ../scripts/detect_efa.sh
+    sudo install -m 755 -D -t ${PREFIX}/scripts ../scripts/mpi_settings.sh
     sudo install -m 755 -D -t ${PREFIX}/scripts ../scripts/test.sh
     #sudo install -m 755 -D -t ${PREFIX}/scripts ../scripts/submit_wrf.sbatch
     #sudo install -m 755 -D -t ${PREFIX}/scripts ../scripts/submit_vasp.sh

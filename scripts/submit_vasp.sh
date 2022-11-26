@@ -51,18 +51,9 @@ export OMP_NUM_THREADS=1
 #export OMP_PLACES=cores
 #export OMP_PROC_BIND=close
 
-#Report bindings
-#    Intel MPI: -print-rank-map
-#    MVAPICH2: MV2_SHOW_CPU_BINDING=1
-#    OpenMPI: --report-bindings
-
-if [ "${HPC_MPI}" == "intelmpi" ]
-then
-    SHOW_BIND_OPTS="-print-rank-map"
-elif [ "${HPC_MPI}" == "openmpi" ]
-then
-    SHOW_BIND_OPTS="--report-bindings"
-fi
+HPC_MPI_DEBUG=1
+# load MPI settings
+source ${PREFIX}/scripts/mpi_settings.sh
 
 echo "Running VASP on $(date)"
 cd ${JOB_DIR}
@@ -71,7 +62,7 @@ NPROCS=$(cat /sys/devices/system/cpu/cpu*/topology/thread_siblings_list | cut -d
 START_DATE=$(date)
 echo "zzz *** ${START_DATE} *** - JobStart - $(basename ${JOB_DIR}) - ${HPC_COMPILER} - ${HPC_MPI}" >> ${VASP_LOG} 2>&1
 
-mpiexec -np ${NPROCS} --bind-to hwthread --map-by core ${SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/vasp.${VASP_VERSION}/bin/vasp_std >> ${VASP_LOG} 2>&1
+mpiexec -np ${NPROCS} --bind-to hwthread --map-by core ${MPI_SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/vasp.${VASP_VERSION}/bin/vasp_std >> ${VASP_LOG} 2>&1
 
 END_DATE=$(date)
 echo "zzz *** ${END_DATE} *** - JobEnd - $(basename ${JOB_DIR}) - ${HPC_COMPILER} - ${HPC_MPI}" >> ${VASP_LOG} 2>&1

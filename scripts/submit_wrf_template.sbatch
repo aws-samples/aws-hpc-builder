@@ -69,18 +69,9 @@ source ${PREFIX}/scripts/detect_efa.sh
 
 ulimit -s unlimited
 
-#Report bindings
-#    Intel MPI: -print-rank-map
-#    MVAPICH2: MV2_SHOW_CPU_BINDING=1
-#    OpenMPI: --report-bindings
-
-if [ "${HPC_MPI}" == "intelmpi" ]
-then
-    SHOW_BIND_OPTS="-print-rank-map"
-elif ["${HPC_MPI}" == "openmpi" ]
-then
-    SHOW_BIND_OPTS="--report-bindings"
-fi
+HPC_MPI_DEBUG=1
+# load MPI settings
+source ${PREFIX}/scripts/mpi_settings.sh
 
 echo "Running WRF on $(date)"
 cd ${JOB_DIR}
@@ -89,7 +80,7 @@ ln -sf ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/main/wrf.exe 
 START_DATE=$(date)
 echo "zzz *** ${START_DATE} *** - JobStart - $(basename ${JOB_DIR}) - ${HPC_COMPILER} - ${HPC_MPI}" >> ${WRF_LOG} 2>&1
 
-mpirun ${SHOW_BIND_OPTS} ./wrf.exe >> ${WRF_LOG} 2>&1
+mpirun ${MPI_SHOW_BIND_OPTS} ./wrf.exe >> ${WRF_LOG} 2>&1
 
 END_DATE=$(date)
 echo "zzz *** ${END_DATE} *** - JobEnd - $(basename ${JOB_DIR}) - ${HPC_COMPILER} - ${HPC_MPI}" >> ${WRF_LOG} 2>&1

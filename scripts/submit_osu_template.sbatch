@@ -59,18 +59,9 @@ source ${PREFIX}/scripts/detect_efa.sh
 
 ulimit -s unlimited
 
-#Report bindings
-#    Intel MPI: -print-rank-map
-#    MVAPICH2: MV2_SHOW_CPU_BINDING=1
-#    OpenMPI: --report-bindings
-
-if [ "${HPC_MPI}" == "intelmpi" ]
-then
-    SHOW_BIND_OPTS="-print-rank-map"
-elif ["${HPC_MPI}" == "openmpi" ]
-then
-    SHOW_BIND_OPTS="--report-bindings"
-fi
+HPC_MPI_DEBUG=1
+# load MPI settings
+source ${PREFIX}/scripts/mpi_settings.sh
 
 echo "Running osu on $(date)"
 
@@ -79,9 +70,10 @@ echo "zzz *** ${START_DATE} *** - JobStart - osu - ${HPC_COMPILER} - ${HPC_MPI}"
 
 #export OMPI_MCA_coll_tuned_use_dynamic_rules=1
 ##export OMPI_MCA_coll_tuned_bcast_algorithm=1
-mpirun ${SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/osu-micro-benchmarks-${OSU_VERSION}/c/mpi/pt2pt/osu_latency >> ${OSU_LOG} 2>&1
-#mpirun ${SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/osu-micro-benchmarks-${OSU_VERSION}/c/mpi/pt2pt/osu_bcast >> ${OSU_LOG} 2>&1
-#mpirun ${SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/osu-micro-benchmarks-${OSU_VERSION}/c/mpi/pt2pt/osu_scatter >> ${OSU_LOG} 2>&1
+mpirun ${MPI_SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/osu-micro-benchmarks-${OSU_VERSION}/c/mpi/pt2pt/osu_latency >> ${OSU_LOG} 2>&1
+mpirun ${MPI_SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/osu-micro-benchmarks-${OSU_VERSION}/c/mpi/pt2pt/osu_bw >> ${OSU_LOG} 2>&1
+#mpirun ${MPI_SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/osu-micro-benchmarks-${OSU_VERSION}/c/mpi/pt2pt/osu_bcast >> ${OSU_LOG} 2>&1
+#mpirun ${MPI_SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/osu-micro-benchmarks-${OSU_VERSION}/c/mpi/pt2pt/osu_scatter >> ${OSU_LOG} 2>&1
 
 END_DATE=$(date)
 echo "zzz *** ${END_DATE} *** - JobEnd - osu - ${HPC_COMPILER} - ${HPC_MPI}" >> ${OSU_LOG} 2>&1
