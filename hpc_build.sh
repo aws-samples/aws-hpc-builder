@@ -110,7 +110,7 @@ build_hpc_module()
 	then
 	    if [ ${module} == "compiler" ]
 	    then
-		if [ "${HPC_COMPILER}" == "icc" ] || [ "${HPC_COMPILER}" == "icc" ]
+		if [ "${HPC_COMPILER}" == "icc" ] || [ "${HPC_COMPILER}" == "icx" ]
 		then
 		    update_world icc-openmpi-${module}-${MODULE_VERSION}
 		    update_world icx-openmpi-${module}-${MODULE_VERSION}
