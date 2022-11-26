@@ -108,9 +108,17 @@ build_hpc_module()
 	download_$(echo ${module} | tr '-' '_')  && install_$(echo ${module} | tr '-' '_') >> ${HPC_BUILD_LOG} 2>&1 
 	if [ $? -eq 0 ] 
 	then
+	    # Intel MPI only avaiable on X86_64(Intel) and AMD64 platforms
+	    if [ "${SARCH}" == "aarch64" ]
+	    then
+		available_mpis="openmpi mpich"
+	    else
+		available_mpis="openmpi mpich intelmpi"
+	    fi
+
 	    if [ ${module} == "compiler" ]
 	    then
-		for every_mpi in openmpi mpich intelmpi
+		for every_mpi in ${available_mpis}
 		do
 		    update_world ${HPC_COMPILER}-${every_mpi}-${module}-${MODULE_VERSION}
 		done
