@@ -1,14 +1,17 @@
 # osu's dependencies
 amdclang-openmpi:openmpi,osu
 amdclang-mpich:mpich,osu
+amdclang-intelmpi:osu
 armgcc-openmpi:openmpi,osu
 armgcc-mpich:mpich,osu
 armclang-openmpi:openmpi,osu
 armclang-mpich:mpich,osu
 clang-openmpi:openmpi,osu
 clang-mpich:mpich,osu
+clang-intelmpi:osu
 gcc-openmpi:openmpi,osu
 gcc-mpich:mpich,osu
+gcc-intelmpi:osu
 icc-openmpi:openmpi,osu
 icc-mpich:mpich,osu
 icc-intelmpi:osu
@@ -19,14 +22,17 @@ icx-intelmpi:osu
 # mt-dgemm's dependencies
 amdclang-openmpi:mt-dgemm
 amdclang-mpich:mt-dgemm
+amdclang-intelmpi:mt-dgemm
 armgcc-openmpi:mt-dgemm
 armgcc-mpich:mt-dgemm
 armclang-openmpi:mt-dgemm
 armclang-mpich:mt-dgemm
 clang-openmpi:mt-dgemm
 clang-mpich:mt-dgemm
+clang-intelmpi:mt-dgemm
 gcc-openmpi:mt-dgemm
 gcc-mpich:mt-dgemm
+gcc-intelmpi:mt-dgemm
 icc-openmpi:mt-dgemm
 icc-mpich:mt-dgemm
 icc-intelmpi:mt-dgemm
@@ -53,14 +59,17 @@ clang-mpich:mpich
 # hdf5's dependencies
 amdclang-openmpi:openmpi,hdf5
 amdclang-mpich:mpich,hdf5
-armgcc-openmpi:openmpi,hdf5
+amdclang-intelmpi:hdf5
+armgcc-openmpi:hdf5
 armgcc-mpich:mpich,hdf5
 armclang-openmpi:openmpi,hdf5
 armclang-mpich:mpich,hdf5
 clang-openmpi:openmpi,hdf5
 clang-mpich:mpich,hdf5
+clang-intelmpi:hdf5
 gcc-openmpi:openmpi,hdf5
 gcc-mpich:mpich,hdf5
+gcc-intelmpi:hdf5
 icc-openmpi:openmpi,hdf5
 icc-mpich:mpich,hdf5
 icc-intelmpi:hdf5
@@ -71,14 +80,17 @@ icx-intelmpi:hdf5
 # pnetcdf's dependencies
 amdclang-openmpi:openmpi,hdf5,pnetcdf
 amdclang-mpich:mpich,hdf5,pnetcdf
+amdclang-intelmpi:hdf5,pnetcdf
 armgcc-openmpi:openmpi,hdf5,pnetcdf
 armgcc-mpich:mpich,hdf5,pnetcdf
 armclang-openmpi:openmpi,hdf5,pnetcdf
 armclang-mpich:mpich,hdf5,pnetcdf
 clang-openmpi:openmpi,hdf5,pnetcdf
 clang-mpich:mpich,hdf5,pnetcdf
+clang-intelmpi:hdf5,pnetcdf
 gcc-openmpi:openmpi,hdf5,pnetcdf
 gcc-mpich:mpich,hdf5,pnetcdf
+gcc-intempi:hdf5,pnetcdf
 icc-openmpi:openmpi,hdf5,pnetcdf
 icc-mpich:mpich,hdf5,pnetcdf
 icc-intelmpi:hdf5,pnetcdf
@@ -89,14 +101,17 @@ icx-intelmpi:hdf5,pnetcdf
 # netcdf-c's dependencies
 amdclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c
 amdclang-mpich:mpich,hdf5,pnetcdf,netcdf-c
+amdclang-intelmpi:hdf5,pnetcdf,netcdf-c
 armgcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c
 armgcc-mpich:mpich,hdf5,pnetcdf,netcdf-c
 armclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c
 armclang-mpich:mpich,hdf5,pnetcdf,netcdf-c
 clang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c
 clang-mpich:mpich,hdf5,pnetcdf,netcdf-c
+clang-intelmpi:hdf5,pnetcdf,netcdf-c
 gcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c
 gcc-mpich:mpich,hdf5,pnetcdf,netcdf-c
+gcc-intelmpi:hdf5,pnetcdf,netcdf-c
 icc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c
 icc-mpich:mpich,hdf5,pnetcdf,netcdf-c
 icc-intelmpi:hdf5,pnetcdf,netcdf-c
@@ -107,14 +122,17 @@ icx-intelmpi:hdf5,pnetcdf,netcdf-c
 # netcdf-fortran's dependencies
 amdclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
 amdclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+amdclang-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran
 armgcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
 armgcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran
 armclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
 armclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran
 clang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
 clang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+clang-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran
 gcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
 gcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran
+gcc-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran
 icc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
 icc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran
 icc-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran
@@ -125,14 +143,17 @@ icx-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran
 # WRF's dependencies
 amdclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 amdclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+amdclang-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 armgcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 armgcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 armclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 armclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 clang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 clang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+clang-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 gcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 gcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+gcc-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 icc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 icc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 icc-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
@@ -143,14 +164,17 @@ icx-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 # WPS's dependencies
 amdclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
 amdclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+amdclang-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
 armgcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
 armgcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
 armclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
 armclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
 clang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
 clang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+clang-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
 gcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
 gcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
+gcc-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
 icc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
 icc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
 icc-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
@@ -161,14 +185,17 @@ icx-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf,wps
 # vasp's dependencies
 amdclang-openmpi:openmpi,vasp
 amdclang-mpich:mpich,vasp
+amdclang-intelmpi:vasp
 armgcc-openmpi:openmpi,scalapack,vasp
 armgcc-mpich:mpich,scalapack,vasp
 armclang-openmpi:openmpi,scalapack,qd,vasp
 armclang-mpich:mpich,scalapack,qd,vasp
 clang-openmpi:openmpi,fftw,lapack,openblas,scalapack,vasp
 clang-mpich:mpich,fftw,lapack,openblas,scalapack,vasp
+clang-intelmpi:fftw,lapack,openblas,scalapack,vasp
 gcc-openmpi:openmpi,fftw,lapack,openblas,scalapack,vasp
 gcc-mpich:mpich,fftw,lapack,openblas,scalapack,vasp
+gcc-intelmpi:fftw,lapack,openblas,scalapack,vasp
 icc-openmpi:openmpi,vasp
 icc-mpich:mpich,vasp
 icc-intelmpi:vasp
@@ -179,26 +206,34 @@ icx-intelmpi:vasp
 # fftw's dependencies
 clang-openmpi:openmpi,fftw
 clang-mpich:mpich,fftw
+clang-intelmpi:fftw
 gcc-openmpi:openmpi,fftw
 gcc-mpich:mpich,fftw
+gcc-intelmpi:fftw
 
 # lapack's dependencies
 clang-openmpi:openmpi,fftw,lapack
 clang-mpich:mpich,fftw,lapack
+clang-intelmpi:fftw,lapack
 gcc-openmpi:openmpi,fftw,lapack
 gcc-mpich:mpich,fftw,lapack
+gcc-intelmpi:fftw,lapack
 
 # openblas's dependencies
 clang-openmpi:openmpi,fftw,lapack,openblas
 clang-mpich:mpich,fftw,lapack,openblas
+clang-intelmpi:fftw,lapack,openblas
 gcc-openmpi:openmpi,fftw,lapack,openblas
 gcc-mpich:mpich,fftw,lapack,openblas
+gcc-intelmpi:fftw,lapack,openblas
 
 # scalapack's dependencies
 clang-openmpi:openmpi,fftw,lapack,openblas,scalapack
 clang-mpich:mpich,fftw,lapack,openblas,scalapack
+clang-intelmpi:fftw,lapack,openblas,scalapack
 gcc-openmpi:openmpi,fftw,lapack,openblas,scalapack
 gcc-mpich:mpich,fftw,lapack,openblas,scalapack
+gcc-intelmpi:fftw,lapack,openblas,scalapack
 armgcc-openmpi:openmpi,scalapack
 armgcc-mpich:mpich,scalapack
 armclang-openmpi:openmpi,scalapack
