@@ -31,13 +31,13 @@ hpc_enable_efa()
 	    export OMPI_MCA_mtl_ofi_provider_include=efa
 	    ;;
 	"mpich")
-	    FI_PROVIDER=efa
+	    export FI_PROVIDER=efa
 	    ;;
 	"mvapich")
-	    FI_PROVIDER=efa
+	    export FI_PROVIDER=efa
 	    ;;
 	*)
-	    FI_PROVIDER=efa
+	    echo "Unsupported MPI"
     esac
 }
 
@@ -55,13 +55,13 @@ hpc_set_mpi()
 	    export OMPI_MCA_pml=ob1
 	    ;;
 	"mpich")
-	    FI_PROVIDER=udp
+	    export FI_PROVIDER=udp
 	    ;;
 	"mvapich")
-	    FI_PROVIDER=udp
+	    export FI_PROVIDER=udp
 	    ;;
 	*)
-	    FI_PROVIDER=sockets
+	    echo "Unsupported MPI"
     esac
 }
 
@@ -74,10 +74,10 @@ hpc_enable_mpi_debug()
     case ${HPC_MPI} in
 	"intelmpi")
 	    export I_MPI_DEBUG=5
-	    MPI_SHOW_BIND_OPTS="-print-rank-map"
+	    export MPI_SHOW_BIND_OPTS="-print-rank-map"
 	    ;;
 	"openmpi")
-	    MPI_SHOW_BIND_OPTS="--report-bindings"
+	    export MPI_SHOW_BIND_OPTS="--report-bindings"
 	    export OMPI_MCA_pml_base_verbose=10
 	    export OMPI_MCA_mtl_base_verbose=10
 	    export OMPI_MCA_btl_base_verbose=10
@@ -90,7 +90,7 @@ hpc_enable_mpi_debug()
 	    export MV2_SHOW_CPU_BINDING=1
 	    ;;
 	*)
-	    continue
+	    echo "Unsupported MPI"
     esac
 }
 
