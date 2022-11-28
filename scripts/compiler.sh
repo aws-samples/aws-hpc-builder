@@ -304,7 +304,7 @@ case ${HPC_COMPILER} in
 	# add armgcc headers to search path
         for armgcc_dtarget in $(find ${HPC_PREFIX}/opt -iname aarch64-linux-gnu )
         do
-	    if [ ! -d ${armgcc_dtarget})/${HPC_TARGET} ] || [ ! -L ${armgcc_dtarget})/${HPC_TARGET} ]
+	    if [ ! -d $(dirname ${armgcc_dtarget})/${HPC_TARGET} ] || [ ! -L $(dirname ${armgcc_dtarget})/${HPC_TARGET} ]
 	    then
 		sudo ln -sfn ${armgcc_dtarget} $(dirname ${armgcc_dtarget})/${HPC_TARGET}
 	    fi
