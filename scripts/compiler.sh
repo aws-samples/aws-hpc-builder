@@ -293,6 +293,7 @@ case ${HPC_COMPILER} in
         export HPC_TARGET=$(armclang -dumpmachine)
 
 	# fix system /usr/bin/ls coudn't find crtbeginS.o etc.
+	# restrict the armgcc_dtarget in armgcc directory
 	armgcc_lib_search_loc=$(dirname $(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o" | grep Generic-AArch64_RHEL)))
 	sysgcc_lib_search_loc=$(dirname $(dirname $(sudo find /usr -iname "crtbeginS.o")))
 	#sudo ln -sfn ${armgcc_lib_search_loc} $(dirname ${armgcc_lib_search_loc})/${HPC_TARGET}
@@ -300,9 +301,14 @@ case ${HPC_COMPILER} in
 	#If a directory, or symlink to a directory, already exists with the target name, the symlink will be created inside it
 	#(so you'd end up with /path/to/recent/file/file in the example above). The -n option, available in some versions of ln,
 	#will take care of symlinks to directories for you, replacing them as necessary:
-	sudo ln -sfn ${armgcc_lib_search_loc} $(dirname ${sysgcc_lib_search_loc})/${HPC_TARGET}
+	if [ ! -d $(dirname ${sysgcc_lib_search_loc})/${HPC_TARGET} ] || [ ! -L $(dirname ${sysgcc_lib_search_loc})/${HPC_TARGET} ]
+	then
+	    sudo ln -sfn ${armgcc_lib_search_loc} $(dirname ${sysgcc_lib_search_loc})/${HPC_TARGET}
+	fi
+
 	# add armgcc headers to search path
-        for armgcc_dtarget in $(find ${HPC_PREFIX}/opt -iname aarch64-linux-gnu )
+	# restrict the armgcc_dtarget in armgcc directory
+        for armgcc_dtarget in $(find ${HPC_PREFIX}/opt -iname aarch64-linux-gnu | grep Generic-AArch64_RHEL)
         do
 	    if [ ! -d $(dirname ${armgcc_dtarget})/${HPC_TARGET} ] || [ ! -L $(dirname ${armgcc_dtarget})/${HPC_TARGET} ]
 	    then
