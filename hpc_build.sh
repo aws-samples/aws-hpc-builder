@@ -120,7 +120,19 @@ build_hpc_module()
 	    then
 		for every_mpi in ${available_mpis}
 		do
-		    update_world ${HPC_COMPILER}-${every_mpi}-${module}-${MODULE_VERSION}
+		    if [ "${HPC_COMPILER}" == "armgcc" ] || [ "${HPC_COMPILER}" == "armclang" ] 
+		    then
+		        # armgcc and armclang are shipped by one package, mark both installed
+		        update_world armclang-${every_mpi}-${module}-${MODULE_VERSION}
+		        update_world armgcc-${every_mpi}-${module}-${MODULE_VERSION}
+		    elif [ "${HPC_COMPILER}" == "icc" ] || [ "${HPC_COMPILER}" == "icx" ]
+		    then
+		        # icc and icx are shipped by one package, mark both installed
+		        update_world icc-${every_mpi}-${module}-${MODULE_VERSION}
+		        update_world icx-${every_mpi}-${module}-${MODULE_VERSION}
+		    else
+			update_world ${HPC_COMPILER}-${every_mpi}-${module}-${MODULE_VERSION}
+		    fi
 		done
 	    else
 		update_world ${HPC_COMPILER}-${HPC_MPI}-${module}-${MODULE_VERSION}
