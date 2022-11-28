@@ -294,9 +294,12 @@ case ${HPC_COMPILER} in
 
 	# fix system /usr/bin/ls coudn't find crtbeginS.o etc.
 	# restrict the armgcc_dtarget in armgcc directory
-	armgcc_lib_search_loc=$(dirname $(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o" | grep Generic-AArch64_RHEL)))
-	sysgcc_lib_search_loc=$(dirname $(dirname $(sudo find /usr -iname "crtbeginS.o")))
-	#sudo ln -sfn ${armgcc_lib_search_loc} $(dirname ${armgcc_lib_search_loc})/${HPC_TARGET}
+	# replace find with echo to improve the speed
+	#armgcc_lib_search_loc=$(dirname $(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o" | grep Generic-AArch64_RHEL)))
+	#sysgcc_lib_search_loc=$(dirname $(dirname $(sudo find /usr -iname "crtbeginS.o")))
+	armgcc_lib_search_loc=$(echo /fsx/aarch64/opt/*/lib/gcc/aarch64-linux-gnu)
+	sysgcc_lib_search_loc="/usr/lib/gcc/${HPC_HOST_TARGET}"
+
 	# https://unix.stackexchange.com/questions/207294/create-symlink-overwrite-if-one-exists
 	#If a directory, or symlink to a directory, already exists with the target name, the symlink will be created inside it
 	#(so you'd end up with /path/to/recent/file/file in the example above). The -n option, available in some versions of ln,
