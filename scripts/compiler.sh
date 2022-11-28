@@ -295,12 +295,19 @@ case ${HPC_COMPILER} in
 	# fix system /usr/bin/ls coudn't find crtbeginS.o etc.
 	armgcc_lib_search_loc=$(dirname $(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o" | grep Generic-AArch64_RHEL)))
 	sysgcc_lib_search_loc=$(dirname $(dirname $(sudo find /usr -iname "crtbeginS.o")))
-	#sudo ln -sf ${armgcc_lib_search_loc} $(dirname ${armgcc_lib_search_loc})/${HPC_TARGET}
-	sudo ln -sf ${armgcc_lib_search_loc} $(dirname ${sysgcc_lib_search_loc})/${HPC_TARGET}
+	#sudo ln -sfn ${armgcc_lib_search_loc} $(dirname ${armgcc_lib_search_loc})/${HPC_TARGET}
+	# https://unix.stackexchange.com/questions/207294/create-symlink-overwrite-if-one-exists
+	#If a directory, or symlink to a directory, already exists with the target name, the symlink will be created inside it
+	#(so you'd end up with /path/to/recent/file/file in the example above). The -n option, available in some versions of ln,
+	#will take care of symlinks to directories for you, replacing them as necessary:
+	sudo ln -sfn ${armgcc_lib_search_loc} $(dirname ${sysgcc_lib_search_loc})/${HPC_TARGET}
 	# add armgcc headers to search path
-        for armgcc_dtarget in $(find ${HPC_PREFIX}/opt -iname aarch64-linux-gnu)
+        for armgcc_dtarget in $(find ${HPC_PREFIX}/opt -iname aarch64-linux-gnu )
         do
-            sudo ln -sf ${armgcc_dtarget} $(dirname ${armgcc_dtarget})/${HPC_TARGET}
+	    if [ ! -d ${armgcc_dtarget})/${HPC_TARGET} ] || [ ! -L ${armgcc_dtarget})/${HPC_TARGET} ]
+	    then
+		sudo ln -sfn ${armgcc_dtarget} $(dirname ${armgcc_dtarget})/${HPC_TARGET}
+	    fi
         done
 	;;
     "icc"|"icx")
