@@ -295,9 +295,9 @@ case ${HPC_COMPILER} in
 	# fix system /usr/bin/ls coudn't find crtbeginS.o etc.
 	# restrict the armgcc_dtarget in armgcc directory
 	# replace find with echo to improve the speed
-	#armgcc_lib_search_loc=$(dirname $(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o" | grep Generic-AArch64_RHEL)))
+	#armgcc_lib_search_loc=$(dirname $(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o" | grep Generic-AArch64)))
 	#sysgcc_lib_search_loc=$(dirname $(dirname $(sudo find /usr -iname "crtbeginS.o")))
-	armgcc_lib_search_loc=$(echo /fsx/aarch64/opt/*/lib/gcc/aarch64-linux-gnu)
+	armgcc_lib_search_loc=$(echo /fsx/aarch64/opt/*Generic-AArch64*/lib/gcc/aarch64-linux-gnu)
 	sysgcc_lib_search_loc="/usr/lib/gcc/${HPC_HOST_TARGET}"
 
 	# https://unix.stackexchange.com/questions/207294/create-symlink-overwrite-if-one-exists
@@ -311,7 +311,8 @@ case ${HPC_COMPILER} in
 
 	# add armgcc headers to search path
 	# restrict the armgcc_dtarget in armgcc directory
-        for armgcc_dtarget in $(find ${HPC_PREFIX}/opt -iname aarch64-linux-gnu | grep Generic-AArch64_RHEL)
+        #for armgcc_dtarget in $(find ${HPC_PREFIX}/opt -iname aarch64-linux-gnu | grep Generic-AArch64)
+	for armgcc_dtarget in $(echo ${HPC_PREFIX}/opt/*Generic-AArch64*/{include/c++/*/,lib/gcc/,libexec/gcc/,}aarch64-linux-gnu)
         do
 	    if [ ! -d $(dirname ${armgcc_dtarget})/${HPC_TARGET} ] || [ ! -L $(dirname ${armgcc_dtarget})/${HPC_TARGET} ]
 	    then
