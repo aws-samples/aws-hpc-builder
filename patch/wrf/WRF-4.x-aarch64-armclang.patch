@@ -23,11 +23,11 @@ diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
 +RWORDSIZE       =       CONFIGURE_RWORDSIZE
 +PROMOTION       =       #-fdefault-real-8
 +ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_SUBR  -DWRF_USE_CLM
-+CFLAGS_LOCAL    =       -w -O3 -c  # -DRSL0_ONLY -I$(ARMPL_INCLUDES_LP64_MP)
-+LDFLAGS_LOCAL   =       -larmpl_lp64_mp -lgfortran -lamath -lm -lastring
++CFLAGS_LOCAL    =       -mcpu native -w -O3 -c  # -DRSL0_ONLY
++LDFLAGS_LOCAL   =       -armpl -lamath -lm -lastring
 +CPLUSPLUSLIB    =       
 +ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
-+FCOPTIM         =       -O3 -ftree-vectorize -funroll-loops
++FCOPTIM         =       -O3 -funroll-loops
 +FCREDUCEDOPT	=       $(FCOPTIM)
 +FCNOOPT         =       -O0
 +FCDEBUG         =       # -g $(FCNOOPT)  # -fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow
@@ -37,10 +37,10 @@ diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
 +FCCOMPAT        =       
 +BYTESWAPIO      =       -fconvert=big-endian -frecord-marker=4
 +FCBASEOPTS_NO_G =       -w $(FORMAT_FREE) $(BYTESWAPIO) $(FCCOMPAT)
-+FCBASEOPTS      =       $(FCBASEOPTS_NO_G) $(FCDEBUG)
++FCBASEOPTS      =       -mcpu native $(OMP) $(FCBASEOPTS_NO_G) $(FCDEBUG)
 +MODULE_SRCH_FLAG =
 +TRADFLAG        =      CONFIGURE_TRADFLAG
-+CPP             =      /lib/cpp CONFIGURE_CPPFLAGS
++CPP             =      cpp CONFIGURE_CPPFLAGS
 +AR              =      armllvm-ar
 +ARFLAGS         =      ru
 +M4              =      m4 -B 14000
@@ -75,11 +75,11 @@ diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
 +RWORDSIZE       =       CONFIGURE_RWORDSIZE
 +PROMOTION       =       #-fdefault-real-8
 +ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_SUBR  -DWRF_USE_CLM
-+CFLAGS_LOCAL    =       -w -O3 -c # -DRSL0_ONLY
-+LDFLAGS_LOCAL   =
++CFLAGS_LOCAL    =       -mcpu native -w -O3 -c # -DRSL0_ONLY
++LDFLAGS_LOCAL   =	 -armpl -lamath -lm -lastring
 +CPLUSPLUSLIB    =
 +ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
-+FCOPTIM         =       -O3 -ftree-vectorize -funroll-loops
++FCOPTIM         =       -O3 -funroll-loops
 +FCREDUCEDOPT    =       $(FCOPTIM)
 +FCNOOPT         =       -O0
 +FCDEBUG         =       # -g $(FCNOOPT)  # -fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow
@@ -88,10 +88,10 @@ diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
 +FCSUFFIX        =
 +BYTESWAPIO      =       -fconvert=big-endian -frecord-marker=4
 +FCBASEOPTS_NO_G =       -w $(FORMAT_FREE) $(BYTESWAPIO) $(FCCOMPAT)
-+FCBASEOPTS      =       $(FCBASEOPTS_NO_G) $(FCDEBUG)
++FCBASEOPTS      =       -mcpu native $(OMP) $(FCBASEOPTS_NO_G) $(FCDEBUG)
 +MODULE_SRCH_FLAG =
 +TRADFLAG        =      CONFIGURE_TRADFLAG
-+CPP             =      /lib/cpp CONFIGURE_CPPFLAGS
++CPP             =      cpp CONFIGURE_CPPFLAGS
 +AR              =      armllvm-ar
 +ARFLAGS         =      ru
 +M4              =      m4 -G

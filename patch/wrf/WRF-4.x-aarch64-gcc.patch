@@ -24,7 +24,7 @@ diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
 +PROMOTION       =       #-fdefault-real-8
 +ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_SUBR  -DWRF_USE_CLM
 +CFLAGS_LOCAL    =       -w -O3 -c  # -DRSL0_ONLY
-+LDFLAGS_LOCAL   =
++LDFLAGS_LOCAL   =	 -armpl -lamath -lm -lastring
 +CPLUSPLUSLIB    =       
 +ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
 +FCOPTIM         =       -O3 -ftree-vectorize -funroll-loops -march=native
@@ -40,7 +40,7 @@ diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
 +FCBASEOPTS      =       $(FCBASEOPTS_NO_G) $(FCDEBUG)
 +MODULE_SRCH_FLAG =
 +TRADFLAG        =      CONFIGURE_TRADFLAG
-+CPP             =      /lib/cpp CONFIGURE_CPPFLAGS
++CPP             =      cpp CONFIGURE_CPPFLAGS
 +AR              =      ar
 +ARFLAGS         =      ru
 +M4              =      m4 -B 14000
@@ -76,7 +76,7 @@ diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
 +PROMOTION       =       #-fdefault-real-8
 +ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_SUBR  -DWRF_USE_CLM
 +CFLAGS_LOCAL    =       -w -O3 -c -march=native # -DRSL0_ONLY
-+LDFLAGS_LOCAL   =
++LDFLAGS_LOCAL   =	 -armpl -lamath -lm -lastring
 +CPLUSPLUSLIB    =
 +ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
 +FCOPTIM         =       -O3 -ftree-vectorize -funroll-loops -march=native
@@ -91,7 +91,7 @@ diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
 +FCBASEOPTS      =       $(FCBASEOPTS_NO_G) $(FCDEBUG)
 +MODULE_SRCH_FLAG =
 +TRADFLAG        =      CONFIGURE_TRADFLAG
-+CPP             =      /lib/cpp CONFIGURE_CPPFLAGS
++CPP             =      cpp CONFIGURE_CPPFLAGS
 +AR              =      ar
 +ARFLAGS         =      ru
 +M4              =      m4 -G

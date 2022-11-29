@@ -7,7 +7,9 @@ fix_clang_ld()
     if [ "${HPC_COMPILER}" == "clang" ] || [ "${HPC_COMPILER}" == "armclang" ]
     then
         # https://github.com/Unidata/netcdf-fortran/issues/309
-        sed -i -e 's/wl=""/wl="-Wl,"/g' -e 's/pic_flag=""/pic_flag="-fPIC"/g' libtool
+        sed -i -e 's/wl=""/wl="-Wl,"/g' -e 's/pic_flag=""/pic_flag="-fPIC -DPIC"/g' libtool
+	#sed -i -e 's#wl=""#wl="-Wl,"#g' libtool
+	#sed -i -e 's#pic_flag=""#pic_flag=" -fPIC -DPIC"#g' libtool
     fi
 }
 
@@ -292,33 +294,33 @@ case ${HPC_COMPILER} in
 	module load armpl/$(ls ${HPC_PREFIX}/opt/moduledeps/acfl/[0-9.]*/armpl)
         export HPC_TARGET=$(armclang -dumpmachine)
 
-	# fix system /usr/bin/ls coudn't find crtbeginS.o etc.
-	# restrict the armgcc_dtarget in armgcc directory
-	# replace find with echo to improve the speed
-	#armgcc_lib_search_loc=$(dirname $(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o" | grep Generic-AArch64)))
-	#sysgcc_lib_search_loc=$(dirname $(dirname $(sudo find /usr -iname "crtbeginS.o")))
+	## fix system /usr/bin/ls coudn't find crtbeginS.o etc.
+	## restrict the armgcc_dtarget in armgcc directory
+	## replace find with echo to improve the speed
+	##armgcc_lib_search_loc=$(dirname $(dirname $(find ${HPC_PREFIX}/opt -iname "crtbeginS.o" | grep Generic-AArch64)))
+	##sysgcc_lib_search_loc=$(dirname $(dirname $(sudo find /usr -iname "crtbeginS.o")))
 	armgcc_lib_search_loc=$(echo /fsx/aarch64/opt/*Generic-AArch64*/lib/gcc/aarch64-linux-gnu)
 	sysgcc_lib_search_loc="/usr/lib/gcc/${HPC_HOST_TARGET}"
 
-	# https://unix.stackexchange.com/questions/207294/create-symlink-overwrite-if-one-exists
-	#If a directory, or symlink to a directory, already exists with the target name, the symlink will be created inside it
-	#(so you'd end up with /path/to/recent/file/file in the example above). The -n option, available in some versions of ln,
-	#will take care of symlinks to directories for you, replacing them as necessary:
-	if [ ! -d $(dirname ${sysgcc_lib_search_loc})/${HPC_TARGET} ] || [ ! -L $(dirname ${sysgcc_lib_search_loc})/${HPC_TARGET} ]
-	then
-	    sudo ln -sfn ${armgcc_lib_search_loc} $(dirname ${sysgcc_lib_search_loc})/${HPC_TARGET}
-	fi
+	## https://unix.stackexchange.com/questions/207294/create-symlink-overwrite-if-one-exists
+	##If a directory, or symlink to a directory, already exists with the target name, the symlink will be created inside it
+	##(so you'd end up with /path/to/recent/file/file in the example above). The -n option, available in some versions of ln,
+	##will take care of symlinks to directories for you, replacing them as necessary:
+	#if [ ! -d $(dirname ${sysgcc_lib_search_loc})/${HPC_TARGET} ] || [ ! -L $(dirname ${sysgcc_lib_search_loc})/${HPC_TARGET} ]
+	#then
+	#    sudo ln -sfn ${armgcc_lib_search_loc} $(dirname ${sysgcc_lib_search_loc})/${HPC_TARGET}
+	#fi
 
 	# add armgcc headers to search path
 	# restrict the armgcc_dtarget in armgcc directory
         #for armgcc_dtarget in $(find ${HPC_PREFIX}/opt -iname aarch64-linux-gnu | grep Generic-AArch64)
-	for armgcc_dtarget in $(echo ${HPC_PREFIX}/opt/*Generic-AArch64*/{include/c++/*/,lib/gcc/,libexec/gcc/,}aarch64-linux-gnu)
-        do
-	    if [ ! -d $(dirname ${armgcc_dtarget})/${HPC_TARGET} ] || [ ! -L $(dirname ${armgcc_dtarget})/${HPC_TARGET} ]
-	    then
-		sudo ln -sfn ${armgcc_dtarget} $(dirname ${armgcc_dtarget})/${HPC_TARGET}
-	    fi
-        done
+	#for armgcc_dtarget in $(echo ${HPC_PREFIX}/opt/*Generic-AArch64*/{include/c++/*/,lib/gcc/,libexec/gcc/,}aarch64-linux-gnu)
+        #do
+	#    if [ ! -d $(dirname ${armgcc_dtarget})/${HPC_TARGET} ] || [ ! -L $(dirname ${armgcc_dtarget})/${HPC_TARGET} ]
+	#    then
+	#	sudo ln -sfn ${armgcc_dtarget} $(dirname ${armgcc_dtarget})/${HPC_TARGET}
+	#    fi
+        #done
 	;;
     "icc"|"icx")
 	source ${HPC_PREFIX}/opt/intel/oneapi/compiler/latest/env/vars.sh
