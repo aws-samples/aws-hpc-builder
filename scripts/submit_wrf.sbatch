@@ -75,7 +75,8 @@ source ${PREFIX}/scripts/mpi_settings.sh
 
 echo "Running WRF on $(date)"
 cd ${JOB_DIR}
-ln -sf ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/main/wrf.exe  .
+#ln -sfn ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/run/{CAMtr_volume_mixing_ratio*,ozone*,RRTM*,*.TBL} .
+ln -sfn ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/main/wrf.exe  .
 
 START_DATE=$(date)
 echo "zzz *** ${START_DATE} *** - JobStart - $(basename ${JOB_DIR}) - ${HPC_COMPILER} - ${HPC_MPI}" >> ${WRF_LOG} 2>&1
