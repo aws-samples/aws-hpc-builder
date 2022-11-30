@@ -76,12 +76,13 @@ install_mvapich()
 	    #--target=${HPC_TARGET} \
 	if [ "$(basename ${FC})" == "gfortran" ]
 	then
+	    # a mvapich bug, have to remove the space between ch4:ofi and "\"
 	    FFLAGS=-fallow-argument-mismatch FCFLAGS=-fallow-argument-mismatch ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
-		--with-device=ch4:ofi \
+		--with-device=ch4:ofi\
 		--with-libfabric=/opt/amazon/efa
         else
 	    ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
-		--with-device=ch4:ofi \
+		--with-device=ch4:ofi\
 		--with-libfabric=/opt/amazon/efa
 	fi
     else
