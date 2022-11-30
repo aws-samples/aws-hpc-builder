@@ -2,12 +2,11 @@
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
-HDF5_VERSION=${2:-1.12.2}
-HDF5_SRC="hdf5-${HDF5_VERSION}.tar.gz"
-DISABLE_COMPILER_ENV=true
+MVAPICH_VERSION=${2:-2.3.7-1}
+MVAPICH_SRC="mvapich-${MVAPICH_VERSION}.tar.gz"
+DISABLE_COMPILER_ENV=false
 
-
-install_sys_dependency_for_hdf5()
+install_sys_dependency_for_mvapich()
 {
     return
     # packages for build gcc/binutils ref: https://wiki.osdev.org/Building_GCC
@@ -45,42 +44,60 @@ install_sys_dependency_for_hdf5()
     fi
 }
 
-download_hdf5()
-{
-    if [ -f ${HDF5_SRC} ]
+download_mvapich() {
+    echo "zzz *** $(date) *** Downloading source code ${MVAPICH_SRC}"
+    if [ -f ${MVAPICH_SRC} ]
     then
         return
     else
-	wget "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${HDF5_VERSION%.*}/hdf5-${HDF5_VERSION}/src/hdf5-${HDF5_VERSION}.tar.gz"
+	wget https://mvapich.cse.ohio-state.edu/download/mvapich/mv2/${VAPICH_SRC}
 	return $?
     fi
 }
 
-install_hdf5()
+install_mvapich()
 {
-    echo "zzz *** $(date) *** Build ${HDF5_SRC%.tar.gz}"
-    sudo rm -rf "${HDF5_SRC%.tar.gz}"
-    tar xf "${HDF5_SRC}"
-    cd "${HDF5_SRC%.tar.gz}"
-    # https://forum.hdfgroup.org/t/compilation-with-aocc-clang-error/6148
-    # https://stackoverflow.com/questions/4580789/ld-unknown-option-soname-on-os-x
-	    #--build=${WRF_TARGET} \
-	    #--host=${WRF_TARGET} \
-	    #--target=${WRF_TARGET} \
-    #CC=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/mpicc FC=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/mpif90 ./configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
-    ./configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
-	    --libdir=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib \
-	    --enable-fortran \
-	    --enable-shared \
-	    --enable-hl \
-	    --enable-parallel \
-	    --enable-unsupported && fix_clang_ld
-    # bulid with mpich fails on check due to limited stacksize on some systems
-    #make check && sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install && cd ..
-    make && sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install && cd ..
+    if [ ${HPC_MPI} != "mvapich" ]
+    then
+        echo "Current MPI is not mvapich, installation stopped" 1>&2
+        return 1
+    fi
+
+    sudo rm -rf "${MVAPICH_SRC%.tar.gz}"
+    tar xf "${MVAPICH_SRC}"
+    cd "${MVAPICH_SRC%.tar.gz}"
+    mkdir -p build
+    cd build
+    if [ -d /opt/amazon/efa ]
+    then
+	    #--build=${HPC_TARGET} \
+	    #--host=${HPC_TARGET} \
+	    #--target=${HPC_TARGET} \
+	if [ "$(basename ${FC})" == "gfortran" ]
+	then
+	    FFLAGS=-fallow-argument-mismatch FCFLAGS=-fallow-argument-mismatch ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+		--with-ofi=/opt/amazon/efa
+        else
+	    ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+		--with-ofi=/opt/amazon/efa
+	fi
+    else
+	if [ "$(basename ${FC})" == "gfortran" ]
+	then
+	    FFLAGS=-fallow-argument-mismatch FCFLAGS=-fallow-argument-mismatch ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
+	else
+	    ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
+	fi
+    fi
+    result=$?
+    if [ $result -ne 0 ]
+    then
+        return  $result
+    fi
+    make && sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install && cd ../..
 }
 
-update_hdf5_version()
+update_mvapich_version()
 {
-    MODULE_VERSION=${HDF5_VERSION}
+    MODULE_VERSION=${MVAPICH_VERSION}
 }
