@@ -111,9 +111,9 @@ build_hpc_module()
 	    # Intel MPI only avaiable on X86_64(Intel) and AMD64 platforms
 	    if [ "${SARCH}" == "aarch64" ]
 	    then
-		available_mpis="openmpi mpich"
+		available_mpis="openmpi mpich mvapich"
 	    else
-		available_mpis="openmpi mpich intelmpi"
+		available_mpis="openmpi mpich intelmpi mvapich"
 	    fi
 
 	    if [ ${module} == "compiler" ]
@@ -275,7 +275,7 @@ hpc_builder_help()
     echo "  -c COMPILER"
     echo "     specify HPC compilers(icc|icx|amdclang|armgcc|armclang|gcc|clang, default vendor's)"
     echo "  -i MPI"
-    echo "     specify mpi(supported MPIs: openmpi|intelmpi|mpich, default=openmpi)"
+    echo "     specify mpi(supported MPIs: openmpi|intelmpi|mpich|mvapich, default=openmpi)"
     echo "  -m MODULE"
     echo "     specify module(default compiler)"
     echo "  -M MODULE_VERSION"
@@ -311,7 +311,7 @@ while getopts 'p:c:m:M:i:lLh' OPT; do
     esac
 done
 
-if [ "${HPC_MPI}" != "openmpi" ] && [ "${HPC_MPI}" != "mpich" ] && [ "${HPC_MPI}" != "intelmpi" ]
+if [ "${HPC_MPI}" != "openmpi" ] && [ "${HPC_MPI}" != "mpich" ] && [ "${HPC_MPI}" != "intelmpi" ] && [ "${HPC_MPI}" != "mvapich" ]
 then
     HPC_MPI=openmpi
 fi

@@ -21,12 +21,14 @@ PREFIX=XXPREFIXXX
 # 0 openmpi
 # 1 mpich
 # 2 intelmpi
+# 3 mvapich
 #
 # usage: env.sh <compiler> <MPI>
 #        C M
 # env.sh 0 0   ## select vendor's native compilers with openmpi
 # env.sh 0 1   ## select vendor's native compilers with mpich
 # env.sh 0 2   ## select vendor's native compilers with intelmpi
+# env.sh 0 3   ## select vendor's native compilers with mvapich
 # env.sh 1 0   ## select GNU/GCC compilers with openmpi
 # env.sh ...
 
@@ -71,6 +73,9 @@ case $2 in
 	;;
     2)
 	HPC_MPI=intelmpi
+	;;
+    3)
+	HPC_MPI=mvapich
 	;;
     *)
 	echo "unknown MPI"

@@ -36,14 +36,17 @@ export OSU_VERSION=6.1
 #
 # MPI table:
 # ----------
-# 0 openmpi # 1 mpich
+# 0 openmpi
+# 1 mpich
 # 2 intelmpi
+# 3 mvapich
 #
 # usage: env.sh <compiler> <MPI>
 #        C M
 # env.sh 0 0   ## select vendor's native compilers with openmpi
 # env.sh 0 1   ## select vendor's native compilers with mpich
 # env.sh 0 2   ## select vendor's native compilers with intelmpi
+# env.sh 0 3   ## select vendor's native compilers with mvapich
 # env.sh 1 0   ## select GNU/GCC compilers with openmpi
 # env.sh ...
 
