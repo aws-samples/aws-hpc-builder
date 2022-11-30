@@ -8,24 +8,25 @@
 #SBATCH --ntasks-per-core=1
 #SBATCH --export=ALL
 #SBATCH --exclusive
-#SBATCH -o XXPREFIXXX/slurm.out
+#SBATCH -o /fsx/log/wrf.out
 
 #--------------------------- customized Job env -----------------------------
 #SBATCH --nodes=6
-#SBATCH --partition=wrfc7g
+#SBATCH --partition=c6gn
 
 PREFIX=XXPREFIXXX
-#export WRF_VERSION=4.2.2
-#export JOB_DIR=${PREFIX}/spooler/xxxxxx
-
-#export WRF_VERSION=4.2.2
-#export JOB_DIR=${PREFIX}/spooler/conus_2.5km_v4
-
-export WRF_VERSION=3.9.1
-export JOB_DIR=${PREFIX}/spooler/run
 
 #export WRF_VERSION=3.9.1
-#export JOB_DIR=${PREFIX}/spooler/wrf_sample_3.9
+#export JOB_DIR=${PREFIX}/spooler/bench_12km
+#export JOB_DIR=${PREFIX}/spooler/bench_2.5km
+
+#export WRF_VERSION=4.2.2
+#export JOB_DIR=${PREFIX}/spooler/v4_bench_conus12km
+#export JOB_DIR=${PREFIX}/spooler/v4_bench_conus2.5km
+
+export WRF_VERSION=4.4.1
+export JOB_DIR=${PREFIX}/spooler/v4.4_bench_conus12km
+#export JOB_DIR=${PREFIX}/spooler/v4.4_bench_conus2.5km
 #----------------------------------------------------------------------------
 
 #ENV VARIABLES#
@@ -63,7 +64,7 @@ export JOB_DIR=${PREFIX}/spooler/run
 source ${PREFIX}/scripts/env.sh 1 0
 #----------------------------------------------------------------------------
 LOGDIR=${PREFIX}/log
-WRF_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_WRF-${WRF_VERSION}.log
+WRF_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_wrf-${WRF_VERSION}.log
 mkdir -p ${LOGDIR}
 
 ulimit -s unlimited

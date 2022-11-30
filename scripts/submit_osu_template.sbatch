@@ -54,7 +54,7 @@ PREFIX=XXPREFIXXX
 source ${PREFIX}/scripts/env.sh 1 0
 #----------------------------------------------------------------------------
 LOGDIR=${PREFIX}/log
-OSU_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_OSU-${OSU_VERSION}.log
+OSU_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_osu-${OSU_VERSION}.log
 mkdir -p ${LOGDIR}
 
 ulimit -s unlimited

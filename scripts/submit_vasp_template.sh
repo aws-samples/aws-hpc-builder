@@ -44,7 +44,7 @@ source ${PREFIX}/scripts/env.sh 0 0
 
 #----------------------------------------------------------------------------
 LOGDIR=${PREFIX}/log
-VASP_LOG=${LOGDIR}/mpiexec_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_VASP-${VASP_VERSION}.log
+VASP_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_vasp-${VASP_VERSION}.log
 mkdir -p ${LOGDIR}
 
 ulimit -s unlimited
@@ -64,7 +64,7 @@ NPROCS=$(cat /sys/devices/system/cpu/cpu*/topology/thread_siblings_list | cut -d
 START_DATE=$(date)
 echo "zzz *** ${START_DATE} *** - JobStart - $(basename ${JOB_DIR}) - ${HPC_COMPILER} - ${HPC_MPI}" >> ${VASP_LOG} 2>&1
 
-mpiexec -np ${NPROCS} --bind-to hwthread --map-by core ${MPI_SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/vasp.${VASP_VERSION}/bin/vasp_std >> ${VASP_LOG} 2>&1
+mpirun -np ${NPROCS} --bind-to hwthread --map-by core ${MPI_SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/vasp.${VASP_VERSION}/bin/vasp_std >> ${VASP_LOG} 2>&1
 
 END_DATE=$(date)
 echo "zzz *** ${END_DATE} *** - JobEnd - $(basename ${JOB_DIR}) - ${HPC_COMPILER} - ${HPC_MPI}" >> ${VASP_LOG} 2>&1
