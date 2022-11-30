@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
-MVAPICH_VERSION=${2:-2.3.7-1}
+MVAPICH_VERSION=${2:-3.0a}
 MVAPICH_SRC="mvapich2-${MVAPICH_VERSION}.tar.gz"
 DISABLE_COMPILER_ENV=false
 
@@ -76,17 +76,21 @@ install_mvapich()
 	if [ "$(basename ${FC})" == "gfortran" ]
 	then
 	    FFLAGS=-fallow-argument-mismatch FCFLAGS=-fallow-argument-mismatch ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
-		--with-ofi=/opt/amazon/efa
+		--with-device=ch4:ofi \
+		--with-libfabric=/opt/amazon/efa
         else
 	    ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
-		--with-ofi=/opt/amazon/efa
+		--with-device=ch4:ofi \
+		--with-libfabric=/opt/amazon/efa
 	fi
     else
 	if [ "$(basename ${FC})" == "gfortran" ]
 	then
-	    FFLAGS=-fallow-argument-mismatch FCFLAGS=-fallow-argument-mismatch ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
+	    FFLAGS=-fallow-argument-mismatch FCFLAGS=-fallow-argument-mismatch ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+		--with-device=ch4:ofi
 	else
-	    ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
+	    ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+		--with-device=ch4:ofi
 	fi
     fi
     result=$?
