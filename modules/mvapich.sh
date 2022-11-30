@@ -50,7 +50,7 @@ download_mvapich() {
     then
         return
     else
-	wget https://mvapich.cse.ohio-state.edu/download/mvapich/mv2/${VAPICH_SRC}
+	wget https://mvapich.cse.ohio-state.edu/download/mvapich/mv2/${MVAPICH_SRC}
 	return $?
     fi
 }
