@@ -50,7 +50,8 @@ icc-mpich:mt-dgemm
 icc-mvapich:mt-dgemm
 icc-intelmpi:mt-dgemm
 icx-openmpi:mt-dgemm
-icx-mvapich:mpich,mt-dgemm
+icx-mpich:mt-dgemm
+icx-mvapich:mt-dgemm
 icx-intelmpi:mt-dgemm
 
 # openmpi's dependencies
@@ -117,6 +118,7 @@ armclang-openmpi:openmpi,hdf5,pnetcdf
 armclang-mpich:mpich,hdf5,pnetcdf
 armclang-mvapich:mvapich,hdf5,pnetcdf
 clang-openmpi:openmpi,hdf5,pnetcdf
+clang-mpich:mpich,hdf5,pnetcdf
 clang-mvapich:mvapich,hdf5,pnetcdf
 clang-intelmpi:hdf5,pnetcdf
 gcc-openmpi:openmpi,hdf5,pnetcdf
@@ -194,6 +196,7 @@ amdclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 amdclang-mvapich:mvapich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 amdclang-intelmpi:hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 armgcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
+armgcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 armgcc-mvapich:mvapich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 armclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
 armclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran,wrf
