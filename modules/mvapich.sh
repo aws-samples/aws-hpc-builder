@@ -3,7 +3,7 @@
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
 MVAPICH_VERSION=${2:-2.3.7-1}
-MVAPICH_SRC="mvapich-${MVAPICH_VERSION}.tar.gz"
+MVAPICH_SRC="mvapich2-${MVAPICH_VERSION}.tar.gz"
 DISABLE_COMPILER_ENV=false
 
 install_sys_dependency_for_mvapich()
