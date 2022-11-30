@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
+# to support efa version must be 3.0a+
 MVAPICH_VERSION=${2:-3.0a}
 MVAPICH_SRC="mvapich2-${MVAPICH_VERSION}.tar.gz"
 DISABLE_COMPILER_ENV=false
