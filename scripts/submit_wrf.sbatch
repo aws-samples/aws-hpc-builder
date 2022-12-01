@@ -68,6 +68,8 @@ WRF_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_wrf-${WRF_VERSION}.
 mkdir -p ${LOGDIR}
 
 ulimit -s unlimited
+export MKL_NUM_THREADS=1
+export OMP_NUM_THREADS=1
 
 HPC_MPI_DEBUG=1
 # load MPI settings

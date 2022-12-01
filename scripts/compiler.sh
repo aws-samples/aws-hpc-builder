@@ -4,7 +4,7 @@
 
 fix_clang_ld()
 {
-    if [ "${HPC_COMPILER}" == "clang" ] || [ "${HPC_COMPILER}" == "armclang" ]
+    if [ "${HPC_COMPILER}" == "clang" ] || [ "${HPC_COMPILER}" == "armclang" ] || [ "${HPC_COMPILER}" == "amdclang" ]
     then
         # https://github.com/Unidata/netcdf-fortran/issues/309
         sed -i -e 's/wl=""/wl="-Wl,"/g' -e 's/pic_flag=""/pic_flag="-fPIC -DPIC"/g' libtool
