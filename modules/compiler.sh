@@ -221,6 +221,8 @@ install_arm_compiler()
     cd arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}
     sudo bash arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}.sh -a -i ${HPC_PREFIX}/opt -f
     cd ..
+
+    build_cmake
 }
 
 install_intel_compiler()
@@ -240,6 +242,8 @@ install_intel_compiler()
     done
     sudo bash ${INTEL_COMPILER_SRC} -a -s --eula accept --install-dir=${HPC_PREFIX}/opt/intel/oneapi
     sudo bash ${INTEL_HPC_COMPILER_SRC} -a -s --eula accept --install-dir=${HPC_PREFIX}/opt/intel/oneapi
+
+    build_cmake
 }
 
 install_amd_compiler()
@@ -253,6 +257,8 @@ install_amd_compiler()
     cd ${AMD_AOCL_SRC%.tar.gz}
     sudo bash ./install.sh -t ${HPC_PREFIX}/opt -i lp64
     cd ..
+
+    build_cmake
 }
 
 install_gcc_compiler()
@@ -283,25 +289,29 @@ install_gcc_compiler()
     export LD_LIBRARY_PATH=${OLD_LIBRARY_PATH}
     unset OPATH
     unset OLD_LIBRARY_PATH
+
+    build_cmake
 }
 
 build_cmake()
 {
-    echo "zzz *** $(date) *** Build ${CMAKE_SRC%.tar.gz}"
-    sudo rm -rf "${CMAKE_SRC%.tar.gz}"
-    tar xf "${CMAKE_SRC}"
-    cd "${CMAKE_SRC%.tar.gz}"
-    ./bootstrap --prefix=${HPC_PREFIX}/opt/gnu --parallel=$(($(nproc) / 2)) -- -DCMAKE_BUILD_TYPE:STRING=Release
-    make
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install
-    cd ..
+    if [ ${S_VERSION_ID} -eq 7 ]
+    then
+	echo "zzz *** $(date) *** Build ${CMAKE_SRC%.tar.gz}"
+	sudo rm -rf "${CMAKE_SRC%.tar.gz}"
+	tar xf "${CMAKE_SRC}"
+	cd "${CMAKE_SRC%.tar.gz}"
+	./bootstrap --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} --parallel=$(($(nproc) / 2)) -- -DCMAKE_BUILD_TYPE:STRING=Release
+	make && sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install && cd ..
+    fi
 }
 
 build_clang()
 {
+    build_cmake
+
     if [ ${S_VERSION_ID} -eq 7 ]
     then
-	build_cmake
 	sudo ln -s /usr/bin/ninja-build /usr/local/bin/ninja
     fi
 
