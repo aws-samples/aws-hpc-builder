@@ -60,6 +60,7 @@ GROMACS_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_gromacs-${GROMA
 mkdir -p ${LOGDIR}
 
 NTOMP=2
+NSTEPS=20000
 
 ulimit -s unlimited
 #export MKL_NUM_THREADS=1
@@ -75,7 +76,7 @@ cd ${JOB_DIR}
 START_DATE=$(date)
 echo "zzz *** ${START_DATE} *** - JobStart - $(basename ${JOB_DIR}) - ${HPC_COMPILER} - ${HPC_MPI}" >> ${GROMACS_LOG} 2>&1
 
-mpirun ${MPI_SHOW_BIND_OPTS} gmx_mpi mdrun -tomp ${NTOMP} -s ${JOB_INPUT} >> ${GROMACS_LOG} 2>&1
+mpirun ${MPI_SHOW_BIND_OPTS} gmx_mpi mdrun -nsteps ${NSTEPS} -ntomp ${NTOMP} -s ${JOB_INPUT} >> ${GROMACS_LOG} 2>&1
 
 END_DATE=$(date)
 echo "zzz *** ${END_DATE} *** - JobEnd - $(basename ${JOB_DIR}) - ${HPC_COMPILER} - ${HPC_MPI}" >> ${GROMACS_LOG} 2>&1

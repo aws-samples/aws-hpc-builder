@@ -8,13 +8,13 @@
 #SBATCH --ntasks-per-core=1
 #SBATCH --export=ALL
 #SBATCH --exclusive
-#SBATCH -o XXPREFIXXX/log/gromacs.out
+#SBATCH -o /fsx/log/gromacs.out
 
 #--------------------------- customized Job env -----------------------------
 #SBATCH --nodes=2
 #SBATCH --partition=c6i
 
-PREFIX=XXPREFIXXX
+PREFIX=/fsx
 
 export GROMACS_VERSION=2022.4
 export JOB_DIR=${PREFIX}/spooler/gromacs
@@ -60,6 +60,7 @@ GROMACS_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_gromacs-${GROMA
 mkdir -p ${LOGDIR}
 
 NTOMP=2
+NSTEPS=20000
 
 ulimit -s unlimited
 #export MKL_NUM_THREADS=1
@@ -75,7 +76,7 @@ cd ${JOB_DIR}
 START_DATE=$(date)
 echo "zzz *** ${START_DATE} *** - JobStart - $(basename ${JOB_DIR}) - ${HPC_COMPILER} - ${HPC_MPI}" >> ${GROMACS_LOG} 2>&1
 
-mpirun ${MPI_SHOW_BIND_OPTS} gmx_mpi mdrun -tomp ${NTOMP} -s ${JOB_INPUT} >> ${GROMACS_LOG} 2>&1
+mpirun ${MPI_SHOW_BIND_OPTS} gmx_mpi mdrun -nsteps ${NSTEPS} -ntomp ${NTOMP} -s ${JOB_INPUT} >> ${GROMACS_LOG} 2>&1
 
 END_DATE=$(date)
 echo "zzz *** ${END_DATE} *** - JobEnd - $(basename ${JOB_DIR}) - ${HPC_COMPILER} - ${HPC_MPI}" >> ${GROMACS_LOG} 2>&1
