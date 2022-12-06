@@ -118,6 +118,15 @@ install_sys_dependency_for_compiler()
 }
 
 download_compiler() {
+    if [ ! -f ${CMAKE_SRC} ] && [ ${S_VERSION_ID} -eq 7 ]
+    then
+	wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/${CMAKE_SRC}
+	result=$?
+	if [ ${result} -ne 0 ]
+	then
+	    return ${result}
+	fi
+    fi
 
     case "${HPC_COMPILER}" in
 	"armgcc" | "armclang")
@@ -193,15 +202,6 @@ download_compiler() {
 	    fi
 	    ;;
 	"clang")
-	    if [ ! -f ${CMAKE_SRC} ]
-	    then
-		wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/${CMAKE_SRC}
-		result=$?
-		if [ ${result} -ne 0 ]
-		then
-		    return ${result}
-		fi
-	    fi
 	    if [ -f ${CLANG_SRC} ]
 	    then
 		return
