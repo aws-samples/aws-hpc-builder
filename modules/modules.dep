@@ -26,6 +26,34 @@ icx-mpich:mpich,osu
 icx-mvapich:mvapich,osu
 icx-intelmpi:osu
 
+# gromacs's dependencies
+amdclang-openmpi:gromacs
+amdclang-mpich:gromacs
+amdclang-mvapich:gromacs
+amdclang-intelmpi:gromacs
+armgcc-openmpi:gromacs
+armgcc-mpich:gromacs
+armgcc-mvapich:gromacs
+armclang-openmpi:gromacs
+armclang-mpich:gromacs
+armclang-mvapich:gromacs
+clang-openmpi:gromacs
+clang-mpich:gromacs
+clang-mvapich:gromacs
+clang-intelmpi:gromacs
+gcc-openmpi:gromacs
+gcc-mpich:gromacs
+gcc-mvapich:gromacs
+gcc-intelmpi:gromacs
+icc-openmpi:gromacs
+icc-mpich:gromacs
+icc-mvapich:gromacs
+icc-intelmpi:gromacs
+icx-openmpi:gromacs
+icx-mpich:gromacs
+icx-mvapich:gromacs
+icx-intelmpi:gromacs
+
 # mt-dgemm's dependencies
 amdclang-openmpi:mt-dgemm
 amdclang-mpich:mt-dgemm

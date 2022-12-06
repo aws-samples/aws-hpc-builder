@@ -8,25 +8,17 @@
 #SBATCH --ntasks-per-core=1
 #SBATCH --export=ALL
 #SBATCH --exclusive
-#SBATCH -o XXPREFIXXX/log/wrf.out
+#SBATCH -o XXPREFIXXX/log/gromacs.out
 
 #--------------------------- customized Job env -----------------------------
-#SBATCH --nodes=6
-#SBATCH --partition=c6gn
+#SBATCH --nodes=2
+#SBATCH --partition=c6i
 
 PREFIX=XXPREFIXXX
 
-#export WRF_VERSION=3.9.1
-#export JOB_DIR=${PREFIX}/spooler/bench_12km
-#export JOB_DIR=${PREFIX}/spooler/bench_2.5km
-
-#export WRF_VERSION=4.2.2
-#export JOB_DIR=${PREFIX}/spooler/v4_bench_conus12km
-#export JOB_DIR=${PREFIX}/spooler/v4_bench_conus2.5km
-
-export WRF_VERSION=4.4.1
-export JOB_DIR=${PREFIX}/spooler/v4.4_bench_conus12km
-#export JOB_DIR=${PREFIX}/spooler/v4.4_bench_conus2.5km
+export GROMACS_VERSION=2022.4
+export JOB_DIR=${PREFIX}/spooler/gromacs
+export JOB_INPUT="test_aws.tpr"
 #----------------------------------------------------------------------------
 
 #ENV VARIABLES#
@@ -64,29 +56,29 @@ export JOB_DIR=${PREFIX}/spooler/v4.4_bench_conus12km
 source ${PREFIX}/scripts/env.sh 1 0
 #----------------------------------------------------------------------------
 LOGDIR=${PREFIX}/log
-WRF_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_wrf-${WRF_VERSION}.log
+GROMACS_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_gromacs-${GROMACS_VERSION}.log
 mkdir -p ${LOGDIR}
 
+NTOMP=2
+
 ulimit -s unlimited
-export MKL_NUM_THREADS=1
-export OMP_NUM_THREADS=1
+#export MKL_NUM_THREADS=1
+#export OMP_NUM_THREADS=1
 
 HPC_MPI_DEBUG=1
 # load MPI settings
 source ${PREFIX}/scripts/mpi_settings.sh
 
-echo "Running WRF on $(date)"
+echo "Running GROMACS on $(date)"
 cd ${JOB_DIR}
-#ln -sfn ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/run/{CAMtr_volume_mixing_ratio*,ozone*,RRTM*,*.TBL} .
-ln -sfn ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/main/wrf.exe .
 
 START_DATE=$(date)
-echo "zzz *** ${START_DATE} *** - JobStart - $(basename ${JOB_DIR}) - ${HPC_COMPILER} - ${HPC_MPI}" >> ${WRF_LOG} 2>&1
+echo "zzz *** ${START_DATE} *** - JobStart - $(basename ${JOB_DIR}) - ${HPC_COMPILER} - ${HPC_MPI}" >> ${GROMACS_LOG} 2>&1
 
-mpirun ${MPI_SHOW_BIND_OPTS} ./wrf.exe >> ${WRF_LOG} 2>&1
+mpirun ${MPI_SHOW_BIND_OPTS} gmx_mpi mdrun -tomp ${NTOMP} -s ${JOB_INPUT} >> ${GROMACS_LOG} 2>&1
 
 END_DATE=$(date)
-echo "zzz *** ${END_DATE} *** - JobEnd - $(basename ${JOB_DIR}) - ${HPC_COMPILER} - ${HPC_MPI}" >> ${WRF_LOG} 2>&1
+echo "zzz *** ${END_DATE} *** - JobEnd - $(basename ${JOB_DIR}) - ${HPC_COMPILER} - ${HPC_MPI}" >> ${GROMACS_LOG} 2>&1
 
 JOB_FINISH_TIME=$(($(date -d "${END_DATE}" +%s)-$(date -d "${START_DATE}" +%s)))
-echo "zzz *** $(date) *** - Job ${JOB_DIR} took ${JOB_FINISH_TIME} seconds($(echo "scale=2;${JOB_FINISH_TIME}/3600" | bc) hours)." >> ${WRF_LOG} 2>&1
+echo "zzz *** $(date) *** - Job ${JOB_DIR} took ${JOB_FINISH_TIME} seconds($(echo "scale=5;${JOB_FINISH_TIME}/3600" | bc) hours)." >> ${GROMACS_LOG} 2>&1
