@@ -6,7 +6,7 @@ PREFIX=/fsx
 # compiler & MPI selection
 # compiler table:
 # ---------------
-# 0 VENDOR's compiler, Intel=icc, AMD=armclang, ARM=armgcc
+# 0 VENDOR's compiler, Intel=icc, AMD=amdclang, ARM=armgcc
 # 1 GNU/GCC compiler
 # 2 GNU/CLANG compiler
 # 3 INTEL/ICC compiler
@@ -84,6 +84,7 @@ esac
 source ${PREFIX}/scripts/compiler.sh
 
 export PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_TARGET}/${HPC_MPI}/bin:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin:${PATH}
+export MANPATH=:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/share/man${MANPATH}
 export LD_LIBRARY_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib64:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib:${LD_LIBRARY_PATH}
 
 export OMP_STACKSIZE=128M

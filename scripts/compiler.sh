@@ -275,7 +275,8 @@ case ${HPC_COMPILER} in
     "gcc"|"clang")
 	export HPC_TARGET=$(${HPC_PREFIX}/opt/gnu/bin/${HPC_COMPILER} -dumpmachine)
 	export LD_LIBRARY_PATH=${HPC_PREFIX}/opt/gnu/lib64:${HPC_PREFIX}/opt/gnu/lib:${LD_LIBRARY_PATH}
-	export PATH=${HPC_PREFIX}/opt/gnu/${HPC_TARGET}/bin:${HPC_PREFIX}/opt/gnu/bin:${HPC_PREFIX}/${HPC_COMPILER}/bin:${PATH}
+	export PATH=${HPC_PREFIX}/opt/gnu/${HPC_TARGET}/bin:${HPC_PREFIX}/opt/gnu/bin:${PATH}
+	export MANPATH=:${HPC_PREFIX}/opt/gnu/share/man:${MANPATH}
 	;;
     "armgcc")
         source /etc/profile.d/modules.sh
