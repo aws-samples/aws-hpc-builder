@@ -9,7 +9,7 @@ check_os_version()
     S_NAME="${NAME}"
 
     case ${NAME} in
-	"Amazon Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux"|"Alibaba Cloud Linux")
+	"Amazon Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux"|"Alibaba Cloud Linux"|"Alibaba Cloud Linux (Aliyun Linux)")
 	    if [ ${VERSION_ID} -eq 2 ]
 	    then
 		S_VERSION_ID=7
