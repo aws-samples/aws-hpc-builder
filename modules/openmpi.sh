@@ -26,10 +26,14 @@ install_sys_dependency_for_openmpi()
 	       	mesa-libgbm at-spi gtk3 xdg-utils libnotify libxcb environment-modules \
 		libXrender-devel expat-devel libX11-devel freetype-devel fontconfig-devel expat-devel libXext-devel pixman-devel cairo-devel \
 	       	zlib-devel libcurl-devel cmake3 m4 libxml2-devel bzip2-devel jasper-devel libpng-devel zlib-devel libjpeg-turbo-devel tmux patch git   
-	if [ "$(sudo dmidecode -s system-product-name)" == "Alibaba Cloud ECS" ]
-	then
-	    sudo yum -y install libfabric libfabric-devel
-	fi
+	case  "${S_NAME}" in
+	    "Alibaba Cloud Linux (Aliyun Linux)")
+		sudo yum -y install libfabric libfabric-devel rdma-core-devel librdmacm-utils libpsm2-devel infinipath-psm-devel libibverbs-utils
+		;;
+	    *)
+		continue
+		;;
+	esac
     elif [ ${S_VERSION_ID} -eq 8 ]
     then
 	sudo $(dnf check-release-update 2>&1 | grep "dnf update --releasever" | tail -n1) -y 2> /dev/null
