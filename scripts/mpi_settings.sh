@@ -44,7 +44,7 @@ hpc_set_mpi()
 {
     case ${HPC_MPI} in
 	"intelmpi")
-	    continue
+	    return
 	    #export I_MPI_FABRICS=ofi
 	    #export I_MPI_OFI_PROVIDER=tcp
 	    ;;
@@ -54,10 +54,10 @@ hpc_set_mpi()
 	    export OMPI_MCA_pml=ob1
 	    ;;
 	"mpich")
-	    export FI_PROVIDER=udp
+	    export FI_PROVIDER=tcp
 	    ;;
 	"mvapich")
-	    export FI_PROVIDER=udp
+	    export FI_PROVIDER=tcp
 	    ;;
 	*)
 	    echo "Unsupported MPI"
