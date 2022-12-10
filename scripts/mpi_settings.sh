@@ -4,7 +4,7 @@
 
 HPC_MPI_DEBUG=${HPC_MPI_DEBUG:-0}
 
-hpc_enable_efa()
+hpc_enable_rdma()
 {
     #if [ ${USE_EFA} -eq 1 ]
     #then
@@ -20,26 +20,25 @@ hpc_enable_efa()
     case ${HPC_MPI} in
 	"intelmpi")
 	    export I_MPI_FABRICS=ofi
-	    export I_MPI_OFI_PROVIDER=efa
+	    export I_MPI_OFI_PROVIDER=${1}
 	    #export I_MPI_FABRICS="shm:ofi"
-	    ###export FI_PROVIDER=efa
+	    ###export FI_PROVIDER=${1}
 	    ;;
 	"openmpi")
 	    # more details see: ompi_info
 	    export OMPI_MCA_mtl=ofi
 	    export OMPI_MCA_pml=cm
-	    export OMPI_MCA_mtl_ofi_provider_include=efa
+	    export OMPI_MCA_mtl_ofi_provider_include=${1}
 	    ;;
 	"mpich")
-	    export FI_PROVIDER=efa
+	    export FI_PROVIDER=${1}
 	    ;;
 	"mvapich")
-	    export FI_PROVIDER=efa
+	    export FI_PROVIDER=${1}
 	    ;;
 	*)
 	    echo "Unsupported MPI"
-    esac
-}
+    esac }
 
 hpc_set_mpi()
 {
@@ -94,10 +93,13 @@ hpc_enable_mpi_debug()
     esac
 }
 
-# EFA Detector
+# RDMA Detector
 if (fi_info -p efa > /dev/null 2>&1)
 then
-    hpc_enable_efa
+    hpc_enable_rdma efa
+elif (fi_info -p verbs > /dev/null 2>&1)
+then
+    hpc_enable_rdma verbs
 else
     hpc_set_mpi
 fi
