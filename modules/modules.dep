@@ -26,6 +26,34 @@ icx-mpich:mpich,osu
 icx-mvapich:mvapich,osu
 icx-intelmpi:osu
 
+# imb's dependencies
+amdclang-openmpi:openmpi,imb
+amdclang-mpich:mpich,imb
+amdclang-mvapich:mvapich,imb
+amdclang-intelmpi:imb
+armgcc-openmpi:openmpi,imb
+armgcc-mpich:mpich,imb
+armgcc-mvapich:mvapich,imb
+armclang-openmpi:openmpi,imb
+armclang-mpich:mpich,imb
+armclang-mvapich:mvapich,imb
+clang-openmpi:openmpi,imb
+clang-mpich:mpich,imb
+clang-mvapich:mvapich,imb
+clang-intelmpi:imb
+gcc-openmpi:openmpi,imb
+gcc-mpich:mpich,imb
+gcc-mvapich:mvapich,imb
+gcc-intelmpi:imb
+icc-openmpi:openmpi,imb
+icc-mpich:mpich,imb
+icc-mvapich:mvapich,imb
+icc-intelmpi:imb
+icx-openmpi:openmpi,imb
+icx-mpich:mpich,imb
+icx-mvapich:mvapich,imb
+icx-intelmpi:imb
+
 # gromacs's dependencies
 amdclang-openmpi:gromacs
 amdclang-mpich:gromacs
