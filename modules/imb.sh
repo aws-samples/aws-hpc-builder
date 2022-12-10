@@ -25,7 +25,7 @@ download_imb()
 
 install_imb()
 {
-    rm -rf ${IMB_SRC%.tar.gz}
+    rm -rf mpi-benchmarks-${IMB_SRC%.tar.gz}
     tar xf ${IMB_SRC}
     cd mpi-benchmarks-${IMB_SRC%.tar.gz}
     if [ -f ../../patch/imb/imb-${IMB_VERSION}-return-value.patch ]
