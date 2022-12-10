@@ -6,7 +6,7 @@ check_os_version()
 {
     eval  "$(cat /etc/os-release | grep "^NAME=\|VERSION_ID=")"
     VERSION_ID=$(echo ${VERSION_ID} | cut -f1 -d.)
-    export S_NAME="${NAME}"
+    S_NAME="${NAME}"
 
     case ${NAME} in
 	"Amazon Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux"|"Alibaba Cloud Linux")
