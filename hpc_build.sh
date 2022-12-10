@@ -18,7 +18,7 @@ check_os_version()
 	    else
 		S_VERSION_ID=${VERSION_ID}
 	    fi
-	    if [ ${S_VERSION_ID} -ne 7 ] || [ ${S_VERSION_ID} -ne 8 ]
+	    if [ ${S_VERSION_ID} -ne 7 ] && [ ${S_VERSION_ID} -ne 8 ]
 	    then
 		echo "Unsupported Linux system: ${NAME} ${VERSION_ID}"
 		exit 1
