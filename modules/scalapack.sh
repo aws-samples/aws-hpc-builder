@@ -36,9 +36,20 @@ install_sys_dependency_for_scalapack()
 		ncurses-compat-libs \
 		sqlite-devel libarchive-devel libmicrohttpd-devel libcurl-devel \
 	       	wget time dmidecode tcsh libtirpc-devel \
-		mesa-libgbm gtk3 xdg-utils libnotify libxcb libxcrypt-compat environment-modules \
+		mesa-libgbm gtk3 xdg-utils libnotify libxcb environment-modules \
 		libXrender-devel expat-devel libX11-devel freetype-devel fontconfig-devel expat-devel libXext-devel pixman-devel cairo-devel \
 		zlib-devel libcurl-devel cmake m4 libxml2-devel bzip2-devel jasper-devel libpng-devel zlib-devel libjpeg-turbo-devel tmux patch git
+	case  "${S_NAME}" in
+	    "Alibaba Cloud Linux")
+		sudo dnf -y install libfabric libfabric-devel
+		;;
+	    "Amazon Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
+		sudo dnf -y install libxcrypt-compat
+		;;
+	    *)
+		continue
+		;;
+	esac
     else
 	exit 1
     fi
