@@ -84,8 +84,10 @@ hpc_enable_mpi_debug()
 	"mpich")
 	    # more details, see README.envvar
 	    export MPIR_CVAR_DEBUG_SUMMARY=1
+	    export HYDRA_TOPO_DEBUG=1
 	    ;;
 	"mvapich")
+	    export MV2_PSM_DEBUG=1
 	    export MV2_SHOW_CPU_BINDING=1
 	    ;;
 	*)
