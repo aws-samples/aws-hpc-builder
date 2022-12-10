@@ -5,18 +5,36 @@
 check_os_version()
 {
     eval  "$(cat /etc/os-release | grep "^NAME=\|VERSION_ID=")"
-    if [ "${NAME}" != "Amazon Linux" ]
-    then
-	echo "Unsupported Linux system: ${NAME} ${VERSION_ID}"
-	exit 1
-    fi
-    if [ ${VERSION_ID} -eq 2 ]
-    then
-	S_VERSION_ID=7
-    elif [ ${VERSION_ID} -eq 2022 ]
-    then
-	S_VERSION_ID=8
-    fi
+    VERSION_ID=$(echo ${VERSION_ID} | cut -f1 -d.)
+
+    case ${NAME} in
+	"Amazon Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
+	    if [ ${VERSION_ID} -eq 2 ]
+	    then
+		S_VERSION_ID=7
+	    elif [ ${VERSION_ID} -eq 2022 ]
+	    then
+		S_VERSION_ID=8
+	    else
+		S_VERSION_ID=${VERSION_ID}
+	    fi
+	    if [ ${S_VERSION_ID} -ne 7 ] || [ ${S_VERSION_ID} -ne 8 ]
+	    then
+		echo "Unsupported Linux system: ${NAME} ${VERSION_ID}"
+		exit 1
+	    fi
+	    HPC_PACKAGE_TYPE=rpm
+	    ;; 
+	"Ubuntu"|"Debian GNU/Linux")
+	    HPC_PACKAGE_TYPE=deb
+	    echo "Not supported yet: ${NAME} ${VERSION_ID}"
+	    exit 1
+	    ;;
+	*)
+	    echo "Unsupported Linux system: ${NAME} ${VERSION_ID}"
+	    exit 1
+	    ;;
+    esac
 }
 
 change_workdir()
