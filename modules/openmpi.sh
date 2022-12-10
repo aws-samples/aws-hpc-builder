@@ -14,7 +14,7 @@ install_sys_dependency_for_openmpi()
     # packages for build wrf
     # packages for build wps
     # packages for install Intel OneAPI compiler and toolchains
-    if [ ${VERSION_ID} -eq 2 ]
+    if [ ${S_VERSION_ID} -eq 7 ]
     then
 	sudo yum -y update
 	#sudo yum -y install hdf5-devel zlib-devel libcurl-devel cmake3 m4 openmpi-devel libxml2-devel libtirpc-devel bzip2-devel jasper-devel libpng-devel zlib-devel libjpeg-turbo-devel tmux patch git
@@ -26,7 +26,7 @@ install_sys_dependency_for_openmpi()
 	       	mesa-libgbm at-spi gtk3 xdg-utils libnotify libxcb environment-modules \
 		libXrender-devel expat-devel libX11-devel freetype-devel fontconfig-devel expat-devel libXext-devel pixman-devel cairo-devel \
 	       	zlib-devel libcurl-devel cmake3 m4 libxml2-devel bzip2-devel jasper-devel libpng-devel zlib-devel libjpeg-turbo-devel tmux patch git   
-    elif [ ${VERSION_ID} -eq 2022 ]
+    elif [ ${S_VERSION_ID} -eq 8 ]
     then
 	sudo $(dnf check-release-update 2>&1 | grep "dnf update --releasever" | tail -n1) -y 2> /dev/null
        	sudo dnf -y update
