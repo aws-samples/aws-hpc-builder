@@ -8,11 +8,11 @@ check_os_version()
     VERSION_ID=$(echo ${VERSION_ID} | cut -f1 -d.)
 
     case ${NAME} in
-	"Amazon Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
+	"Amazon Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux"|"Alibaba Cloud Linux")
 	    if [ ${VERSION_ID} -eq 2 ]
 	    then
 		S_VERSION_ID=7
-	    elif [ ${VERSION_ID} -eq 2022 ]
+	    elif [ ${VERSION_ID} -eq 2022 ] || [ ${VERSION_ID} -eq 3 ]
 	    then
 		S_VERSION_ID=8
 	    else
