@@ -81,7 +81,6 @@ install_sys_dependency_for_compiler()
 {
     # packages for build gcc/binutils ref: https://wiki.osdev.org/Building_GCC
     # packages for build llvm/clang 
-    # packages for armclang(libtinfo.so.5)
     # packages for build elfutils ref: https://github.com/iovisor/bcc/issues/3601  sqlite-devel, libcurl-devel libmicrohttpd-devel and libarchive-devel
     # packages for build wrf
     # packages for build wps
@@ -91,9 +90,8 @@ install_sys_dependency_for_compiler()
 	sudo yum -y update
 	#sudo yum -y install hdf5-devel zlib-devel libcurl-devel cmake3 m4 openmpi-devel libxml2-devel libtirpc-devel bzip2-devel jasper-devel libpng-devel zlib-devel libjpeg-turbo-devel tmux patch git
 	sudo yum -y install \
-		gcc gcc-c++ gcc-gfortran make bison flex gmp-devel libmpc-devel mpfr-devel texinfo isl-devel \
+		gcc gcc-c++ gcc-gfortran make bison flex gmp-devel libmpc-devel mpfr-devel texinfo \
 		openssl-devel ninja-build \
-		ncurses-compat-libs \
 		sqlite-devel libarchive-devel libmicrohttpd-devel libcurl-devel \
 		bzip2 wget time dmidecode tcsh libtirpc-devel \
 	       	mesa-libgbm at-spi gtk3 xdg-utils libnotify libxcb environment-modules \
@@ -101,14 +99,22 @@ install_sys_dependency_for_compiler()
 	       	zlib-devel libcurl-devel cmake3 m4 libxml2-devel bzip2-devel jasper-devel libpng-devel zlib-devel libjpeg-turbo-devel tmux patch git   
 	case  "${S_NAME}" in
 	    "Alibaba Cloud Linux (Aliyun Linux)")
-		sudo yum -y install libfabric libfabric-devel rdma-core-devel librdmacm-utils libpsm2-devel infinipath-psm-devel libibverbs-utils
+		return
 		;;
-	    *)
-		continue
+	    "Amazon Linux")
+                # packages for armclang(libtinfo.so.5) | gcc
+		sudo yum -y install ncurses-compat-libs isl-devel
 		;;
 	esac
     elif [ ${S_VERSION_ID} -eq 8 ]
     then
+    # packages for build gcc/binutils ref: https://wiki.osdev.org/Building_GCC
+    # packages for build llvm/clang 
+    # packages for armclang(libtinfo.so.5)
+    # packages for build elfutils ref: https://github.com/iovisor/bcc/issues/3601  sqlite-devel, libcurl-devel libmicrohttpd-devel and libarchive-devel
+    # packages for build wrf
+    # packages for build wps
+    # packages for install Intel OneAPI compiler and toolchains
 	sudo $(dnf check-release-update 2>&1 | grep "dnf update --releasever" | tail -n1) -y 2> /dev/null
        	sudo dnf -y update
        	sudo dnf -y install \
@@ -122,13 +128,10 @@ install_sys_dependency_for_compiler()
 		zlib-devel libcurl-devel cmake m4 libxml2-devel bzip2-devel jasper-devel libpng-devel zlib-devel libjpeg-turbo-devel tmux patch git
 	case  "${S_NAME}" in
 	    "Alibaba Cloud Linux")
-		sudo dnf -y install libfabric libfabric-devel
+		return
 		;;
 	    "Amazon Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
 		sudo dnf -y install libxcrypt-compat
-		;;
-	    *)
-		continue
 		;;
 	esac
     else
