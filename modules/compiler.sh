@@ -243,8 +243,6 @@ install_arm_compiler()
     cd arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}
     sudo bash arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}.sh -a -i ${HPC_PREFIX}/opt -f
     cd ..
-
-    build_cmake
 }
 
 install_intel_compiler()
@@ -264,8 +262,6 @@ install_intel_compiler()
     done
     sudo bash ${INTEL_COMPILER_SRC} -a -s --eula accept --install-dir=${HPC_PREFIX}/opt/intel/oneapi
     sudo bash ${INTEL_HPC_COMPILER_SRC} -a -s --eula accept --install-dir=${HPC_PREFIX}/opt/intel/oneapi
-
-    build_cmake
 }
 
 install_amd_compiler()
@@ -279,8 +275,6 @@ install_amd_compiler()
     cd ${AMD_AOCL_SRC%.tar.gz}
     sudo bash ./install.sh -t ${HPC_PREFIX}/opt -i lp64
     cd ..
-
-    build_cmake
 }
 
 install_gcc_compiler()
@@ -311,8 +305,6 @@ install_gcc_compiler()
     export LD_LIBRARY_PATH=${OLD_LIBRARY_PATH}
     unset OPATH
     unset OLD_LIBRARY_PATH
-
-    build_cmake
 }
 
 build_cmake()

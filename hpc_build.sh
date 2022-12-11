@@ -268,6 +268,12 @@ main()
 	source ../scripts/compiler.sh
 	set_compiler_env
 	fix_lib_missing
+
+	# Redhat|Centos|Oracle|Amazon|Alibaba Clould Linux's cmake is too old, install a new version
+	if [ ! -f ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/cmake ]
+	then
+	    build_cmake
+	fi
 	export PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/${HPC_TARGET}/bin:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin:${PATH}
 	export LD_LIBRARY_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib64:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib:${LD_LIBRARY_PATH}
 	build_hpc_module ${MODULES} ${TARGET_MODULE_VERSION}
