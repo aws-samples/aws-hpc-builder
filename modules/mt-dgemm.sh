@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 MT_DEGMM_VERSION=${2:-1.0.0}
 MT_DEGMM_SRC=mt-dgemm-${MT_DEGMM_VERSION}.tar.gz

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
@@ -20,36 +20,46 @@ WPS_SRC="WPS-${WPS_VERSION}.tar.gz"
 install_sys_dependency_for_wps()
 {
     # packages for build wps
-    if [ ${S_VERSION_ID} -eq 7 ]
-    then
-	sudo yum -y update
-	sudo yum -y install mesa-libgbm at-spi gtk3 xdg-utils libnotify libxcb jasper-devel \
-	    libXrender-devel expat-devel libX11-devel freetype-devel fontconfig-devel expat-devel libXext-devel pixman-devel cairo-devel
-	case  "${S_NAME}" in
-	    "Alibaba Cloud Linux (Aliyun Linux)"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
-		return
-		;;
-	    "Amazon Linux")
-		return
-		;;
-	esac
-    elif [ ${S_VERSION_ID} -eq 8 ]
-    then
-	sudo $(dnf check-release-update 2>&1 | grep "dnf update --releasever" | tail -n1) -y 2> /dev/null
-       	sudo dnf -y update
-       	sudo dnf -y install mesa-libgbm at-spi gtk3 xdg-utils libnotify libxcb jasper-devel \
-	    libXrender-devel expat-devel libX11-devel freetype-devel fontconfig-devel expat-devel libXext-devel pixman-devel cairo-devel
-	case  "${S_NAME}" in
-	    "Alibaba Cloud Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
-		return
-		;;
-	    "Amazon Linux")
-		return
-		;;
-	esac
-    else
-	exit 1
-    fi
+    case ${S_VERSION_ID} in
+	7)
+	    sudo yum -y update
+	    sudo yum -y install mesa-libgbm at-spi gtk3 xdg-utils libnotify libxcb jasper-devel \
+		libXrender-devel expat-devel libX11-devel freetype-devel fontconfig-devel expat-devel libXext-devel pixman-devel cairo-devel
+
+
+	    case  "${S_NAME}" in
+		"Alibaba Cloud Linux (Aliyun Linux)"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
+		    return
+		    ;;
+		"Amazon Linux")
+		    return
+		    ;;
+	    esac
+	    ;;
+	8)
+	    sudo $(dnf check-release-update 2>&1 | grep "dnf update --releasever" | tail -n1) -y 2> /dev/null
+	    sudo dnf -y update
+	    sudo dnf -y install mesa-libgbm at-spi gtk3 xdg-utils libnotify libxcb jasper-devel \
+		libXrender-devel expat-devel libX11-devel freetype-devel fontconfig-devel expat-devel libXext-devel pixman-devel cairo-devel
+
+	    case  "${S_NAME}" in
+		"Alibaba Cloud Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
+		    return
+		    ;;
+		"Amazon Linux")
+		    return
+		    ;;
+	    esac
+	    ;;
+	18|20)
+	    sudo apt-get -y update
+	    sudo apt-get -y install libgbm1 libgtk-3-0 xdg-utils libnotify4 libxcb1 tcl environment-modules \
+                libxrender-dev libexpat1-dev libx11-dev libfreetype6-dev libfontconfig1-dev libxext-dev libpixman-1-dev libcairo2-dev
+	    ;;
+	*)
+	    exit 1
+	    ;;
+    esac
 }
 
 set_wps_build_env()

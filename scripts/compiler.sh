@@ -31,7 +31,13 @@ fix_lib_missing()
     then
         # ARM 编译器找不到 libgfortran 的问题
         ARM_GCC_VERSION=$(module avail 2>&1 | grep -A1 "${HPC_PREFIX}" | tail -n1 | awk '{print $3}' | sed s"%gnu/%%g")
-        echo "${HPC_PREFIX}/opt/gcc-${ARM_GCC_VERSION}_Generic-AArch64_RHEL-${S_VERSION_ID}_aarch64-linux/lib64/" > /tmp/libgfortran.conf
+	if [ "${HPC_PACKAGE_TYPE}" == "rpm" ]
+	then
+	    echo "${HPC_PREFIX}/opt/gcc-${ARM_GCC_VERSION}_Generic-AArch64_RHEL-${S_VERSION_ID}_aarch64-linux/lib64/" > /tmp/libgfortran.conf
+	elif [ "${HPC_PACKAGE_TYPE}" == "deb" ]
+	then
+	    echo "${HPC_PREFIX}/opt/gcc-${ARM_GCC_VERSION}_Generic-AArch64_Ubuntu-${S_VERSION_ID}.04_aarch64-linux/lib64/" > /tmp/libgfortran.conf
+	fi
         sudo mv /tmp/libgfortran.conf /etc/ld.so.conf.d/
         sudo ldconfig > /dev/null 2>&1 
     elif [ "${HPC_COMPILER}" == "amdclang" ]

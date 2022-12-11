@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
@@ -66,6 +66,21 @@ INTEL_HPC_COMPILER_DL_ID=18679
 #https://registrationcenter-download.intel.com/akdlm/irc_nas/18852/l_BaseKit_p_2022.3.0.8767_offline.sh
 #https://registrationcenter-download.intel.com/akdlm/irc_nas/18679/l_HPCKit_p_2022.3.0.8751_offline.sh
 
+# ArmPL 22.02
+#https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-allinea-studio/$(echo ${ARM_COMPILER_VERSION} | tr '.' '-')/arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}_${SARCH}.tar"
+# ArmPL 22.1
+#https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/22-1/arm-compiler-for-linux_22.1_RHEL-7_aarch64.tar
+#https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/22-1/arm-compiler-for-linux_22.1_RHEL-8_aarch64.tar
+#https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/22-1/arm-compiler-for-linux_22.1_Ubuntu-18.04_aarch64.tar
+#https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/22-1/arm-compiler-for-linux_22.1_Ubuntu-20.04_aarch64.tar
+
+if [ "${HPC_PACKAGE_TYPE}" == "rpm" ]
+then
+    ARM_COMPILER_SRC=arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}_${SARCH}.tar
+elif [ "${HPC_PACKAGE_TYPE}" == "deb" ]
+then
+    ARM_COMPILER_SRC=arm-compiler-for-linux_${ARM_COMPILER_VERSION}_Ubuntu-${S_VERSION_ID}.04_${SARCH}.tar
+fi
 
 INTEL_COMPILER_SRC="l_BaseKit_p_${INTEL_COMPILER_VERSION}_offline.sh"
 INTEL_HPC_COMPILER_SRC="l_HPCKit_p_${INTEL_HPC_COMPILER_VERSION}_offline.sh"
@@ -80,67 +95,85 @@ ELFUTILS_SRC="elfutils-${ELFUTILS_VERSION}.tar.bz2"
 install_sys_dependency_for_compiler()
 {
     # packages for build gcc/binutils ref: https://wiki.osdev.org/Building_GCC
-    # packages for build llvm/clang 
+    # packages for build llvm/clang/cmake(openssl)
     # packages for build elfutils ref: https://github.com/iovisor/bcc/issues/3601  sqlite-devel, libcurl-devel libmicrohttpd-devel and libarchive-devel
     # packages for build wrf
     # packages for build wps
     # packages for install Intel OneAPI compiler and toolchains
-    if [ ${S_VERSION_ID} -eq 7 ]
-    then
-	sudo yum -y update
-	#sudo yum -y install hdf5-devel zlib-devel libcurl-devel cmake3 m4 openmpi-devel libxml2-devel libtirpc-devel bzip2-devel jasper-devel libpng-devel zlib-devel libjpeg-turbo-devel tmux patch git
-	sudo yum -y install \
+    case ${S_VERSION_ID} in
+	7)
+	    sudo yum -y update
+	    #sudo yum -y install hdf5-devel zlib-devel libcurl-devel cmake3 m4 openmpi-devel libxml2-devel libtirpc-devel bzip2-devel jasper-devel libpng-devel zlib-devel libjpeg-turbo-devel tmux patch git
+	    sudo yum -y install \
 		gcc gcc-c++ gcc-gfortran make bison flex gmp-devel libmpc-devel mpfr-devel texinfo \
 		openssl-devel ninja-build \
 		sqlite-devel libarchive-devel libmicrohttpd-devel libcurl-devel \
 		bzip2 wget time dmidecode tcsh libtirpc-devel \
-	       	mesa-libgbm at-spi gtk3 xdg-utils libnotify libxcb environment-modules \
-		libXrender-devel expat-devel libX11-devel freetype-devel fontconfig-devel expat-devel libXext-devel pixman-devel cairo-devel \
-	       	zlib-devel libcurl-devel cmake3 m4 libxml2-devel bzip2-devel jasper-devel libpng-devel zlib-devel libjpeg-turbo-devel tmux patch git   
-	case  "${S_NAME}" in
-	    "Alibaba Cloud Linux (Aliyun Linux)")
-		return
-		;;
-	    "Amazon Linux")
-                # packages for armclang(libtinfo.so.5) | gcc
-		sudo yum -y install ncurses-compat-libs isl-devel
-		;;
-	esac
-    elif [ ${S_VERSION_ID} -eq 8 ]
-    then
-    # packages for build gcc/binutils ref: https://wiki.osdev.org/Building_GCC
-    # packages for build llvm/clang 
-    # packages for armclang(libtinfo.so.5)
-    # packages for build elfutils ref: https://github.com/iovisor/bcc/issues/3601  sqlite-devel, libcurl-devel libmicrohttpd-devel and libarchive-devel
-    # packages for build wrf
-    # packages for build wps
-    # packages for install Intel OneAPI compiler and toolchains
-	sudo $(dnf check-release-update 2>&1 | grep "dnf update --releasever" | tail -n1) -y 2> /dev/null
-       	sudo dnf -y update
-       	sudo dnf -y install \
+	       	mesa-libgbm at-spi gtk3 xdg-utils libnotify libxcb tcl environment-modules \
+		libXrender-devel expat-devel libX11-devel freetype-devel fontconfig-devel libXext-devel pixman-devel cairo-devel \
+	       	zlib-devel libcurl-devel cmake3 m4 libxml2-devel bzip2-devel jasper-devel libpng-devel libjpeg-turbo-devel tmux patch git   
+
+	    case  "${S_NAME}" in
+		"Alibaba Cloud Linux (Aliyun Linux)"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
+		    return
+		    ;;
+		"Amazon Linux")
+		    # packages for armclang(libtinfo.so.5) | gcc
+		    sudo yum -y install ncurses-compat-libs isl-devel
+		    ;;
+	    esac
+	    ;;
+	8)
+	    # packages for build gcc/binutils ref: https://wiki.osdev.org/Building_GCC
+	    # packages for build llvm/clang
+	    # packages for armclang(libtinfo.so.5)
+	    # packages for build elfutils ref: https://github.com/iovisor/bcc/issues/3601  sqlite-devel, libcurl-devel libmicrohttpd-devel and libarchive-devel
+	    # packages for build wrf
+	    # packages for build wps
+	    # packages for install Intel OneAPI compiler and toolchains
+	    sudo $(dnf check-release-update 2>&1 | grep "dnf update --releasever" | tail -n1) -y 2> /dev/null
+	    sudo dnf -y update
+	    sudo dnf -y install \
 		gcc gcc-c++ gcc-gfortran make bison flex gmp-devel libmpc-devel mpfr-devel texinfo isl-devel \
 		ninja-build \
 		ncurses-compat-libs \
 		sqlite-devel libarchive-devel libmicrohttpd-devel libcurl-devel \
 	       	bzip2 wget time dmidecode tcsh libtirpc-devel \
-		mesa-libgbm gtk3 xdg-utils libnotify libxcb environment-modules \
-		libXrender-devel expat-devel libX11-devel freetype-devel fontconfig-devel expat-devel libXext-devel pixman-devel cairo-devel \
-		zlib-devel libcurl-devel cmake m4 libxml2-devel bzip2-devel jasper-devel libpng-devel zlib-devel libjpeg-turbo-devel tmux patch git
-	case  "${S_NAME}" in
-	    "Alibaba Cloud Linux")
-		return
-		;;
-	    "Amazon Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
-		sudo dnf -y install libxcrypt-compat
-		;;
-	esac
-    else
-	exit 1
-    fi
+		mesa-libgbm gtk3 xdg-utils libnotify libxcb tcl environment-modules \
+		libXrender-devel expat-devel libX11-devel freetype-devel fontconfig-devel libXext-devel pixman-devel cairo-devel \
+		zlib-devel cmake m4 libxml2-devel bzip2-devel jasper-devel libpng-devel libjpeg-turbo-devel tmux patch git
+
+	    case  "${S_NAME}" in
+		"Alibaba Cloud Linux")
+		    return
+		    ;;
+		"Amazon Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
+		    sudo dnf -y install libxcrypt-compat
+		    ;;
+	    esac
+	    ;;
+	18)
+	    sudo apt-get -y update
+	    sudo apt-get -y install gcc g++ gfortran make bison flex libgmp3-dev libmpc-dev libmpfr-dev texinfo \
+		libssl-dev libncurses5 ninja-build \
+		libsqlite3-dev libarchive-dev libmicrohttpd-dev libcurl4-nss-dev \
+	       	bzip2 wget time dmidecode tcsh libtirpc-dev \
+		libgbm1 libgtk-3-0 xdg-utils libnotify4 libxcb1 tcl environment-modules \
+		libxrender-dev libexpat1-dev libx11-dev libfreetype6-dev libfontconfig1-dev libxext-dev libpixman-1-dev libcairo2-dev \
+		zlib1g-dev cmake m4 libxml2-dev libbz2-dev libpng-dev libturbojpeg0-dev tmux patch git
+
+	    ;;
+	20)
+	    sudo apt-get -y update
+	    ;;
+	*)
+	    exit 1
+	    ;;
+    esac
 }
 
 download_compiler() {
-    if [ ! -f ${CMAKE_SRC} ] && [ ${S_VERSION_ID} -eq 7 ]
+    if [ ! -f ${CMAKE_SRC} ] && ([ ${S_VERSION_ID} -eq 7 ] || [ ${S_VERSION_ID} -eq 18 ])
     then
 	wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/${CMAKE_SRC}
 	result=$?
@@ -152,15 +185,11 @@ download_compiler() {
 
     case "${HPC_COMPILER}" in
 	"armgcc" | "armclang")
-	    if [ -f arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}_${SARCH}.tar ]
+	    if [ -f ${ARM_COMPILER_SRC} ]
 	    then
 		return
 	    else
-		# 22.02
-		# #wget "https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-allinea-studio/$(echo ${ARM_COMPILER_VERSION} | tr '.' '-')/arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}_${SARCH}.tar"
-		# # 22.1
-		# #wget https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/22-1/arm-compiler-for-linux_22.1_RHEL-7_aarch64.tar
-		wget "https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/$(echo ${ARM_COMPILER_VERSION} | tr '.' '-')/arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}_${SARCH}.tar"
+		wget "https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/$(echo ${ARM_COMPILER_VERSION} | tr '.' '-')/${ARM_COMPILER_SRC}"
 		return $?
 	    fi
 	    ;;
@@ -238,10 +267,10 @@ download_compiler() {
 
 install_arm_compiler()
 {
-    sudo rm -rf arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}
-    tar xf arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}_aarch64.tar
-    cd arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}
-    sudo bash arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}.sh -a -i ${HPC_PREFIX}/opt -f
+    sudo rm -rf "${ARM_COMPILER_SRC%_aarch64.tar}"
+    tar xf "${ARM_COMPILER_SRC}"
+    cd "${ARM_COMPILER_SRC%_aarch64.tar}"
+    sudo bash "${ARM_COMPILER_SRC%_aarch64.tar}.sh" -a -i ${HPC_PREFIX}/opt -f
     cd ..
 }
 
@@ -309,7 +338,7 @@ install_gcc_compiler()
 
 build_cmake()
 {
-    if [ ${S_VERSION_ID} -eq 7 ]
+    if [ ${S_VERSION_ID} -eq 7 ] || [ ${S_VERSION_ID} -eq 18 ]
     then
 	echo "zzz *** $(date) *** Build ${CMAKE_SRC%.tar.gz}"
 	sudo rm -rf "${CMAKE_SRC%.tar.gz}"

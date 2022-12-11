@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
@@ -10,26 +10,34 @@ check_os_version()
 
     case ${NAME} in
 	"Amazon Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux"|"Alibaba Cloud Linux"|"Alibaba Cloud Linux (Aliyun Linux)")
-	    if [ ${VERSION_ID} -eq 2 ]
-	    then
-		S_VERSION_ID=7
-	    elif [ ${VERSION_ID} -eq 2022 ] || [ ${VERSION_ID} -eq 3 ]
-	    then
-		S_VERSION_ID=8
-	    else
-		S_VERSION_ID=${VERSION_ID}
-	    fi
-	    if [ ${S_VERSION_ID} -ne 7 ] && [ ${S_VERSION_ID} -ne 8 ]
-	    then
-		echo "Unsupported Linux system: ${NAME} ${VERSION_ID}"
-		exit 1
-	    fi
 	    HPC_PACKAGE_TYPE=rpm
+	    case ${VERSION_ID} in
+		2|7)
+		    S_VERSION_ID=7
+		    ;;
+		3|8|2022)
+		    S_VERSION_ID=8
+		    ;;
+		*)
+		    echo "Unsupported Linux system: ${NAME} ${VERSION_ID}"
+		    exit 1
+		    ;;
+	    esac
 	    ;; 
 	"Ubuntu"|"Debian GNU/Linux")
 	    HPC_PACKAGE_TYPE=deb
-	    echo "Not supported yet: ${NAME} ${VERSION_ID}"
-	    exit 1
+	    case ${VERSION_ID} in
+		10|18)
+		    S_VERSION_ID=18
+		    ;;
+		11|20)
+		    S_VERSION_ID=20
+		    ;;
+		*)
+		    echo "Unsupported Linux system: ${NAME} ${VERSION_ID}"
+		    exit 1
+		    ;;
+	    esac
 	    ;;
 	*)
 	    echo "Unsupported Linux system: ${NAME} ${VERSION_ID}"

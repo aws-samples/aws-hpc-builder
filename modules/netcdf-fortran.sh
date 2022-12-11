@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
@@ -8,32 +8,37 @@ DISABLE_COMPILER_ENV=false
 
 install_sys_dependency_for_netcdf_fortran()
 {
-    if [ ${S_VERSION_ID} -eq 7 ]
-    then
-	sudo yum -y update
-	case  "${S_NAME}" in
-	    "Alibaba Cloud Linux (Aliyun Linux)"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
-		return
-		;;
-	    "Amazon Linux")
-		return
-		;;
-	esac
-    elif [ ${S_VERSION_ID} -eq 8 ]
-    then
-	sudo $(dnf check-release-update 2>&1 | grep "dnf update --releasever" | tail -n1) -y 2> /dev/null
-       	sudo dnf -y update
-	case  "${S_NAME}" in
-	    "Alibaba Cloud Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
-		return
-		;;
-	    "Amazon Linux")
-		return
-		;;
-	esac
-    else
-	exit 1
-    fi
+    case ${S_VERSION_ID} in
+	7)
+	    sudo yum -y update
+	    case  "${S_NAME}" in
+		"Alibaba Cloud Linux (Aliyun Linux)"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
+		    return
+		    ;;
+		"Amazon Linux")
+		    return
+		    ;;
+	    esac
+	    ;;
+	8)
+	    sudo $(dnf check-release-update 2>&1 | grep "dnf update --releasever" | tail -n1) -y 2> /dev/null
+	    sudo dnf -y update
+	    case  "${S_NAME}" in
+		"Alibaba Cloud Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
+		    return
+		    ;;
+		"Amazon Linux")
+		    return
+		    ;;
+	    esac
+	    ;;
+	18|20)
+	    sudo apt-get -y update
+	    ;;
+	*)
+	    exit 1
+	    ;;
+    esac
 }
 
 download_netcdf_fortran() {
