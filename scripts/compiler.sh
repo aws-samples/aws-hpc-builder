@@ -19,26 +19,26 @@ fix_lib_missing()
     then
         echo "${HPC_PREFIX}/opt/gnu/lib64" > /tmp/libgfortran.conf
         sudo mv /tmp/libgfortran.conf /etc/ld.so.conf.d/
-        sudo ldconfig
+        sudo ldconfig > /dev/null 2>&1 
     elif [ "${HPC_COMPILER}" == "icc" ]
     then
         # Intel 编译器找不到 libimf 的问题: https://stackoverflow.com/questions/70687930/intel-oneapi-2022-libimf-so-no-such-file-or-directory-during-openmpi-compila
         INTEL_ICC_VERSION=$(ls -lhd ${HPC_PREFIX}/opt/intel/oneapi/compiler/latest | awk '{print $NF}')
         echo "${HPC_PREFIX}/opt/intel/oneapi/compiler/${INTEL_ICC_VERSION}/linux/compiler/lib/intel64_lin/" > /tmp/libimf.conf
         sudo mv /tmp/libimf.conf /etc/ld.so.conf.d/
-        sudo ldconfig
+        sudo ldconfig > /dev/null 2>&1 
     elif [ "${HPC_COMPILER}" == "armgcc" ]
     then
         # ARM 编译器找不到 libgfortran 的问题
         ARM_GCC_VERSION=$(module avail 2>&1 | grep -A1 "${HPC_PREFIX}" | tail -n1 | awk '{print $3}' | sed s"%gnu/%%g")
         echo "${HPC_PREFIX}/opt/gcc-${ARM_GCC_VERSION}_Generic-AArch64_RHEL-${S_VERSION_ID}_aarch64-linux/lib64/" > /tmp/libgfortran.conf
         sudo mv /tmp/libgfortran.conf /etc/ld.so.conf.d/
-        sudo ldconfig
+        sudo ldconfig > /dev/null 2>&1 
     elif [ "${HPC_COMPILER}" == "amdclang" ]
     then
 	echo "${HPC_PREFIX}/opt/aocc-compiler-${AMD_COMPILER_VERSION}/lib" > /tmp/libomp.conf
 	sudo mv /tmp/libomp.conf /etc/ld.so.conf.d/
-	sudo ldconfig
+	sudo ldconfig > /dev/null 2>&1 
     fi
 }
 
