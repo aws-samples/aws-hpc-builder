@@ -35,6 +35,7 @@ install_sys_dependency_for_mpich()
 	    ;;
 	18|20)
 	    sudo apt-get -y update
+	    ;;
 	*)
 	    exit 1
 	    ;;

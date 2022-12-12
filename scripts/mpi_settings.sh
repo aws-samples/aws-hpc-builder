@@ -6,23 +6,17 @@ HPC_MPI_DEBUG=${HPC_MPI_DEBUG:-0}
 
 hpc_enable_rdma()
 {
-    #if [ ${USE_EFA} -eq 1 ]
-    #then
-    #export FI_PROVIDER="efa"
     #export FI_EFA_USE_DEVICE_RDMA=1
     #export OMPI_MCA_pml=ob1
     #export OMPI_MCA_btl=tcp,vader,self
-    #else
     #export OMPI_MCA_pml=ob1
     #export OMPI_MCA_btl=tcp,vader,self
-    #fi
 
     case ${HPC_MPI} in
 	"intelmpi")
 	    export I_MPI_FABRICS=ofi
 	    export I_MPI_OFI_PROVIDER=${1}
 	    #export I_MPI_FABRICS="shm:ofi"
-	    ###export FI_PROVIDER=${1}
 	    ;;
 	"openmpi")
 	    # more details see: ompi_info
@@ -38,7 +32,8 @@ hpc_enable_rdma()
 	    ;;
 	*)
 	    echo "Unsupported MPI"
-    esac }
+    esac
+}
 
 hpc_set_mpi()
 {
