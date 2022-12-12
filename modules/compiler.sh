@@ -152,7 +152,7 @@ install_sys_dependency_for_compiler()
 		    ;;
 	    esac
 	    ;;
-	18)
+	18|20)
 	    sudo apt-get -y update
 	    sudo apt-get -y install gcc g++ gfortran make bison flex libgmp3-dev libmpc-dev libmpfr-dev texinfo \
 		libssl-dev libncurses5 ninja-build \
@@ -162,9 +162,6 @@ install_sys_dependency_for_compiler()
 		libxrender-dev libexpat1-dev libx11-dev libfreetype6-dev libfontconfig1-dev libxext-dev libpixman-1-dev libcairo2-dev \
 		zlib1g-dev cmake m4 libxml2-dev libbz2-dev libpng-dev libturbojpeg0-dev tmux patch git
 
-	    ;;
-	20)
-	    sudo apt-get -y update
 	    ;;
 	*)
 	    exit 1
