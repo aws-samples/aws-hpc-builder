@@ -62,6 +62,7 @@ case $1 in
 	;;
     *)
 	echo "unknown compiler"
+	;;
 esac
 
 case $2 in 
@@ -79,6 +80,7 @@ case $2 in
 	;;
     *)
 	echo "unknown MPI"
+	;;
 esac
 
 source ${PREFIX}/scripts/compiler.sh

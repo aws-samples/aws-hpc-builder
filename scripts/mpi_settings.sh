@@ -32,6 +32,7 @@ hpc_enable_rdma()
 	    ;;
 	*)
 	    echo "Unsupported MPI"
+	    ;;
     esac
 }
 
@@ -56,6 +57,7 @@ hpc_set_mpi()
 	    ;;
 	*)
 	    echo "Unsupported MPI"
+	    ;;
     esac
 }
 
@@ -87,6 +89,7 @@ hpc_enable_mpi_debug()
 	    ;;
 	*)
 	    echo "Unsupported MPI"
+	    ;;
     esac
 }
 
