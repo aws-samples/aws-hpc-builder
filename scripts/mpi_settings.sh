@@ -18,7 +18,7 @@ hpc_enable_rdma()
 	    export I_MPI_OFI_PROVIDER=${1}
 	    #export I_MPI_FABRICS="shm:ofi"
 	    ;;
-	"openmpi")
+	"openmpi"|"nvidiampi")
 	    # more details see: ompi_info
 	    export OMPI_MCA_mtl=ofi
 	    export OMPI_MCA_pml=cm
@@ -44,7 +44,7 @@ hpc_set_mpi()
 	    #export I_MPI_FABRICS=ofi
 	    #export I_MPI_OFI_PROVIDER=tcp
 	    ;;
-	"openmpi")
+	"openmpi"|"nvidiampi")
 	    # more details see: ompi_info
 	    export OMPI_MCA_btl=tcp,vader,self
 	    export OMPI_MCA_pml=ob1
@@ -72,7 +72,7 @@ hpc_enable_mpi_debug()
 	    export I_MPI_DEBUG=5
 	    export MPI_SHOW_BIND_OPTS="-print-rank-map"
 	    ;;
-	"openmpi")
+	"openmpi"|"nvidiampi")
 	    export MPI_SHOW_BIND_OPTS="--report-bindings"
 	    export OMPI_MCA_pml_base_verbose=10
 	    export OMPI_MCA_mtl_base_verbose=10

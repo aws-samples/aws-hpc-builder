@@ -100,8 +100,8 @@ check_and_use_nvidiampi()
     then
 	if [ "${HPC_COMPILER}" == "nvc" ]
 	then
-	    module unload  $(basename /opt/nvidia/hpc_sdk/modulefiles/nvhpc-nompi)/$(ls /opt/nvidia/hpc_sdk/modulefiles/nvhpc-nompi)
-	    module load  $(basename /opt/nvidia/hpc_sdk/modulefiles/nvhpc)/$(ls /opt/nvidia/hpc_sdk/modulefiles/nvhpc)
+	    module unload  $(basename ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc-nompi)/$(ls ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc-nompi)
+	    module load  $(basename ${HPC_PREFIX}/opt/nvidia/hpc_sdk/modulefiles/nvhpc)/$(ls ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc)
 	fi
     else
 	echo "Unsupported compiler and MPI combination: ${HPC_COMPILER} + ${HCP_MPI}"
