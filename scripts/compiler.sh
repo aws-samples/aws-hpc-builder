@@ -98,16 +98,10 @@ check_and_use_nvidiampi()
 {
     if [ "${HPC_MPI}" == "nvidiampi" ]
     then
-	if [ "${HPC_COMPILER}" == "nvc" ]
-	then
-	    export OMPI_CC=${CC}
-	    export OMPI_FC=${FC}
-	    export OMPI_CXX=${CXX}
-	    export OMPI_F77=${F77}
-	fi
-    else
-	echo "Unsupported compiler and MPI combination: ${HPC_COMPILER} + ${HCP_MPI}"
-	exit 1
+	export OMPI_CC=${CC}
+	export OMPI_FC=${FC}
+	export OMPI_CXX=${CXX}
+	export OMPI_F77=${F77}
     fi
 }
 
