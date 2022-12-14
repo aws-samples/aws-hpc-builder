@@ -55,32 +55,37 @@ icx-mvapich:mvapich,imb
 icx-intelmpi:imb
 
 # gromacs's dependencies
-amdclang-openmpi:gromacs
-amdclang-mpich:gromacs
-amdclang-mvapich:gromacs
+amdclang-openmpi:openmpi,gromacs
+amdclang-mpich:mpich,gromacs
+amdclang-mvapich:mvapich,gromacs
 amdclang-intelmpi:gromacs
-armgcc-openmpi:gromacs
-armgcc-mpich:gromacs
-armgcc-mvapich:gromacs
-armclang-openmpi:gromacs
-armclang-mpich:gromacs
-armclang-mvapich:gromacs
-clang-openmpi:gromacs
-clang-mpich:gromacs
-clang-mvapich:gromacs
+armgcc-openmpi:openmpi,gromacs
+armgcc-mpich:mpich,gromacs
+armgcc-mvapich:mvapich,gromacs
+armclang-openmpi:openmpi,gromacs
+armclang-mpich:mpich,gromacs
+armclang-mvapich:mvapich,gromacs
+clang-openmpi:openmpi,gromacs
+clang-mpich:mpich,gromacs
+clang-mvapich:mvapich,gromacs
 clang-intelmpi:gromacs
-gcc-openmpi:gromacs
-gcc-mpich:gromacs
-gcc-mvapich:gromacs
+gcc-openmpi:opnempi,gromacs
+gcc-mpich:mpich,gromacs
+gcc-mvapich:mvapich,gromacs
 gcc-intelmpi:gromacs
-icc-openmpi:gromacs
-icc-mpich:gromacs
-icc-mvapich:gromacs
+icc-openmpi:openmpi,gromacs
+icc-mpich:mpich,gromacs
+icc-mvapich:mvapich,gromacs
 icc-intelmpi:gromacs
-icx-openmpi:gromacs
-icx-mpich:gromacs
-icx-mvapich:gromacs
+icx-openmpi:openmpi,gromacs
+icx-mpich:mpich,gromacs
+icx-mvapich:mvapich,gromacs
 icx-intelmpi:gromacs
+nvc-openmpi:openmpi,gromacs
+nvc-mpich:mpich,gromacs
+nvc-intelmpi:gromacs
+nvc-nvidiampi:gromacs
+
 
 # mt-dgemm's dependencies
 amdclang-openmpi:mt-dgemm
@@ -117,6 +122,7 @@ clang-openmpi:openmpi
 gcc-openmpi:openmpi
 icc-openmpi:openmpi
 icx-openmpi:openmpi
+nvc-openmpi:openmpi
 
 # mpich's dependencies
 armclang-mpich:mpich
@@ -125,6 +131,7 @@ gcc-mpich:mpich
 icc-mpich:mpich
 icx-mpich:mpich
 clang-mpich:mpich
+nvc-mpich:mpich
 
 # mpich's dependencies
 armclang-mvapich:mvapich
@@ -133,6 +140,7 @@ gcc-mvapich:mvapich
 icc-mvapich:mvapich
 icx-mvapich:mvapich
 clang-mvapich:mvapich
+nvc-mvapich:mvapich
 
 # hdf5's dependencies
 amdclang-openmpi:openmpi,hdf5

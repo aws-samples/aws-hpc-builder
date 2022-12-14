@@ -10,6 +10,8 @@ CMAKE_VERSION=${2:-3.25.0}
 CLANG_VERSION=${2:-15.0.2}
 ARM_COMPILER_VERSION=${2:-22.1}
 AMD_COMPILER_VERSION=${2:-4.0.0}
+NVIDIA_COMPILER_VERSION=22.11
+NVIDIA_CUDA_VERSION=11.8
 #AMD_COMPILER_VERSION=${2:-3.2.0}
 #AMD_AOCL_VERSION=${AMD_COMPILER_VERSION}
 AMD_AOCL_VERSION=4.0
@@ -81,6 +83,8 @@ elif [ "${HPC_PACKAGE_TYPE}" == "deb" ]
 then
     ARM_COMPILER_SRC=arm-compiler-for-linux_${ARM_COMPILER_VERSION}_Ubuntu-${S_VERSION_ID}.04_${SARCH}.tar
 fi
+
+NVIDIA_COMPILER_SRC=nvhpc_2022_$(echo ${NVIDIA_COMPILER_VERSION} | sed 's/\.//g')_Linux_$(arch)_cuda_${NVIDIA_CUDA_VERSION}.tar.gz
 
 INTEL_COMPILER_SRC="l_BaseKit_p_${INTEL_COMPILER_VERSION}_offline.sh"
 INTEL_HPC_COMPILER_SRC="l_HPCKit_p_${INTEL_HPC_COMPILER_VERSION}_offline.sh"
@@ -258,6 +262,15 @@ download_compiler() {
 		return $?
 	    fi
 	    ;;
+	"nvc")
+	    if [ -f ${NVIDIA_COMPILER_SRC} ]
+	    then
+		return
+	    else
+		wget https://developer.download.nvidia.com/hpc-sdk/${NVIDIA_COMPILER_VERSION}/${NVIDIA_COMPILER_SRC}
+		return $?
+	    fi
+	    ;;
     esac
 }
 
@@ -301,6 +314,17 @@ install_amd_compiler()
     cd ${AMD_AOCL_SRC%.tar.gz}
     sudo bash ./install.sh -t ${HPC_PREFIX}/opt -i lp64
     cd ..
+}
+
+
+install_nvidia_compiler()
+{
+    tar xf ${NVIDIA_COMPILER_SRC}
+    pushd ${HPC_PREFIX}/opt/${AMD_COMPILER_SRC%.tar.gz}
+    export NVHPC_SILENT=true
+    export NVHPC_INSTALL_DIR=${HPC_PREFIX}/opt
+    export NVHPC_INSTALL_TYPE=single
+    sudo --preserve-env=NVHPC_SILENT,NVHPC_INSTALL_DIR,NVHPC_INSTALL_TYPE env ${HPC_PREFIX}/opt/${AMD_COMPILER_SRC%.tar.gz}/install
 }
 
 install_gcc_compiler()
@@ -407,6 +431,10 @@ install_compiler()
 	;;
     "amdclang")
 	install_amd_compiler
+	return $?
+	;;
+    "nvc")
+	install_nvidia_compiler
 	return $?
 	;;
 esac
@@ -619,6 +647,9 @@ update_compiler_version()
 	;;
     "amdclang")
 	MODULE_VERSION=${AMD_COMPILER_VERSION}
+	;;
+    "nvc")
+	MODULE_VERSION=${NVIDIA_COMPILER_VERSION}
 	;;
 esac
 }

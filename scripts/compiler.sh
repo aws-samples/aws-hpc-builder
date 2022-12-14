@@ -94,6 +94,21 @@ check_and_use_intelmpi()
     fi
 }
 
+check_and_use_nvidiampi()
+{
+    if [ "${HPC_MPI}" == "nvidiampi" ]
+    then
+	if [ "${HPC_COMPILER}" == "nvc" ]
+	then
+	    module unload  $(basename /opt/nvidia/hpc_sdk/modulefiles/nvhpc-nompi)/$(ls /opt/nvidia/hpc_sdk/modulefiles/nvhpc-nompi)
+	    module load  $(basename /opt/nvidia/hpc_sdk/modulefiles/nvhpc)/$(ls /opt/nvidia/hpc_sdk/modulefiles/nvhpc)
+	fi
+    else
+	echo "Unsupported compiler and MPI combination: ${HPC_COMPILER} + ${HCP_MPI}"
+	exit 1
+    fi
+}
+
 # openmpi 找不到编译器, 使用全路径
 use_vendor_compiler()
 {
@@ -135,6 +150,7 @@ use_vendor_compiler()
 	##export OMPI_FC=gfortran
     fi
     check_and_use_intelmpi
+    check_and_use_nvidiampi
 }
 
 set_compiler_env()
@@ -217,8 +233,19 @@ set_compiler_env()
 		##export OMPI_CXX=g++
 		##export OMPI_FC=gfortran
 		;;
+	    "nvc")
+		export FC=$(which nvfortran)
+		export F77=$(which nvfortran)
+		#export F90=$(which armflang)
+		export CC=$(which nvc)
+		export CXX=$(which nvc++)
+		#export OMPI_CC=gcc
+		##export OMPI_CXX=g++
+		##export OMPI_FC=gfortran
+		;;
 	esac
 	check_and_use_intelmpi
+	check_and_use_nvidiampi
 	return
     fi
     use_vendor_compiler

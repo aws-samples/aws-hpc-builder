@@ -14,6 +14,7 @@ PREFIX=/fsx
 # 5 AMD/CLANG compiler
 # 6 ARM/GCC compiler
 # 7 ARM/CLANG compiler
+# 8 NVidia/NVC compiler
 #
 # 
 # MPI table:
@@ -22,6 +23,7 @@ PREFIX=/fsx
 # 1 mpich
 # 2 intelmpi
 # 3 mvapich
+# 4 nvidiampi
 #
 # usage: env.sh <compiler> <MPI>
 #        C M
@@ -30,6 +32,7 @@ PREFIX=/fsx
 # env.sh 0 2   ## select vendor's native compilers with intelmpi
 # env.sh 0 3   ## select vendor's native compilers with mvapich
 # env.sh 1 0   ## select GNU/GCC compilers with openmpi
+# env.sh 8 4   ## select Nvidia compilers with mpi shipped by Nvidia compilers
 # env.sh ...
 
 export HPC_USE_VENDOR_COMPILER=false
@@ -60,6 +63,9 @@ case $1 in
     7)
 	HPC_COMPILER=armclang
 	;;
+    8)
+	HPC_COMPILER=nvc
+	;;
     *)
 	echo "unknown compiler"
 	;;
@@ -77,6 +83,9 @@ case $2 in
 	;;
     3)
 	HPC_MPI=mvapich
+	;;
+    4)
+	HPC_MPI=nvidiampi
 	;;
     *)
 	echo "unknown MPI"
