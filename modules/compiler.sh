@@ -319,12 +319,12 @@ install_amd_compiler()
 
 install_nvidia_compiler()
 {
-    rm -rf ${AMD_COMPILER_SRC%.tar.gz}
+    rm -rf ${NVIDIA_COMPILER_SRC%.tar.gz}
     tar xf ${NVIDIA_COMPILER_SRC}
     export NVHPC_SILENT=true
     export NVHPC_INSTALL_DIR=${HPC_PREFIX}/opt
     export NVHPC_INSTALL_TYPE=single
-    sudo --preserve-env=NVHPC_SILENT,NVHPC_INSTALL_DIR,NVHPC_INSTALL_TYPE env ${AMD_COMPILER_SRC%.tar.gz}/install
+    sudo --preserve-env=NVHPC_SILENT,NVHPC_INSTALL_DIR,NVHPC_INSTALL_TYPE env ${NVIDIA_COMPILER_SRC%.tar.gz}/install
 }
 
 install_gcc_compiler()
