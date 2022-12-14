@@ -100,8 +100,10 @@ check_and_use_nvidiampi()
     then
 	if [ "${HPC_COMPILER}" == "nvc" ]
 	then
-	    module unload  $(basename ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc-nompi)/$(ls ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc-nompi)
-	    module load  $(basename ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc)/$(ls ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc)
+	    export OMPI_CC=${CC}
+	    export OMPI_FC=${FC}
+	    export OMPI_CXX=${CXX}
+	    export OMPI_F77=${F77}
 	fi
     else
 	echo "Unsupported compiler and MPI combination: ${HPC_COMPILER} + ${HCP_MPI}"
@@ -150,7 +152,6 @@ use_vendor_compiler()
 	##export OMPI_FC=gfortran
     fi
     check_and_use_intelmpi
-    check_and_use_nvidiampi
 }
 
 set_compiler_env()
@@ -244,6 +245,7 @@ set_compiler_env()
 		##export OMPI_FC=gfortran
 		;;
 	esac
+	# to change to pre-build MPIs' compilers, have to specify the corresponding environment parameters
 	check_and_use_intelmpi
 	check_and_use_nvidiampi
 	return
@@ -367,6 +369,7 @@ case ${HPC_COMPILER} in
         export HPC_TARGET=$(clang -dumpmachine)
 	;;
     "nvc")
+        export MODULEPATH=${MODULEPATH}:${HPC_PREFIX}/opt/nvidia/modulefiles
 	module load $(basename ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc-nompi)/$(ls ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc-nompi)
 	;;
 esac
@@ -379,6 +382,11 @@ esac
 if [ "${HPC_MPI}" == "intelmpi" ]
 then
     source ${HPC_PREFIX}/opt/intel/oneapi/mpi/latest/env/vars.sh 
+
+elif [ "${HPC_MPI}" == "nvidiampi" ]
+then
+    module unload  $(basename ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc-nompi)/$(ls ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc-nompi)
+    module load  $(basename ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc)/$(ls ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc)
 fi
 
 export LD_LIBRARY_PATH=${LIBRARY_PATH}:${LD_LIBRARY_PATH}
