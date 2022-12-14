@@ -34,7 +34,21 @@ install_gromacs()
     fi
     mkdir -p build
     cd build
-    cmake .. -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} -DGMX_BUILD_OWN_FFTW=ON -DGMX_MPI=ON -DGMX_MP=ON
+    if [ "${HPC_COMPILER}" == "nvc" ]
+    then
+	cmake .. -DCMAKE_C_COMPILER=${CC} \
+	    -DCMAKE_CXX_COMPILER=${CXX} \
+	    -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+	    -DGMX_BUILD_OWN_FFTW=ON \
+	    -DGMX_MPI=ON -DGMX_MP=ON \
+	    -DGMX_GPU=CUDA
+    else
+	cmake .. -DCMAKE_C_COMPILER=${CC} \
+	    -DCMAKE_CXX_COMPILER=${CXX} \
+	    -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+	    -DGMX_BUILD_OWN_FFTW=ON \
+	    -DGMX_MPI=ON -DGMX_MP=ON
+    fi
     make && sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install && cd ../..
 }
 

@@ -161,6 +161,10 @@ build_hpc_module()
 			update_world ${HPC_COMPILER}-${every_mpi}-${module}-${MODULE_VERSION}
 		    fi
 		done
+		if [ "${HPC_COMPILER}" == "nvc" ]
+		then
+		    update_world nvc-nvidiampi-${module}-${MODULE_VERSION}
+		fi
 	    else
 		update_world ${HPC_COMPILER}-${HPC_MPI}-${module}-${MODULE_VERSION}
 	    fi
