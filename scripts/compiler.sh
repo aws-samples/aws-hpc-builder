@@ -101,7 +101,7 @@ check_and_use_nvidiampi()
 	if [ "${HPC_COMPILER}" == "nvc" ]
 	then
 	    module unload  $(basename ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc-nompi)/$(ls ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc-nompi)
-	    module load  $(basename ${HPC_PREFIX}/opt/nvidia/hpc_sdk/modulefiles/nvhpc)/$(ls ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc)
+	    module load  $(basename ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc)/$(ls ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc)
 	fi
     else
 	echo "Unsupported compiler and MPI combination: ${HPC_COMPILER} + ${HCP_MPI}"
@@ -365,6 +365,9 @@ case ${HPC_COMPILER} in
 	source ${HPC_PREFIX}/opt/setenv_AOCC.sh
 	source $(ls ${HPC_PREFIX}/opt/[0-9.]*/amd-libs.cfg)
         export HPC_TARGET=$(clang -dumpmachine)
+	;;
+    "nvc")
+	module load $(basename ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc-nompi)/$(ls ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc-nompi)
 	;;
 esac
 
