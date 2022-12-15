@@ -138,33 +138,31 @@ build_hpc_module()
 	    # Intel MPI only avaiable on X86_64(Intel) and AMD64 platforms
 	    if [ "${SARCH}" == "aarch64" ]
 	    then
-		available_mpis="openmpi mpich mvapich"
+		available_mpis="openmpi mpich mvapich nvidiampi"
 	    else
-		available_mpis="openmpi mpich intelmpi mvapich"
+		available_mpis="openmpi mpich intelmpi mvapich nvidiampi"
 	    fi
 
 	    if [ ${module} == "compiler" ]
 	    then
 		for every_mpi in ${available_mpis}
 		do
-		    if [ "${HPC_COMPILER}" == "armgcc" ] || [ "${HPC_COMPILER}" == "armclang" ] 
-		    then
-		        # armgcc and armclang are shipped by one package, mark both installed
-		        update_world armclang-${every_mpi}-${module}-${MODULE_VERSION}
-		        update_world armgcc-${every_mpi}-${module}-${MODULE_VERSION}
-		    elif [ "${HPC_COMPILER}" == "icc" ] || [ "${HPC_COMPILER}" == "icx" ]
-		    then
-		        # icc and icx are shipped by one package, mark both installed
-		        update_world icc-${every_mpi}-${module}-${MODULE_VERSION}
-		        update_world icx-${every_mpi}-${module}-${MODULE_VERSION}
-		    else
-			update_world ${HPC_COMPILER}-${every_mpi}-${module}-${MODULE_VERSION}
-		    fi
+		    case "${HPC_COMPILER}" in
+			"armgcc"|"armclang")
+			    # armgcc and armclang are shipped by one package, mark both installed
+			    update_world armclang-${every_mpi}-${module}-${MODULE_VERSION}
+			    update_world armgcc-${every_mpi}-${module}-${MODULE_VERSION}
+			    ;;
+			"icc"|"icx")
+			    # icc and icx are shipped by one package, mark both installed
+			    update_world icc-${every_mpi}-${module}-${MODULE_VERSION}
+			    update_world icx-${every_mpi}-${module}-${MODULE_VERSION}
+			    ;;
+			*)
+			    update_world ${HPC_COMPILER}-${every_mpi}-${module}-${MODULE_VERSION}
+			    ;;
+		    esac
 		done
-		if [ "${HPC_COMPILER}" == "nvc" ]
-		then
-		    update_world nvc-nvidiampi-${module}-${MODULE_VERSION}
-		fi
 	    else
 		update_world ${HPC_COMPILER}-${HPC_MPI}-${module}-${MODULE_VERSION}
 	    fi

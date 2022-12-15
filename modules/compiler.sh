@@ -6,7 +6,7 @@
 # 修改下面的版本号可以编译不同的版本组合
 # **************************************
 GCC_VERSION=${2:-12.2.0}
-CMAKE_VERSION=${2:-3.25.0}
+CMAKE_VERSION=3.25.1
 CLANG_VERSION=${2:-15.0.2}
 ARM_COMPILER_VERSION=${2:-22.1}
 AMD_COMPILER_VERSION=${2:-4.0.0}

@@ -379,6 +379,10 @@ then
 
 elif [ "${HPC_MPI}" == "nvidiampi" ]
 then
+    if [ "${HPC_COMPILER}" != "nvc" ]
+    then
+	export MODULEPATH=${MODULEPATH}:${HPC_PREFIX}/opt/nvidia/modulefiles
+    fi
     module unload  $(basename ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc-nompi)/$(ls ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc-nompi)
     module load  $(basename ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc)/$(ls ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc)
 fi
