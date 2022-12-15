@@ -93,6 +93,43 @@ nvc-mpich:mpich,gromacs
 nvc-intelmpi:gromacs
 nvc-nvidiampi:gromacs
 
+# aws-ofi-nccl's dependencies
+amdclang-openmpi:openmpi,aws-ofi-nccl
+amdclang-mpich:mpich,aws-ofi-nccl
+amdclang-mvapich:mvapich,aws-ofi-nccl
+amdclang-intelmpi:aws-ofi-nccl
+amdclang-nvidiampi:aws-ofi-nccl
+armgcc-openmpi:openmpi,aws-ofi-nccl
+armgcc-mpich:mpich,aws-ofi-nccl
+armgcc-mvapich:mvapich,aws-ofi-nccl
+armgcc-nvidiampi:aws-ofi-nccl
+armclang-openmpi:openmpi,aws-ofi-nccl
+armclang-mpich:mpich,aws-ofi-nccl
+armclang-mvapich:mvapich,aws-ofi-nccl
+armclang-nvidiampi:aws-ofi-nccl
+clang-openmpi:openmpi,aws-ofi-nccl
+clang-mpich:mpich,aws-ofi-nccl
+clang-mvapich:mvapich,aws-ofi-nccl
+clang-intelmpi:aws-ofi-nccl
+clang-nvidiampi:aws-ofi-nccl
+gcc-openmpi:openmpi,aws-ofi-nccl
+gcc-mpich:mpich,aws-ofi-nccl
+gcc-mvapich:mvapich,aws-ofi-nccl
+gcc-intelmpi:aws-ofi-nccl
+gcc-nvidiampi:aws-ofi-nccl
+icc-openmpi:openmpi,aws-ofi-nccl
+icc-mpich:mpich,aws-ofi-nccl
+icc-mvapich:mvapich,aws-ofi-nccl
+icc-intelmpi:aws-ofi-nccl
+icc-nvidiampi:aws-ofi-nccl
+icx-openmpi:openmpi,aws-ofi-nccl
+icx-mpich:mpich,aws-ofi-nccl
+icx-mvapich:mvapich,aws-ofi-nccl
+icx-intelmpi:aws-ofi-nccl
+icx-nvidiampi:aws-ofi-nccl
+nvc-openmpi:openmpi,aws-ofi-nccl
+nvc-mpich:mpich,aws-ofi-nccl
+nvc-intelmpi:aws-ofi-nccl
 
 # mt-dgemm's dependencies
 amdclang-openmpi:mt-dgemm
