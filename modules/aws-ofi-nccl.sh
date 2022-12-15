@@ -63,13 +63,13 @@ install_aws_ofi_nccl()
     ./autogen.sh
     if [ -d /opt/amazon/efa ]
     then
-	./configure  --prefix=${HPC_PREFIX}/${HPC_COMPLIER}/${HPC_MPI} \
+	./configure  --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --with-libfabric=/opt/amazon/efa \
 	    --with-cuda=${HPC_PREFIX}/opt/nvidia/Linux_$(arch)/${NVIDIA_COMPILER_VERSION}/cuda/${NVIDIA_CUDA_VERSION} \
 	    --with-nccl=${HPC_PREFIX}/opt/nvidia/Linux_$(arch)/${NVIDIA_COMPILER_VERSION}/comm_libs/nccl \
 	    --with-mpi=$(dirname $(dirname $(which mpirun)))
     else
-	./configure  --prefix=${HPC_PREFIX}/${HPC_COMPLIER}/${HPC_MPI} \
+	./configure  --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --with-libfabric=/usr \
 	    --with-cuda=${HPC_PREFIX}/opt/nvidia/Linux_$(arch)/${NVIDIA_COMPILER_VERSION}/cuda/${NVIDIA_CUDA_VERSION} \
 	    --with-nccl=${HPC_PREFIX}/opt/nvidia/Linux_$(arch)/${NVIDIA_COMPILER_VERSION}/comm_libs/nccl \
