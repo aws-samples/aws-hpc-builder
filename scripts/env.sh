@@ -98,4 +98,10 @@ export PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_TARGET}/${HPC_MPI}/bin:${HPC_PRE
 export MANPATH=:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/share/man${MANPATH}
 export LD_LIBRARY_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib64:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib:${LD_LIBRARY_PATH}
 
+# To support EFA, use libfabric provided by Amazon 
+if [ -d /opt/amazon/efa ]
+then
+    export LD_LIBRARY_PATH=/opt/amazon/efa/lib64:${LD_LIBRARY_PATH}
+fi
+
 export OMP_STACKSIZE=128M
