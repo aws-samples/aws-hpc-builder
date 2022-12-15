@@ -69,7 +69,7 @@ clang-openmpi:openmpi,gromacs
 clang-mpich:mpich,gromacs
 clang-mvapich:mvapich,gromacs
 clang-intelmpi:gromacs
-gcc-openmpi:opnempi,gromacs
+gcc-openmpi:openmpi,gromacs
 gcc-mpich:mpich,gromacs
 gcc-mvapich:mvapich,gromacs
 gcc-intelmpi:gromacs
