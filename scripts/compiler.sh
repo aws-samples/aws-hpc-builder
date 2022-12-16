@@ -365,6 +365,7 @@ case ${HPC_COMPILER} in
     "nvc")
         export MODULEPATH=${MODULEPATH}:${HPC_PREFIX}/opt/nvidia/modulefiles
 	module load $(basename ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc-nompi)/$(ls ${HPC_PREFIX}/opt/nvidia/modulefiles/nvhpc-nompi)
+	export HPC_TARGET=$(arch)-linux
 	;;
 esac
 
