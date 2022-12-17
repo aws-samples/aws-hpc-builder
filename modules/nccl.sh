@@ -2,11 +2,11 @@
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
-AWS_OFI_NCCL_VERSION=${2:-1.4.0}
-AWS_OFI_NCCL_SRC="aws-ofi-nccl-${AWS_OFI_NCCL_VERSION}-aws.tar.gz"
+NCCL_VERSION=${2:-2.16.2-1}
+NCCL_SRC="nccl-${NCCL_VERSION}.tar.gz"
 DISABLE_COMPILER_ENV=false
 
-install_sys_dependency_for_aws_ofi_nccl()
+install_sys_dependency_for_nccl()
 {
     case ${S_VERSION_ID} in
 	7)
@@ -43,42 +43,30 @@ install_sys_dependency_for_aws_ofi_nccl()
     esac
 }
 
-download_aws_ofi_nccl()
+download_nccl()
 {
-    if [ -f ${AWS_OFI_NCCL_SRC} ]
+    if [ -f ${NCCL_SRC} ]
     then
         return
     else
-	wget "https://github.com/aws/aws-ofi-nccl/archive/refs/tags/v1.4.0-aws.tar.gz" -O ${AWS_OFI_NCCL_SRC}
+	wget "https://github.com/NVIDIA/nccl/archive/refs/tags/v${NCCL_VERSION}" -O ${NCCL_SRC}
 	return $?
     fi
 }
 
-install_aws_ofi_nccl()
+install_nccl()
 {
-    echo "zzz *** $(date) *** Build ${AWS_OFI_NCCL_SRC%-aws.tar.gz}"
-    sudo rm -rf "${AWS_OFI_NCCL_SRC%.tar.gz}"
-    tar xf "${AWS_OFI_NCCL_SRC}"
-    cd "${AWS_OFI_NCCL_SRC%.tar.gz}"
-    ./autogen.sh
-    if [ -d /opt/amazon/efa ]
-    then
-	./configure  --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
-	    --with-libfabric=/opt/amazon/efa \
-	    --with-cuda=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/cuda \
-	    --with-nccl=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
-	    --with-mpi=$(dirname $(dirname $(which mpirun)))
-    else
-	./configure  --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
-	    --with-libfabric=/usr \
-	    --with-cuda=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/cuda \
-	    --with-nccl=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
-	    --with-mpi=$(dirname $(dirname $(which mpirun)))
-    fi
-    make && sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && cd ..
+    echo "zzz *** $(date) *** Build ${NCCL_SRC%.tar.gz}"
+    sudo rm -rf "${NCCL_SRC%.tar.gz}"
+    tar xf "${NCCL_SRC}"
+    cd "${NCCL_SRC%.tar.gz}"
+    export PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
+    make src.build CUDA_HOME=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/cuda && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make src.install \
+	cd ..
 }
 
-update_aws_ofi_nccl_version()
+update_nccl_version()
 {
-    MODULE_VERSION=${AWS_OFI_NCCL_VERSION}
+    MODULE_VERSION=${NCCL_VERSION}
 }

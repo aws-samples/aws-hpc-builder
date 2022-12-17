@@ -62,6 +62,7 @@ install_gromacs()
 		-DCUDA_TOOLKIT_ROOT_DIR=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/cuda \
 		-DGMX_GPU=CUDA
 	elif [ -d /usr/local/cuda ]
+	then
 	    # nvcc(cuda 11.x) doesn't support new gcc version greater than 10
 	    # 132 | #error -- unsupported GNU version! gcc versions later than 11 are not supported! The nvcc flag '-allow-unsupported-compiler' can be used to override this version check" " however, using an unsupported host compiler may cause compilation failure or incorrect run time execution. Use at your own risk.
             #         |  ^~~~~
