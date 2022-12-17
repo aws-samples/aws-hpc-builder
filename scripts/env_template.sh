@@ -94,9 +94,9 @@ esac
 
 source ${PREFIX}/scripts/compiler.sh
 
-export PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_TARGET}/${HPC_MPI}/bin:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin:${PATH}
-export MANPATH=:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/share/man${MANPATH}
-export LD_LIBRARY_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib64:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib:${LD_LIBRARY_PATH}
+export PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/${HPC_TARGET}/bin:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/bin:${PATH}
+export MANPATH=:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/share/man:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/share/man${MANPATH}
+export LD_LIBRARY_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib64:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/lib64:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/lib:${LD_LIBRARY_PATH}
 
 # To support EFA, use libfabric provided by Amazon
 if [ -d /opt/amazon/efa ]

@@ -66,13 +66,13 @@ install_aws_ofi_nccl()
 	./configure  --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --with-libfabric=/opt/amazon/efa \
 	    --with-cuda=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/cuda \
-	    --with-nccl=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+	    --with-nccl=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local \
 	    --with-mpi=$(dirname $(dirname $(which mpirun)))
     else
 	./configure  --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --with-libfabric=/usr \
 	    --with-cuda=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/cuda \
-	    --with-nccl=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+	    --with-nccl=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local \
 	    --with-mpi=$(dirname $(dirname $(which mpirun)))
     fi
     make && sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && cd ..
