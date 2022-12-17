@@ -45,7 +45,7 @@ install_netcdf_c()
 	    --disable-doxygen \
 	    --disable-dap
     make
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install
+    sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB,CPPFLAGS,LDFLAGS make install
     cd ../..
 }
 

@@ -75,7 +75,7 @@ install_aws_ofi_nccl()
 	    --with-nccl=${HPC_PREFIX}/opt/nvidia/Linux_$(arch)/${NVIDIA_COMPILER_VERSION}/comm_libs/nccl \
 	    --with-mpi=$(dirname $(dirname $(which mpirun)))
     fi
-    make && sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install && cd ..
+    make && sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && cd ..
 }
 
 update_aws_ofi_nccl_version()

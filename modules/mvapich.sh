@@ -99,7 +99,7 @@ install_mvapich()
     then
         return  $result
     fi
-    make && sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install && cd ../..
+    make && sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB,FFLAGS,FCFLAGS env make install && cd ../..
 }
 
 update_mvapich_version()

@@ -69,7 +69,7 @@ install_netcdf_fortran()
             --enable-shared
     fix_clang_ld
     make check
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install
+    sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB,CPPFLAGS,LDFLAGS env make install
     cd ../..
 }
 
