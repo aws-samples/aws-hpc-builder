@@ -49,7 +49,7 @@ download_nccl()
     then
         return
     else
-	wget "https://github.com/NVIDIA/nccl/archive/refs/tags/v${NCCL_VERSION}" -O ${NCCL_SRC}
+	wget "https://github.com/NVIDIA/nccl/archive/refs/tags/v${NCCL_VERSION}.tar.gz" -O ${NCCL_SRC}
 	return $?
     fi
 }
