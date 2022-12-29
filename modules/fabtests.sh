@@ -64,10 +64,10 @@ install_fabtests()
 
     if [ -d /opt/amazon/efa ]
     then
-	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+	./configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --with-libfabric=/opt/amazon/efa
     else
-	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+	./configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --with-libfabric=/usr
     fi
     result=$?
