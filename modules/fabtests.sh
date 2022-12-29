@@ -66,7 +66,6 @@ install_fabtests()
     else
 	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --with-libfabric=/usr
-	fi
     fi
     result=$?
     if [ $result -ne 0 ]
