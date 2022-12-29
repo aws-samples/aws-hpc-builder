@@ -23,7 +23,7 @@ install_sys_dependency_for_mpich()
 	8)
 	    sudo $(dnf check-release-update 2>&1 | grep "dnf update --releasever" | tail -n1) -y 2> /dev/null
 	    sudo dnf -y update
-	    sudo dnf -y install libfabric libfabric-devel rdma-core-devel librdmacm-utils libpsm2-devel infinipath-psm-devel libibverbs-utils libnl3 libnl3-devel python3
+	    sudo dnf -y install libfabric libfabric-devel rdma-core-devel librdmacm-utils libibverbs-utils libnl3 libnl3-devel python3
 	    case  "${S_NAME}" in
 		"Alibaba Cloud Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
 		    return

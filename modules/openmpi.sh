@@ -23,7 +23,7 @@ install_sys_dependency_for_openmpi()
 	8)
 	    sudo $(dnf check-release-update 2>&1 | grep "dnf update --releasever" | tail -n1) -y 2> /dev/null
 	    sudo dnf -y update
-	    sudo dnf -y install libfabric libfabric-devel rdma-core-devel librdmacm-utils libpsm2-devel infinipath-psm-devel libibverbs-utils libnl3 libnl3-devel
+	    sudo dnf -y install libfabric libfabric-devel rdma-core-devel librdmacm-utils libibverbs-utils libnl3 libnl3-devel
 	    case  "${S_NAME}" in
 		"Alibaba Cloud Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
 		    return
@@ -72,12 +72,16 @@ install_openmpi()
 	    #--host=${WRF_TARGET} \
 	    #--target=${WRF_TARGET} \
 	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+	    --enable-orterun-prefix-by-default \
+            --enable-wrapper-rpath \
 	    --with-ofi=/opt/amazon/efa
     else
 	    #--build=${WRF_TARGET} \
 	    #--host=${WRF_TARGET} \
 	    #--target=${WRF_TARGET}
-	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
+	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+	    --enable-orterun-prefix-by-default \
+            --enable-wrapper-rpath
     fi
     result=$?
     if [ $result -ne 0 ]
