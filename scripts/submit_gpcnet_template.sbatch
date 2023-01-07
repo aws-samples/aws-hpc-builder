@@ -8,10 +8,10 @@
 #SBATCH --ntasks-per-core=1
 #SBATCH --export=ALL
 #SBATCH --exclusive
-#SBATCH -o /fsx/log/gpcnet.out
+#SBATCH -o XXPREFIXXX/log/gpcnet.out
 
 #--------------------------- customized Job env -----------------------------
-#SBATCH --nodes=4
+#SBATCH --nodes=10
 #SBATCH --partition=c7gnpg
 
 export GPCNET_VERSION=git
@@ -50,7 +50,7 @@ export GPCNET_VERSION=git
 # env.sh 1 0   ## select GNU/GCC compilers with openmpi
 # env.sh ...
 
-PREFIX=/fsx
+PREFIX=XXPREFIXXX
 source ${PREFIX}/scripts/env.sh 1 0
 #----------------------------------------------------------------------------
 LOGDIR=${PREFIX}/log
