@@ -26,6 +26,34 @@ icx-mpich:mpich,osu
 icx-mvapich:mvapich,osu
 icx-intelmpi:osu
 
+# gpcnet's dependencies
+amdclang-openmpi:openmpi,gpcnet
+amdclang-mpich:mpich,gpcnet
+amdclang-mvapich:mvapich,gpcnet
+amdclang-intelmpi:gpcnet
+armgcc-openmpi:openmpi,gpcnet
+armgcc-mpich:mpich,gpcnet
+armgcc-mvapich:mvapich,gpcnet
+armclang-openmpi:openmpi,gpcnet
+armclang-mpich:mpich,gpcnet
+armclang-mvapich:mvapich,gpcnet
+clang-openmpi:openmpi,gpcnet
+clang-mpich:mpich,gpcnet
+clang-mvapich:mvapich,gpcnet
+clang-intelmpi:gpcnet
+gcc-openmpi:openmpi,gpcnet
+gcc-mpich:mpich,gpcnet
+gcc-mvapich:mvapich,gpcnet
+gcc-intelmpi:gpcnet
+icc-openmpi:openmpi,gpcnet
+icc-mpich:mpich,gpcnet
+icc-mvapich:mvapich,gpcnet
+icc-intelmpi:gpcnet
+icx-openmpi:openmpi,gpcnet
+icx-mpich:mpich,gpcnet
+icx-mvapich:mvapich,gpcnet
+icx-intelmpi:gpcnet
+
 # fabtests's dependencies
 amdclang-openmpi:openmpi,fabtests
 amdclang-mpich:mpich,fabtests
