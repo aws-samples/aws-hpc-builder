@@ -20,6 +20,8 @@ hpc_enable_rdma()
 	    ;;
 	"openmpi"|"nvidiampi")
 	    # more details see: ompi_info
+	    export OMPI_ALLOW_RUN_AS_ROOT=1
+	    export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 	    export OMPI_MCA_mtl=ofi
 	    export OMPI_MCA_pml=cm
 	    export OMPI_MCA_mtl_ofi_provider_include=${1}
@@ -46,6 +48,8 @@ hpc_set_mpi()
 	    ;;
 	"openmpi"|"nvidiampi")
 	    # more details see: ompi_info
+	    export OMPI_ALLOW_RUN_AS_ROOT=1
+	    export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 	    export OMPI_MCA_btl=tcp,vader,self
 	    export OMPI_MCA_pml=ob1
 	    ;;
