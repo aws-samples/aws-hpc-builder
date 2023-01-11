@@ -185,6 +185,7 @@ build_hpc_module()
 
 install_sys_scripts()
 {
+    mkdir -p ${PREFIX}/{log,spooler}
     sudo mkdir -p ${PREFIX}/scripts
     sed s"%XXPREFIXXX%${PREFIX}%g" ../scripts/env_template.sh > /tmp/env.sh
     sudo install -m 755 -D -t ${PREFIX}/scripts /tmp/env.sh

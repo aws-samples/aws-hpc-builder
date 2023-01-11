@@ -26,6 +26,34 @@ icx-mpich:mpich,osu
 icx-mvapich:mvapich,osu
 icx-intelmpi:osu
 
+# b-eff's dependencies
+amdclang-openmpi:openmpi,b-eff
+amdclang-mpich:mpich,b-eff
+amdclang-mvapich:mvapich,b-eff
+amdclang-intelmpi:b-eff
+armgcc-openmpi:openmpi,b-eff
+armgcc-mpich:mpich,b-eff
+armgcc-mvapich:mvapich,b-eff
+armclang-openmpi:openmpi,b-eff
+armclang-mpich:mpich,b-eff
+armclang-mvapich:mvapich,b-eff
+clang-openmpi:openmpi,b-eff
+clang-mpich:mpich,b-eff
+clang-mvapich:mvapich,b-eff
+clang-intelmpi:b-eff
+gcc-openmpi:openmpi,b-eff
+gcc-mpich:mpich,b-eff
+gcc-mvapich:mvapich,b-eff
+gcc-intelmpi:b-eff
+icc-openmpi:openmpi,b-eff
+icc-mpich:mpich,b-eff
+icc-mvapich:mvapich,b-eff
+icc-intelmpi:b-eff
+icx-openmpi:openmpi,b-eff
+icx-mpich:mpich,b-eff
+icx-mvapich:mvapich,b-eff
+icx-intelmpi:b-eff
+
 # gpcnet's dependencies
 amdclang-openmpi:openmpi,gpcnet
 amdclang-mpich:mpich,gpcnet
