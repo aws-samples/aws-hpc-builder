@@ -57,6 +57,10 @@ LOGDIR=${PREFIX}/log
 B_EFF_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_b_eff-${B_EFF_VERSION}.log
 mkdir -p ${LOGDIR}
 
+JOBDIR=${PREFIX}/spooler/b-eff
+cd ${JOBDIR}
+ln -sfn ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/b_eff-${B_EFF_VERSION}/b_eff .
+
 ulimit -s unlimited
 
 HPC_MPI_DEBUG=1
@@ -70,7 +74,7 @@ echo "zzz *** ${START_DATE} *** - JobStart - b_eff - ${HPC_COMPILER} - ${HPC_MPI
 
 #export OMPI_MCA_coll_tuned_use_dynamic_rules=1
 ##export OMPI_MCA_coll_tuned_bcast_algorithm=1
-mpirun ${MPI_SHOW_BIND_OPTS} ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/b_eff-${B_EFF_VERSION}/b_eff >> ${B_EFF_LOG} 2>&1
+mpirun ${MPI_SHOW_BIND_OPTS} ./b_eff >> ${B_EFF_LOG} 2>&1
 
 END_DATE=$(date)
 echo "zzz *** ${END_DATE} *** - JobEnd - b_eff - ${HPC_COMPILER} - ${HPC_MPI}" >> ${B_EFF_LOG} 2>&1
