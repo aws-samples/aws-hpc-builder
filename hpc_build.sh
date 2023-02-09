@@ -347,7 +347,7 @@ elif [ ${MEMPERCORE} -gt 1 ]
 then
     export MAKEFLAGS="-j $(($(nproc) / 2))"
 else
-    export MAKEFLAGS="-j $((${MEM_IN_GB} / 2))"
+    export MAKEFLAGS="-j $((${MEM_IN_GB} / 4))"
 fi
 
 while getopts 'p:c:m:M:i:lLh' OPT; do
