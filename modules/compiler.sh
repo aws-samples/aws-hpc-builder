@@ -518,8 +518,8 @@ build_elfutils_stage_one()
     mkdir -p build
     cd build
     ../configure --prefix=${HPC_PREFIX}/tmp/${HPC_COMPILER}
-    make
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install
+    make CFLAGS="-Wno-error=deprecated-declarations"
+    sudo --preserve-env=PATH,LD_LIBRARY_PATH env make CFLAGS="-Wno-error=deprecated-declarations" install
     cd ../..
 }
 
@@ -533,8 +533,8 @@ build_elfutils()
     mkdir -p build
     cd build
     ../configure --prefix=${HPC_PREFIX}/opt/gnu
-    make
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install
+    make CFLAGS="-Wno-error=deprecated-declarations"
+    sudo --preserve-env=PATH,LD_LIBRARY_PATH env make CFLAGS="-Wno-error=deprecated-declarations" install
     cd ../..
 }
 
