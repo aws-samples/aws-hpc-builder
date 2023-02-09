@@ -337,6 +337,19 @@ LIST_INSTALLED=0
 HPC_MODULE=compiler
 HPC_USE_VENDOR_COMPILER=true
 
+# enable parallel compiling
+MEM_IN_GB=$(($(cat /proc/meminfo | grep "^MemTotal:" | awk '{print $2}') / 1024 / 1024))
+MEMPERCORE=$((${MEM_IN_GB} / $(nproc)))
+if [ ${MEMPERCORE} -gt 2 ]
+then
+    export MAKEFLAGS="-j $(nproc)"
+elif [ ${MEMPERCORE} -gt 1 ]
+then
+    export MAKEFLAGS="-j $(($(nproc) / 2))"
+else
+    export MAKEFLAGS="-j $((${MEM_IN_GB} / 2))"
+fi
+
 while getopts 'p:c:m:M:i:lLh' OPT; do
     case $OPT in
         p) PREFIX="$OPTARG";;
