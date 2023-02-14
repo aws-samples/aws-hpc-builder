@@ -132,7 +132,7 @@ build_hpc_module()
 	then
 	    unset_compiler_env
 	fi
-	download_$(echo ${module} | tr '-' '_')  && install_$(echo ${module} | tr '-' '_') >> ${HPC_BUILD_LOG} 2>&1 
+	download_$(echo ${module} | tr '-' '_') >> ${HPC_BUILD_LOG} 2>&1 && install_$(echo ${module} | tr '-' '_') >> ${HPC_BUILD_LOG} 2>&1 
 	if [ $? -eq 0 ] 
 	then
 	    # Intel MPI only avaiable on X86_64(Intel) and AMD64 platforms
