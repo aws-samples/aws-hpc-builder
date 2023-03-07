@@ -10,8 +10,8 @@ diff -urN WPS.orig/arch/configure.defaults WPS/arch/configure.defaults
 +COMPRESSION_LIBS    = CONFIGURE_COMP_L
 +COMPRESSION_INC     = CONFIGURE_COMP_I
 +FDEFS               = CONFIGURE_FDEFS
-+SFC                 = flang
-+SCC                 = clang
++SFC                 = armflang
++SCC                 = armclang
 +DM_FC               = mpif90
 +DM_CC               = mpicc
 +FC                  = CONFIGURE_FC 

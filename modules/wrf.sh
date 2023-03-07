@@ -3,7 +3,7 @@
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
 #WRF_VERSION=git
-WRF_VERSION=${2:-4.4.1}
+WRF_VERSION=${2:-4.4.2}
 DISABLE_COMPILER_ENV=false
 
 # 读取命令行新的版本信息后再计算WRF的主要版本等信息
