@@ -62,7 +62,7 @@ install_ncview()
     cd "${NCVIEW_SRC%.tar.gz}"
     export PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
     ./configure \
-	--prefix==${PREFIX} \
+	--prefix=${PREFIX} \
 	--with-udunits2_incdir=/usr/include/udunits2
 	
     make
