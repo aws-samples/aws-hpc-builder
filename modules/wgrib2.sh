@@ -57,7 +57,7 @@ download_wgrib2()
 
 patch_wgrib2()
 {
-    patch -Np1 < ../../wgrib2/wgrib2-$(uname -m)-${HPC_COMPILER}.patch
+    patch -Np1 < ../../patch/wgrib2/wgrib2-$(uname -m)-${HPC_COMPILER}.patch
 }
 
 install_wgrib2()
@@ -67,6 +67,8 @@ install_wgrib2()
     tar xf "${WGRIB2_SRC}"
     cd grib2
     patch_wgrib2
+
+    unset MAKEFLAGS
 
     export BUILD=$(${CC} -dumpmachine)
     export NETCDF_INCLUDES=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include
