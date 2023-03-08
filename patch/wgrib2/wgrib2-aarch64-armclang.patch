@@ -1,0 +1,50 @@
+diff -urN grib2.orig/makefile grib2/makefile
+--- grib2.orig/makefile	2023-02-08 15:26:44.000000000 +0000
++++ grib2/makefile	2023-03-08 05:09:43.980334346 +0000
+@@ -164,15 +164,15 @@
+ # if USE_NETCDF3=1, then USE_NETCDF4 must 0
+ #
+ # USE_NETCDF3=0
+-USE_NETCDF3=1
++USE_NETCDF3=0
+ #
+-USE_NETCDF4=0
++#USE_NETCDF4=system
+ # USE_NETCDF4=compile
+ # USE_NETCDF4=system
+-#USE_NETCDF4=${NETCDF_INCLUDES}:${NETCDF_LIBRARIES}
++USE_NETCDF4=${NETCDF_INCLUDES}:${NETCDF_LIBRARIES}
+ # USE_HDF5 is only active if USE_NETCDF4 != 0
+ #USE_HDF5=0
+-USE_HDF5=compile
++USE_HDF5=${HDF5_INCLUDES}:${HDF5_LIBRARIES}
+ #USE_HDF5=system
+ #USE_HDF5=${HDF5_INCLUDES}:${HDF5_LIBRARIES}
+ USE_REGEX=1
+@@ -541,7 +541,7 @@
+    hdf5CFLAGS+=-O2
+    ifeq ($(need_ftn),1)
+       wCPPFLAGS+=-DFLANG
+-      wLDFLAGS+=-lflang -lflangrti -lpgmath
++      wLDFLAGS+=-lflang -lflangrti -armpl -lamath -lm -lastring
+       wFFLAGS+=-c -O3 -ffast-math 
+ #      wFFLAGS+=-march=znver3
+       FTN_REAL8:="-r8"
+@@ -968,7 +968,7 @@
+ 	rm tmpj.tar
+ 
+ ${jlib}:	${jasperdir} ${zlib}
+-	cd ${jasperdir} && export CC=${CCjasper} && export CFLAGS=${PIC_option}  && ./configure --without-x --disable-libjpeg --disable-opengl --prefix=${cwd} && ${MAKE} -j 1 check install
++	cd ${jasperdir} && export CC=${CCjasper} && export CFLAGS=${PIC_option}  && ./configure --build=${BUILD} --without-x --disable-libjpeg --disable-opengl --prefix=${cwd} && ${MAKE} -j 1 check install
+ 
+ ${openjpegdir}:
+ 	cp ${ojsrc} tmpoj.tar.gz
+@@ -1038,7 +1038,7 @@
+ 	gunzip -f tmpproj4.tar.gz
+ 	tar -xvf tmpproj4.tar
+ 	rm tmpproj4.tar
+-	cd ${proj4dir}  && export CFLAGS="${wCPPFLAGS}" &&  ./configure --disable-shared --prefix=${cwd} && ${MAKE} -j 1 check install
++	cd ${proj4dir}  && export CFLAGS="${wCPPFLAGS}" &&  ./configure --build=${BUILD} --disable-shared --prefix=${cwd} && ${MAKE} -j 1 check install
+ 
+ ${netcdf3dir}:
+ 	cp ${netcdf3src} tmpn.tar.gz

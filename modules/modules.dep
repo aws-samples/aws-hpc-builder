@@ -459,6 +459,34 @@ icx-mpich:mpich,hdf5,pnetcdf,netcdf-c,ncview
 icx-mvapich:mvapich,hdf5,pnetcdf,netcdf-c,ncview
 icx-intelmpi:hdf5,pnetcdf,netcdf-c,ncview
 
+# wgrib2's dependencies
+amdclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,wgrib2
+amdclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,wgrib2
+amdclang-mvapich:mvapich,hdf5,pnetcdf,netcdf-c,wgrib2
+amdclang-intelmpi:hdf5,pnetcdf,netcdf-c,wgrib2
+armgcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,wgrib2
+armgcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,wgrib2
+armgcc-mvapich:mvapich,hdf5,pnetcdf,netcdf-c,wgrib2
+armclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,wgrib2
+armclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,wgrib2
+armclang-mvapich:mvapich,hdf5,pnetcdf,netcdf-c,wgrib2
+clang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,wgrib2
+clang-mpich:mpich,hdf5,pnetcdf,netcdf-c,wgrib2
+clang-mvapich:mvapich,hdf5,pnetcdf,netcdf-c,wgrib2
+clang-intelmpi:hdf5,pnetcdf,netcdf-c,wgrib2
+gcc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,wgrib2
+gcc-mpich:mpich,hdf5,pnetcdf,netcdf-c,wgrib2
+gcc-mvapich:mvapich,hdf5,pnetcdf,netcdf-c,wgrib2
+gcc-intelmpi:hdf5,pnetcdf,netcdf-c,wgrib2
+icc-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,wgrib2
+icc-mpich:mpich,hdf5,pnetcdf,netcdf-c,wgrib2
+icc-mvapich:mvapich,hdf5,pnetcdf,netcdf-c,wgrib2
+icc-intelmpi:hdf5,pnetcdf,netcdf-c,wgrib2
+icx-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,wgrib2
+icx-mpich:mpich,hdf5,pnetcdf,netcdf-c,wgrib2
+icx-mvapich:mvapich,hdf5,pnetcdf,netcdf-c,wgrib2
+icx-intelmpi:hdf5,pnetcdf,netcdf-c,wgrib2
+
 # netcdf-fortran's dependencies
 amdclang-openmpi:openmpi,hdf5,pnetcdf,netcdf-c,netcdf-fortran
 amdclang-mpich:mpich,hdf5,pnetcdf,netcdf-c,netcdf-fortran
