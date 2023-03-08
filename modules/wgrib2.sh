@@ -70,7 +70,7 @@ install_wgrib2()
 
     unset MAKEFLAGS
 
-    export BUILD=$(${CC} -dumpmachine)
+    export BUILD=$(arch)-unknown-linux-gnu
     export NETCDF_INCLUDES=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include
     export NETCDF_LIBRARIES=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib
     export HDF5_INCLUDES=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include

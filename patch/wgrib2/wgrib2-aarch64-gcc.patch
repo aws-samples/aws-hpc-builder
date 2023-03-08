@@ -44,7 +44,7 @@ diff -urN grib2.orig/makefile grib2/makefile
  	tar -xvf tmpproj4.tar
  	rm tmpproj4.tar
 -	cd ${proj4dir}  && export CFLAGS="${wCPPFLAGS}" &&  ./configure --disable-shared --prefix=${cwd} && ${MAKE} -j 1 check install
-+	cd ${proj4dir}  && export CFLAGS="${wCPPFLAGS}" &&  ./configure --build=${BUILD} --disable-shared --prefix=${cwd} && ${MAKE} -j 1 check install
++	cd ${proj4dir}  && export CFLAGS="${wCPPFLAGS}" &&  ./configure --build=${BUILD} --disable-shared --prefix=${cwd} && ${MAKE} -j 1 install
  
  ${netcdf3dir}:
  	cp ${netcdf3src} tmpn.tar.gz
