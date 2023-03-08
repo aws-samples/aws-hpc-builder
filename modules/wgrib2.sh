@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
-WGRIB2_VERSION=${2:-2.1.8}
-WGRIB2_SRC="wgrib2.tar.gz.${WGRIB2_VERSION}"
+WGRIB2_VERSION=${2:-3.1.2}
+WGRIB2_SRC="wgrib2.tar.gz.v${WGRIB2_VERSION}"
 DISABLE_COMPILER_ENV=false
 
 install_sys_dependency_for_wgrib2()
