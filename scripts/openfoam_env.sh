@@ -2,7 +2,6 @@
 # Copyright # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 # SPDX-License-Identifier: MIT
 
-
 case ${HPC_COMPILER} in
     "amdclang")
 	WM_COMPILER=Amd
@@ -35,17 +34,17 @@ case ${HPC_MPI} in
     "intelmpi")
 	WM_MPILIB="INTELMPI"
 	;;
-    "mpich"|"mvapich")
+    "mpich"|"mvapich"|"openmpi")
+	export MPI_ROOT=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
 	export MPI_ARCH_FLAGS="-DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX"
 	export MPI_ARCH_INC="-isystem ${MPI_ROOT}/include"
-	export MPI_ARCH_LIBS="-L${MPI_ROOT}/lib -lmpi -lrt"
 	WM_MPILIB="SYSTEMMPI"
-	;;
-    "openmpi")
-	export MPI_ARCH_FLAGS="-DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX"
-	export MPI_ARCH_INC="-isystem ${MPI_ROOT}/include"
-	export MPI_ARCH_LIBS="-L${MPI_ROOT}/lib -lmpi"
-	WM_MPILIB="SYSTEMMPI"
+	if [ "${HPC_MPI}" == "openmpi" ]
+	then 
+	    export MPI_ARCH_LIBS="-L${MPI_ROOT}/lib -lmpi"
+	else
+	    export MPI_ARCH_LIBS="-L${MPI_ROOT}/lib -lmpi -lrt"
+	fi
 	;;
     *)
 	echo "unknown or unsupported MPI"
