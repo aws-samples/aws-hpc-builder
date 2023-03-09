@@ -46,14 +46,14 @@ install_sys_dependency_for_openfoam()
 
 download_openfoam()
 {
-    if [ -f ${OPENFOAM_SRC} ]
+    if [ ! -f ${OPENFOAM_SRC} ]
     then
-        return
-    else
 	wget https://dl.openfoam.com/source/v${OPENFOAM_VERSION}/OpenFOAM-v${OPENFOAM_VERSION}.tgz
-	return $?
+	if [ ${result} -ne 0 ]
+	then
+	    return ${result}
+	fi
     fi
-
     if [ -f ${THIRDPARTY_SRC} ]
     then
         return
@@ -61,7 +61,6 @@ download_openfoam()
 	wget https://dl.openfoam.com/source/v${OPENFOAM_VERSION}/ThirdParty-v${OPENFOAM_VERSION}.tgz
 	return $?
     fi
-
 }
 
 patch_openfoam()
@@ -77,8 +76,8 @@ install_openfoam()
     echo "zzz *** $(date) *** Build ${OPENFOAM_SRC%.tgz}"
     sudo rm -rf "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/${OPENFOAM_SRC%.tgz}"
     sudo rm -rf "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/${THIRDPARTY_SRC%.tgz}"
-    tar xf "${OPENFOAM_SRC%.tgz}"
-    tar xf "${THIRDPARTY_SRC%.tgz}"
+    tar xf "${OPENFOAM_SRC}"
+    tar xf "${THIRDPARTY_SRC}"
     sudo mv "${OPENFOAM_SRC%.tgz}" "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/"
     sudo mv "${THIRDPARTY_SRC%.tgz}" "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/"
 
@@ -126,7 +125,7 @@ install_openfoam()
 	    ;;
     esac
     
-    .   "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/OpenFOAM-v${OPENFOAM_VERSION}/etc/bashrc" WM_COMPILER=${WM_COMPILER} WM_MPLIB=${WM_MPLIB}
+    .  "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/OpenFOAM-v${OPENFOAM_VERSION}/etc/bashrc" WM_COMPILER=${WM_COMPILER} WM_MPLIB=${WM_MPLIB}
     foam
     ./Allwmake -s -l
     cd -
