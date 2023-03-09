@@ -82,9 +82,6 @@ install_openfoam()
     sudo mv "${THIRDPARTY_SRC%.tgz}" "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/"
 
     export MPI_ROOT=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
-    export MPI_ARCH_FLAGS="-DOMPI_SKIP_MPICXX"
-    export MPI_ARCH_INC="-isystem $MPI_ROOT/include"
-    export MPI_ARCH_LIBS="-L$MPI_ROOT/lib -lmpi"
     
     case ${HPC_COMPILER} in
 	"amdclang")
@@ -117,15 +114,25 @@ install_openfoam()
 	"intelmpi")
 	    WM_MPILIB="INTELMPI"
 	    ;;
-	"mpich"|"mvapich"|"nvidiampi"|"openmpi")
+	"mpich"|"mvapich")
+	    export MPI_ARCH_FLAGS="-DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX"
+	    export MPI_ARCH_INC="-isystem ${MPI_ROOT}/include"
+	    export MPI_ARCH_LIBS="-L${MPI_ROOT}/lib -lmpi -lrt"
+	    WM_MPILIB="SYSTEMMPI"
+	    ;;
+	"openmpi")
+	    export MPI_ARCH_FLAGS="-DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX"
+	    export MPI_ARCH_INC="-isystem ${MPI_ROOT}/include"
+	    export MPI_ARCH_LIBS="-L${MPI_ROOT}/lib -lmpi"
 	    WM_MPILIB="SYSTEMMPI"
 	    ;;
 	*)
+	    echo "unknown or unsupported MPI"
 	    exit 1
 	    ;;
     esac
     
-    . "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/OpenFOAM-v${OPENFOAM_VERSION}/etc/bashrc" WM_COMPILER=${WM_COMPILER} WM_MPLIB=${WM_MPLIB}
+    . "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/OpenFOAM-v${OPENFOAM_VERSION}/etc/bashrc" WM_COMPILER=${WM_COMPILER} WM_MPLIB=${WM_MPILIB}
     cd "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/OpenFOAM-v${OPENFOAM_VERSION}/"
     ./Allwmake -s -l
     cd -
