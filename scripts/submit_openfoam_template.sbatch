@@ -53,8 +53,8 @@ export JOB_DIR=${PREFIX}/spooler/motorBikeDemoArm
 # env.sh 1 0   ## select GNU/GCC compilers with openmpi
 # env.sh ...
 
-source ${PREFIX}/scripts/env.sh 1 0
-source ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/OpenFOAM-v${OPENFOAM_VERSION}/etc/bashrc
+source ${PREFIX}/scripts/env.sh 7 1
+source ${PREFIX}/scripts/openfoam_env.sh
 
 #----------------------------------------------------------------------------
 LOGDIR=${PREFIX}/log
