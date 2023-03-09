@@ -96,6 +96,7 @@ install_openfoam()
 	    ;;
 	"armgcc"|"gcc")
 	    WM_COMPIER=Gcc
+	    ;;
 	"clang")
 	    WM_COMPILER=Clang
 	    ;;
