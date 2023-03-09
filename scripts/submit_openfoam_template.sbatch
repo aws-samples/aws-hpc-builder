@@ -9,13 +9,13 @@
 #SBATCH --ntasks-per-core=1
 #SBATCH --export=ALL
 #SBATCH --exclusive
-#SBATCH -o /fsx/log/openfoam.out
+#SBATCH -o XXPREFIXXX/log/openfoam.out
 
 #--------------------------- customized Job env -----------------------------
 #SBATCH --nodes=2
 #SBATCH --partition=c6gn
 
-PREFIX=/fsx
+PREFIX=XXPREFIXXX
 
 export OPENFOAM_VERSION=2212
 export JOB_DIR=${PREFIX}/spooler/motorBikeDemoArm
