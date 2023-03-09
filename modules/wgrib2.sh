@@ -57,7 +57,10 @@ download_wgrib2()
 
 patch_wgrib2()
 {
-    patch -Np1 < ../../patch/wgrib2/wgrib2-$(uname -m)-${HPC_COMPILER}.patch
+    if [ -f ../../patch/wgrib2/wgrib2-$(arch)-${HPC_COMPILER}.patch ]
+    then
+	patch -Np1 < ../../patch/wgrib2/wgrib2-$(arch)-${HPC_COMPILER}.patch
+    fi
 }
 
 install_wgrib2()

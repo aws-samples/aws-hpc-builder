@@ -11,7 +11,7 @@
 #SBATCH -o /fsx/log/wrf.out
 
 #--------------------------- customized Job env -----------------------------
-#SBATCH --nodes=6
+#SBATCH --nodes=2
 #SBATCH --partition=c6gn
 
 PREFIX=/fsx
@@ -24,7 +24,7 @@ PREFIX=/fsx
 #export JOB_DIR=${PREFIX}/spooler/v4_bench_conus12km
 #export JOB_DIR=${PREFIX}/spooler/v4_bench_conus2.5km
 
-export WRF_VERSION=4.4.1
+export WRF_VERSION=4.4.2
 export JOB_DIR=${PREFIX}/spooler/v4.4_bench_conus12km
 #export JOB_DIR=${PREFIX}/spooler/v4.4_bench_conus2.5km
 #----------------------------------------------------------------------------

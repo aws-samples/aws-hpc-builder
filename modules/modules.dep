@@ -26,6 +26,34 @@ icx-mpich:mpich,osu
 icx-mvapich:mvapich,osu
 icx-intelmpi:osu
 
+# openfoam's dependencies
+amdclang-openmpi:openmpi,openfoam
+amdclang-mpich:mpich,openfoam
+amdclang-mvapich:mvapich,openfoam
+amdclang-intelmpi:openfoam
+armgcc-openmpi:openmpi,openfoam
+armgcc-mpich:mpich,openfoam
+armgcc-mvapich:mvapich,openfoam
+armclang-openmpi:openmpi,openfoam
+armclang-mpich:mpich,openfoam
+armclang-mvapich:mvapich,openfoam
+clang-openmpi:openmpi,openfoam
+clang-mpich:mpich,openfoam
+clang-mvapich:mvapich,openfoam
+clang-intelmpi:openfoam
+gcc-openmpi:openmpi,openfoam
+gcc-mpich:mpich,openfoam
+gcc-mvapich:mvapich,openfoam
+gcc-intelmpi:openfoam
+icc-openmpi:openmpi,openfoam
+icc-mpich:mpich,openfoam
+icc-mvapich:mvapich,openfoam
+icc-intelmpi:openfoam
+icx-openmpi:openmpi,openfoam
+icx-mpich:mpich,openfoam
+icx-mvapich:mvapich,openfoam
+icx-intelmpi:openfoam
+
 # b-eff's dependencies
 amdclang-openmpi:openmpi,b-eff
 amdclang-mpich:mpich,b-eff
