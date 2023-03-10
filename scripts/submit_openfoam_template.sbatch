@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: MIT
 
 #SBATCH --wait-all-nodes=1
-#SBATCH --ntasks=128
 #SBATCH --ntasks-per-node=64
 #SBATCH --cpus-per-task=1
 #SBATCH --ntasks-per-core=1
