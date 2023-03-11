@@ -173,7 +173,9 @@ build_hpc_module()
 	    elif [ -f ../scripts/submit_${module}_template.sh ]
 	    then
 		install_module_script sh
-	    elif [ -f ../scripts/${module}_env.sh ]
+	    fi
+
+	    if [ -f ../scripts/${module}_env.sh ]
 	    then
 		sudo install -m 755 -D -t ${PREFIX}/scripts ../scripts/${module}_env.sh
 	    fi
