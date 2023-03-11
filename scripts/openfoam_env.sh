@@ -2,6 +2,8 @@
 # Copyright # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 # SPDX-License-Identifier: MIT
 
+OPENFOAM_VERSION=${OPENFOAM_VERSION:-2212}
+
 case ${HPC_COMPILER} in
     "amdclang")
 	WM_COMPILER=Amd
