@@ -86,7 +86,7 @@ mpirun ${MPI_SHOW_BIND_OPTS} patchSummary -parallel -decomposeParDict system/dec
 
 ls -d processor* | xargs -i rm -rf ./{}/0
 ls -d processor* | xargs -i cp -r 0.orig ./{}/0
-mpirun ${MPI_SHOW_BIND_OPTS} potentialFoam -parallel -noFunctionObjects -initialiseUBCs -decomposeParDict system/decomposeParDict.ptscotch > ./log/potentialFoam.log 2>&1s
+mpirun ${MPI_SHOW_BIND_OPTS} potentialFoam -parallel -noFunctionObjects -initialiseUBCs -decomposeParDict system/decomposeParDict.ptscotch > ./log/potentialFoam.log 2>&1
 mpirun ${MPI_SHOW_BIND_OPTS} simpleFoam -parallel  -decomposeParDict system/decomposeParDict.ptscotch > ./log/simpleFoam.log 2>&1
 
 END_DATE=$(date)
