@@ -69,9 +69,9 @@ install_hdf5()
     # add intelmpi support
     if [ "${HPC_MPI}" == "intelmpi" ]
     then
-	LIBS_OPTS="LIBS=\"-lmpi -lmpifort -L${I_MPI_ROOT}/lib -L${I_MPI_ROOT}/lib/release ${LIBS}\""
+	LIBS="-lmpi -lmpifort -L${I_MPI_ROOT}/lib -L${I_MPI_ROOT}/lib/release ${LIBS}"
     fi
-    ./configure ${LIBS_OPTS} --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+    ./configure LIBS="${LIBS_OPTS}" --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --libdir=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib \
 	    --enable-fortran \
 	    --enable-shared \
