@@ -65,7 +65,13 @@ install_hdf5()
 	    #--host=${WRF_TARGET} \
 	    #--target=${WRF_TARGET} \
     #CC=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/mpicc FC=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/mpif90 ./configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
-    ./configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+
+    # add intelmpi support
+    if [ "${HPC_MPI}" == "intelmpi" ]
+    then
+	LIBS_OPTS="LIBS=\"-lmpi -lmpifort -L${I_MPI_ROOT}/lib -L${I_MPI_ROOT}/lib/release ${LIBS}\""
+    fi
+    ./configure ${LIBS_OPTS} --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --libdir=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib \
 	    --enable-fortran \
 	    --enable-shared \
@@ -73,8 +79,8 @@ install_hdf5()
 	    --enable-parallel \
 	    --enable-unsupported && fix_clang_ld
     # bulid with mpich fails on check due to limited stacksize on some systems
-    #make check && sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install && cd ..
-    make && sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install && cd ..
+    #make check && sudo --preserve-env=PATH,LD_LIBRARY_PATH,I_MPI_CC,I_MPI_CXX,I_MPI_FC,I_MPI_F77,I_MPI_F90 env make install && cd .. 
+    make && sudo --preserve-env=PATH,LD_LIBRARY_PATH,I_MPI_CC,I_MPI_CXX,I_MPI_FC,I_MPI_F77,I_MPI_F90 env make install && cd ..
 }
 
 update_hdf5_version()
