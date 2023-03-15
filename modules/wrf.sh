@@ -246,10 +246,11 @@ install_wrf()
        	cd "${WRF_SRC%.tar.gz}"
 	# since 4.4, the NoahMP code has been moved to an external repository
 	# https://github.com/wrf-model/WRF/releases/tag/v4.4
-	if [ ${WRF_ARM_VERSION} -eq 44 ]
+	if [ ${WRF_ARM_VERSION} -ge 44 ]
 	then
 	    cd phys
-	    git clone https://github.com/NCAR/noahmp.git
+	    NOAHMP_BRANCH=release-v$(echo ${WRF_VERISON} | awk -F. '{print $1"."$2}')-WRF
+	    git clone --branch ${NOAHMP_BRANCH} https://github.com/NCAR/noahmp.git
 	    cd ..
 	fi
     fi

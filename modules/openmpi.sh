@@ -74,6 +74,7 @@ install_openmpi()
 	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --enable-orterun-prefix-by-default \
             --enable-wrapper-rpath \
+	    --with-pmi=/opt/slurm/lib \
 	    --with-ofi=/opt/amazon/efa
     else
 	    #--build=${WRF_TARGET} \
@@ -81,6 +82,7 @@ install_openmpi()
 	    #--target=${WRF_TARGET}
 	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --enable-orterun-prefix-by-default \
+	    --with-pmi=/opt/slurm/lib \
             --enable-wrapper-rpath
     fi
     result=$?
