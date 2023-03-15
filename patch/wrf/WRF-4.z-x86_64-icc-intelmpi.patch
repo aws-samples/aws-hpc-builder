@@ -1,0 +1,14 @@
+diff -urN WRF-4.z.orig/arch/configure.defaults WRF-4.z/arch/configure.defaults
+--- WRF-4.z.orig/arch/configure.defaults	2021-01-16 01:21:58.000000000 +0800
++++ WRF-4.z/arch/configure.defaults	2023-03-15 14:28:15.907190955 +0800
+@@ -302,8 +302,8 @@
+ SFC             =       ifort
+ SCC             =       icc
+ CCOMP           =       icc
+-DM_FC           =       mpif90 -f90=$(SFC)
+-DM_CC           =       mpicc -cc=$(SCC)
++DM_FC           =       mpiifort
++DM_CC           =       mpiicc
+ FC              =       CONFIGURE_FC
+ CC              =       CONFIGURE_CC
+ LD              =       $(FC)

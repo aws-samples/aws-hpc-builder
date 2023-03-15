@@ -139,20 +139,20 @@ patch_wrf()
     # 精度问题, patch GIT 版本(加上SARCH 只需给特定平台(如aarch64) 提供patch, clang 通过 ${HPC_COMPILER} 差异提供或不提供补丁
     if [ "$WRF_VERSION" == "git" ] 
     then
-	if [ -f "../../patch/wrf/WRF-${WRF_VERSION}-$(uname -m)-${HPC_COMPILER}.patch" ]
+	if [ -f "../../patch/wrf/WRF-${WRF_VERSION}-$(uname -m)-${HPC_COMPILER}-${HPC_MPI}.patch" ]
 	then
-	    patch -Np1 < "../../patch/wrf/WRF-${WRF_VERSION}-$(uname -m)-${HPC_COMPILER}.patch"
+	    patch -Np1 < "../../patch/wrf/WRF-${WRF_VERSION}-$(uname -m)-${HPC_COMPILER}-${HPC_MPI}.patch"
 	fi
-	if [ -f "../../patch/wrf/WRF-4.z-double-precision-${SARCH}.patch" ]
+	if [ -f "../../patch/wrf/WRF-4.z-double-precision-${SARCH}-${HPC_MPI}.patch" ]
 	then
-	    patch -Np1 < "../../patch/wrf/WRF-4.z-double-precision-${SARCH}.patch"
+	    patch -Np1 < "../../patch/wrf/WRF-4.z-double-precision-${SARCH}-${HPC_MPI}.patch"
 	fi
 	return
     fi
     # 精度问题, patch 其他版本
-    if [ -f "../../patch/wrf/WRF-${WRF_MAJOR_VERSION}.x-double-precision-${SARCH}.patch" ]
+    if [ -f "../../patch/wrf/WRF-${WRF_MAJOR_VERSION}.x-double-precision-${SARCH}-${HPC_MPI}.patch" ]
     then
-	patch -Np1 < "../../patch/wrf/WRF-${WRF_MAJOR_VERSION}.x-double-precision-${SARCH}.patch"
+	patch -Np1 < "../../patch/wrf/WRF-${WRF_MAJOR_VERSION}.x-double-precision-${SARCH}-${HPC_MPI}.patch"
     fi
     
     # Amazon Linux 2022/RHEL8/Centos8/Oracle Linux 8's tirpc issue
@@ -167,23 +167,23 @@ patch_wrf()
 	#PROCESSOR_TYPE=$(sudo dmidecode -t processor | grep -i Version | awk '{print $NF}')
         if [ ${WRF_ARM_VERSION} -lt 40 ] 
         then
-	    if [ -f "../../patch/wrf/WRF-3.x-${SARCH}-${HPC_COMPILER}.patch" ]
+	    if [ -f "../../patch/wrf/WRF-3.x-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch" ]
 	    then
-		patch -Np1 < "../../patch/wrf/WRF-3.x-${SARCH}-${HPC_COMPILER}.patch"
+		patch -Np1 < "../../patch/wrf/WRF-3.x-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch"
                 #patch -Np1 < "../../patch/wrf/WRF-3.x-${SARCH}-${PROCESSOR_TYPE}.patch"
 	    fi
         elif [ ${WRF_ARM_VERSION} -lt 42 ]
         then 
-	    if [ -f "../../patch/wrf/WRF-4.x-${SARCH}-${HPC_COMPILER}.patch" ]
+	    if [ -f "../../patch/wrf/WRF-4.x-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch" ]
 	    then 
 		#patch -Np1 < "../../patch/wrf/WRF-4.x-${SARCH}-${PROCESSOR_TYPE}.patch"
-		patch -Np1 < "../../patch/wrf/WRF-4.x-${SARCH}-${HPC_COMPILER}.patch"
+		patch -Np1 < "../../patch/wrf/WRF-4.x-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch"
 	    fi
 	elif [ ${WRF_ARM_VERSION} -ge 42 ]
 	then
-	    if [ -f "../../patch/wrf/WRF-4.z-${SARCH}-${HPC_COMPILER}.patch" ]
+	    if [ -f "../../patch/wrf/WRF-4.z-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch" ]
 	    then
-		patch -Np1 < "../../patch/wrf/WRF-4.z-${SARCH}-${HPC_COMPILER}.patch"
+		patch -Np1 < "../../patch/wrf/WRF-4.z-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch"
 	    fi
         fi
     # 编译器支持, intel and amd
@@ -192,34 +192,41 @@ patch_wrf()
     then
         if [ ${WRF_ARM_VERSION} -lt 40 ]
         then
-	    if [ -f "../../patch/wrf/WRF-3.x-$(uname -m)-${HPC_COMPILER}.patch" ]
+	    if [ -f "../../patch/wrf/WRF-3.x-$(uname -m)-${HPC_COMPILER}-${HPC_MPI}.patch" ]
 	    then
-		patch -Np1 < "../../patch/wrf/WRF-3.x-$(uname -m)-${HPC_COMPILER}.patch"
+		patch -Np1 < "../../patch/wrf/WRF-3.x-$(uname -m)-${HPC_COMPILER}-${HPC_MPI}.patch"
 	    fi
         elif [ ${WRF_ARM_VERSION} -lt 41 ]
         then
             # 对于icc, 事实上 4.0的最后一个版本 4.0.3 已经修正 "-openmpi" 成 "-gopenmpi", 所以只有4.1 之前非 4.0.3 版本需要此 icc 补丁
 	    if [ "${HPC_COMPILER}" == "icc" ]
 	    then
-		if [ "${WRF_VERSION}" != "4.0.3" ]
+		if [ "${WRF_VERSION}" == "4.0.3" ]
 		then
-		    if [ -f "../../patch/wrf/WRF-4.x-${SARCH}-${HPC_COMPILER}.patch" ]
+		    if [ -f "../../patch/wrf/WRF-4.z-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch" ]
 		    then
-			patch -Np1 < "../../patch/wrf/WRF-4.x-${SARCH}-${HPC_COMPILER}.patch"
+			patch -Np1 < "../../patch/wrf/WRF-4.z-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch"
+		    fi
+		else
+		    if [ -f "../../patch/wrf/WRF-4.x-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch" ]
+		    then
+			patch -Np1 < "../../patch/wrf/WRF-4.x-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch"
 		    fi
 		fi
 	    else 
 		# 对于gcc，或者clang 等编译器, 4.0.x 版本都使用相同的补丁
-		if [ -f "../../patch/wrf/WRF-4.x-$(uname -m)-${HPC_COMPILER}.patch" ]
+		if [ -f "../../patch/wrf/WRF-4.x-$(uname -m)-${HPC_COMPILER}-${HPC_MPI}.patch" ]
 		then
-		    patch -Np1 < "../../patch/wrf/WRF-4.x-$(uname -m)-${HPC_COMPILER}.patch"
+		    patch -Np1 < "../../patch/wrf/WRF-4.x-$(uname -m)-${HPC_COMPILER}-${HPC_MPI}.patch"
 		fi
 	    fi
 	else
 	    # 使用开源编译器，可以使用相同的patch，所以这里用 $(uname -m)
-	    if [ "${HPC_COMPILER}" != "icc" ]
+	    if [ "${HPC_COMPILER}" == "icc" ]
 	    then
-		patch -Np1 < "../../patch/wrf/WRF-4.x-$(uname -m)-${HPC_COMPILER}.patch"
+		patch -Np1 < "../../patch/wrf/WRF-4.z-$(uname -m)-${HPC_COMPILER}-${HPC_MPI}.patch"
+	    else
+		patch -Np1 < "../../patch/wrf/WRF-4.x-$(uname -m)-${HPC_COMPILER}-${HPC_MPI}.patch"
 	    fi
         fi
     fi
