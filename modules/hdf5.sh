@@ -69,7 +69,7 @@ install_hdf5()
     # add intelmpi support
     if [ "${HPC_MPI}" == "intelmpi" ]
     then
-	LIBS="-lmpi -lmpifort -L${I_MPI_ROOT}/lib -L${I_MPI_ROOT}/lib/release ${LIBS}"
+	LIBS_OPTS="-lmpi -lmpifort -L${I_MPI_ROOT}/lib -L${I_MPI_ROOT}/lib/release ${LIBS}"
     fi
     ./configure LIBS="${LIBS_OPTS}" --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --libdir=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib \
