@@ -249,7 +249,7 @@ install_wrf()
 	if [ ${WRF_ARM_VERSION} -ge 44 ]
 	then
 	    cd phys
-	    NOAHMP_BRANCH=release-v$(echo ${WRF_VERISON} | awk -F. '{print $1"."$2}')-WRF
+	    NOAHMP_BRANCH=release-v$(echo ${WRF_VERSION} | awk -F. '{print $1"."$2}')-WRF
 	    git clone --branch ${NOAHMP_BRANCH} https://github.com/NCAR/noahmp.git
 	    cd ..
 	fi
