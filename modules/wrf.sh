@@ -165,7 +165,15 @@ patch_wrf()
     if [ "${SARCH}" == "aarch64" ]
     then
 	#PROCESSOR_TYPE=$(sudo dmidecode -t processor | grep -i Version | awk '{print $NF}')
-        if [ ${WRF_ARM_VERSION} -lt 40 ] 
+	
+	# support WRF 3.7.x on aarch64
+	if [ ${WRF_ARM_VERSION} -lt 39 ]
+	then
+	    if [ -f "../../patch/wrf/WRF-3.w-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch" ]
+	    then
+		patch -Np1 < "../../patch/wrf/WRF-3.w-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch"
+	    fi
+        elif [ ${WRF_ARM_VERSION} -lt 40 ] 
         then
 	    if [ -f "../../patch/wrf/WRF-3.x-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch" ]
 	    then
