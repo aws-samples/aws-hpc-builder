@@ -99,7 +99,7 @@ export MANPATH=:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/share/man:${HPC_PREFIX}
 export LD_LIBRARY_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib64:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/lib64:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/lib:${LD_LIBRARY_PATH}
 export PKG_CONFIG_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib64/pkgconfig:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib/pkgconfig:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/lib64/pkgconfig:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/lib/pkgconfig:${PKG_CONFIG_PATH}
 
-# To support EFA, use libfabric provided by Amazon 
+# To support EFA, use libfabric provided by Amazon
 if [ -d /opt/amazon/efa ]
 then
     export LD_LIBRARY_PATH=/opt/amazon/efa/lib64:${LD_LIBRARY_PATH}
