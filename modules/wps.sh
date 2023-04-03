@@ -10,7 +10,7 @@ DISABLE_COMPILER_ENV=false
 # 读取命令行新的版本信息后再计算WRF的主要版本等信息
 WRF_MAJOR_VERSION=${WRF_VERSION%%.*}
 #　与官方开始支持ARM　版本有关（4.2 以后版本加入了 ARM )
-WRF_ARM_VERSION=$(echo ${WRF_VERSION} | awk -F'.' '{print $1$2}')
+WRF_FORMATED_VERSION=$(echo ${WRF_VERSION} | awk -F'.' '{print $1$2}')
 # WPS 4.3.1 版本以后开始才开始支持 gfortran 9
 WPS_GNU_VERSION=$(echo ${WPS_VERSION} | awk -F'.' '{print $1$2}')
 

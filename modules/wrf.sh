@@ -9,7 +9,7 @@ DISABLE_COMPILER_ENV=false
 # 读取命令行新的版本信息后再计算WRF的主要版本等信息
 WRF_MAJOR_VERSION=${WRF_VERSION%%.*}
 #　与官方开始支持ARM　版本有关（4.2 以后版本加入了 ARM )
-WRF_ARM_VERSION=$(echo ${WRF_VERSION} | awk -F'.' '{print $1$2}')
+WRF_FORMATED_VERSION=$(echo ${WRF_VERSION} | awk -F'.' '{print $1$2}')
 
 WRF_SRC="WRF-${WRF_VERSION}.tar.gz"
 
@@ -156,7 +156,7 @@ patch_wrf()
     fi
     
     # Amazon Linux 2022/RHEL8/Centos8/Oracle Linux 8's tirpc issue
-    if [ ${WRF_ARM_VERSION} -lt 42 ] && [ ${S_VERSION_ID} -eq 8 ]
+    if [ ${WRF_FORMATED_VERSION} -lt 42 ] && [ ${S_VERSION_ID} -eq 8 ]
     then
 	patch -Np1 < "../../patch/wrf/WRF-tirpc.patch"
     fi
@@ -167,27 +167,27 @@ patch_wrf()
 	#PROCESSOR_TYPE=$(sudo dmidecode -t processor | grep -i Version | awk '{print $NF}')
 	
 	# support WRF 3.7.x on aarch64
-	if [ ${WRF_ARM_VERSION} -lt 39 ]
+	if [ ${WRF_FORMATED_VERSION} -lt 39 ]
 	then
 	    if [ -f "../../patch/wrf/WRF-3.w-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch" ]
 	    then
 		patch -Np1 < "../../patch/wrf/WRF-3.w-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch"
 	    fi
-        elif [ ${WRF_ARM_VERSION} -lt 40 ] 
+        elif [ ${WRF_FORMATED_VERSION} -lt 40 ] 
         then
 	    if [ -f "../../patch/wrf/WRF-3.x-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch" ]
 	    then
 		patch -Np1 < "../../patch/wrf/WRF-3.x-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch"
                 #patch -Np1 < "../../patch/wrf/WRF-3.x-${SARCH}-${PROCESSOR_TYPE}.patch"
 	    fi
-        elif [ ${WRF_ARM_VERSION} -lt 42 ]
+        elif [ ${WRF_FORMATED_VERSION} -lt 42 ]
         then 
 	    if [ -f "../../patch/wrf/WRF-4.x-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch" ]
 	    then 
 		#patch -Np1 < "../../patch/wrf/WRF-4.x-${SARCH}-${PROCESSOR_TYPE}.patch"
 		patch -Np1 < "../../patch/wrf/WRF-4.x-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch"
 	    fi
-	elif [ ${WRF_ARM_VERSION} -ge 42 ]
+	elif [ ${WRF_FORMATED_VERSION} -ge 42 ]
 	then
 	    if [ -f "../../patch/wrf/WRF-4.z-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch" ]
 	    then
@@ -198,13 +198,13 @@ patch_wrf()
     # Intel 和 AMD, 如果使用clang 和 gcc 可以使用同样的 patch, 所以这里补丁变量使用 $(uname -m)
     elif [ "${SARCH}" == "x86_64" ] || [ "${SARCH}" == "amd64" ]
     then
-        if [ ${WRF_ARM_VERSION} -lt 40 ]
+        if [ ${WRF_FORMATED_VERSION} -lt 40 ]
         then
 	    if [ -f "../../patch/wrf/WRF-3.x-$(uname -m)-${HPC_COMPILER}-${HPC_MPI}.patch" ]
 	    then
 		patch -Np1 < "../../patch/wrf/WRF-3.x-$(uname -m)-${HPC_COMPILER}-${HPC_MPI}.patch"
 	    fi
-        elif [ ${WRF_ARM_VERSION} -lt 41 ]
+        elif [ ${WRF_FORMATED_VERSION} -lt 41 ]
         then
             # 对于icc, 事实上 4.0的最后一个版本 4.0.3 已经修正 "-openmpi" 成 "-gopenmpi", 所以只有4.1 之前非 4.0.3 版本需要此 icc 补丁
 	    if [ "${HPC_COMPILER}" == "icc" ]
@@ -261,7 +261,7 @@ install_wrf()
        	cd "${WRF_SRC%.tar.gz}"
 	# since 4.4, the NoahMP code has been moved to an external repository
 	# https://github.com/wrf-model/WRF/releases/tag/v4.4
-	if [ ${WRF_ARM_VERSION} -ge 44 ]
+	if [ ${WRF_FORMATED_VERSION} -ge 44 ]
 	then
 	    cd phys
 	    NOAHMP_BRANCH=release-v$(echo ${WRF_VERSION} | awk -F. '{print $1"."$2}')-WRF
