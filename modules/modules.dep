@@ -358,6 +358,7 @@ icx-openmpi:openmpi
 nvc-openmpi:openmpi
 
 # mpich's dependencies
+amdclang-mpich:mpich
 armclang-mpich:mpich
 armgcc-mpich:mpich
 gcc-mpich:mpich
