@@ -346,6 +346,7 @@ install_gcc_compiler()
     fi
     export PATH=${HPC_PREFIX}/opt/gnu/${TARGET}/bin:${HPC_PREFIX}/opt/gnu/bin:${HPC_PREFIX}/tmp/${HPC_COMPILER}/${TARGET}/bin:${HPC_PREFIX}/tmp/${HPC_COMPILER}/bin:${PATH}
     export LD_LIBRARY_PATH=${HPC_PREFIX}/opt/gnu/lib64:${HPC_PREFIX}/opt/gnu/lib:${LD_LIBRARY_PATH}
+    export PKG_CONFIG_PATH=${HPC_PREFIX}/opt/gnu/lib64/pkgconfig:${HPC_PREFIX}/opt/gnu/lib/pkgconfig:${PKG_CONFIG_PATH}
     build_binutils
     # after build binutils, use the official version to rebuild gcc
     build_gcc
@@ -366,7 +367,7 @@ build_cmake()
 	tar xf "${CMAKE_SRC}"
 	cd "${CMAKE_SRC%.tar.gz}"
 	./bootstrap --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} --parallel=$(($(nproc) / 2)) -- -DCMAKE_BUILD_TYPE:STRING=Release
-	make && sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install && cd ..
+	make && sudo --preserve-env=PATH,LD_LIBRARY_PATH,PKG_CONFIG_PATH env make install && cd ..
     fi
 }
 
@@ -393,9 +394,9 @@ build_clang()
 	-DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/opt/gnu \
 	-DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;flang;lldb'
 
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH env \
+    sudo --preserve-env=PATH,LD_LIBRARY_PATH,PKG_CONFIG_PATH env \
 	ninja -C ${BUILDDIR} install
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH env \
+    sudo --preserve-env=PATH,LD_LIBRARY_PATH,PKG_CONFIG_PATH env \
 	cmake -G Ninja -S llvm-project-llvmorg-${CLANG_VERSION}/llvm  -B ${BUILDDIR} \
 	-DLLVM_EXTERNAL_LIT=./llvm-project-llvmorg-${CLANG_VERSION}/llvm/utils/lit/lit.py \
 	-DLLVM_ROOT=${HPC_PREFIX}/opt/gnu
@@ -406,6 +407,7 @@ install_clang_compiler()
 {
     export PATH=${HPC_PREFIX}/opt/gnu/bin:${PATH}
     export LD_LIBRARY_PATH=${HPC_PREFIX}/opt/gnu/lib:${LD_LIBRARY_PATH}
+    export PKG_CONFIG_PATH=${HPC_PREFIX}/opt/gnu/lib/pkgconfig:${PKG_CONFIG_PATH}
     build_clang
     sudo ln -sf ${HPC_PREFIX}/opt/gnu/bin/{flang-new,flang}
 }
