@@ -1,0 +1,85 @@
+diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
+--- WRF-4.x.orig/arch/configure.defaults	2021-01-15 17:21:58.000000000 +0000
++++ WRF-4.x/arch/configure.defaults	2023-04-04 13:25:58.000000000 +0000
+@@ -757,46 +757,48 @@
+ CC_TOOLS        =      $(SCC) 
+ 
+ ###########################################################
+-#ARCH    Linux x86_64 ppc64le, gfortran compiler with gcc  #serial smpar dmpar dm+sm
++#ARCH    Linux x86_64 ppc64le, flang compiler with clang  #serial smpar dmpar dm+sm
+ #
+-DESCRIPTION     =       GNU ($SFC/$SCC)
++DESCRIPTION     =       AMD AOCC ($SFC/$SCC)
+ DMPARALLEL      =       # 1
+ OMPCPP          =       # -D_OPENMP
+ OMP             =       # -fopenmp
+-OMPCC           =       # -fopenmp
+-SFC             =       gfortran
+-SCC             =       gcc
+-CCOMP           =       gcc
++OMPCC           =       # -fopenmp -Mpreprocess
++SFC             =       flang
++SCC             =       clang
++CCOMP           =       clang
+ DM_FC           =       mpif90 -f90=$(SFC)
+-DM_CC           =       mpicc -cc=$(SCC)
++DM_CC           =       mpicc -DMPI2_SUPPORT
+ FC              =       CONFIGURE_FC
+ CC              =       CONFIGURE_CC
+ LD              =       $(FC)
+ RWORDSIZE       =       CONFIGURE_RWORDSIZE
+ PROMOTION       =       #-fdefault-real-8
+ ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_SUBR  -DWRF_USE_CLM
+-CFLAGS_LOCAL    =       -w -O3 -c  # -DRSL0_ONLY
+-LDFLAGS_LOCAL   =       
++LIBMVEC         =       -mllvm -vector-library=LIBMVEC-X86 -mllvm -enable-loop-vectorization-with-conditions -Mstack_arrays
++AOCCOPT         =       -O3 -m64 -Ofast -ffast-math
++CFLAGS_LOCAL    =       -w $(AOCCOPT) # -DRSL0_ONLY
++LDFLAGS_LOCAL   =       -ltirpc -lalm -lamdlibm -lm -ljemalloc -lmvec $(AOCCOPT)
+ CPLUSPLUSLIB    =       
+ ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
+-FCOPTIM         =       -O2 -ftree-vectorize -funroll-loops
+-FCREDUCEDOPT	=       $(FCOPTIM)
+-FCNOOPT		=       -O0
++FCOPTIM         =       $(AOCCOPT) -fopenmp
++FCREDUCEDOPT	=       -O2 -Ofast -ffast-math
++FCNOOPT		=       -O0 -DFCNOOPT -fopenmp
+ FCDEBUG         =       # -g $(FCNOOPT) # -ggdb -fbacktrace -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow
+-FORMAT_FIXED    =       -ffixed-form
+-FORMAT_FREE     =       -ffree-form -ffree-line-length-none
++FORMAT_FIXED    =       -Mfixed
++FORMAT_FREE     =       -Mfreeform
+ FCSUFFIX        =       
+ FCCOMPAT        =       
+-BYTESWAPIO      =       -fconvert=big-endian -frecord-marker=4
+-FCBASEOPTS_NO_G =       -w $(FORMAT_FREE) $(BYTESWAPIO) $(FCCOMPAT)
+-FCBASEOPTS      =       $(FCBASEOPTS_NO_G) $(FCDEBUG)
++BYTESWAPIO      =       -Mbyteswapio
++FCBASEOPTS_NO_G =       -w $(FORMAT_FREE) $(BYTESWAPIO) -fopenmp
++FCBASEOPTS      =       $(FCBASEOPTS_NO_G) $(FCDEBUG) -DBASEOPTS -fopenmp
+ MODULE_SRCH_FLAG =     
+-TRADFLAG        =      CONFIGURE_TRADFLAG
+-CPP             =      /lib/cpp CONFIGURE_CPPFLAGS
+-AR              =      ar
++TRADFLAG        =      -traditional
++CPP             =      /lib/cpp -P
++AR              =      llvm-ar
+ ARFLAGS         =      ru
+ M4              =      m4 -G
+-RANLIB          =      ranlib
++RANLIB          =      llvm-ranlib
+ RLFLAGS		=	
+ CC_TOOLS        =      $(SCC) 
+ 
+diff -urN WRF-4.x.orig/configure WRF-4.x/configure
+--- WRF-4.x.orig/configure	2021-01-15 17:21:58.000000000 +0000
++++ WRF-4.x/configure	2023-04-04 12:50:11.000000000 +0000
+@@ -686,7 +686,7 @@
+   foo=foo_$$
+ 
+   grep '^SFC' configure.wrf | grep -i 'gfortran' > /dev/null
+-  if [ $? ]
++  if [ $? -eq 0 ]
+   then
+ 
+     cat > ${foo}.F << EOF

@@ -70,10 +70,14 @@ install_hdf5()
     if [ "${HPC_MPI}" == "intelmpi" ]
     then
 	LIBS_OPTS="-lmpi -lmpifort -L${I_MPI_ROOT}/lib -L${I_MPI_ROOT}/lib/release ${LIBS}"
+	CXX_OPTS=$(which mpiicpc)
+    else
+	CXX_OPTS=$(which mpicxx)
     fi
-    ./configure LIBS="${LIBS_OPTS}" --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+    ./configure CXX=${CXX_OPTS} LIBS="${LIBS_OPTS}" --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --libdir=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib \
 	    --enable-fortran \
+	    --enable-cxx \
 	    --enable-shared \
 	    --enable-hl \
 	    --enable-parallel \
