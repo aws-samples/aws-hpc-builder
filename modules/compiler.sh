@@ -25,6 +25,11 @@ TARGET=$(uname -m)-bing-linux
 #TARGET=$(gcc -### 2>&1 | grep "^Target:" | awk '{print $2}')
 # **************************************
 
+# Intel OneAPI Base and HPC toolkits URLs
+# https://www.intel.com/content/www/us/en/developer/tools/oneapi/toolkits.html
+# https://www.intel.com/content/www/us/en/developer/tools/oneapi/base-toolkit-download.html
+# https://www.intel.com/content/www/us/en/developer/tools/oneapi/hpc-toolkit-download.html
+
 # Intel OneAPI 2021.3
 #INTEL_COMPILER_VERSION=${2:-2021.3.0.3219}
 #INTEL_HPC_COMPILER_VERSION=2021.3.0.3230
@@ -67,6 +72,15 @@ INTEL_HPC_COMPILER_DL_ID=18679
 #https://registrationcenter-download.intel.com/akdlm/irc_nas/18975/l_HPCKit_p_2022.3.1.16997_offline.sh
 #https://registrationcenter-download.intel.com/akdlm/irc_nas/18852/l_BaseKit_p_2022.3.0.8767_offline.sh
 #https://registrationcenter-download.intel.com/akdlm/irc_nas/18679/l_HPCKit_p_2022.3.0.8751_offline.sh
+
+
+# Intel OneAPI 2023.1
+#INTEL_COMPILER_VERSION=${2:-2023.3.1.0.46401}
+#INTEL_HPC_COMPILER_VERSION=2023.1.0.46346
+#INTEL_COMPILER_DL_ID=7deeaac4-f605-4bcf-a81b-ea7531577c61
+#INTEL_HPC_COMPILER_DL_ID=1ff1b38a-8218-4c53-9956-f0b264de35a
+#https://registrationcenter-download.intel.com/akdlm/IRC_NAS/7deeaac4-f605-4bcf-a81b-ea7531577c61/l_BaseKit_p_2023.1.0.46401_offline.sh
+#https://registrationcenter-download.intel.com/akdlm/IRC_NAS/1ff1b38a-8218-4c53-9956-f0b264de35a4/l_HPCKit_p_2023.1.0.46346_offline.sh
 
 # ArmPL 22.02
 #https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-allinea-studio/$(echo ${ARM_COMPILER_VERSION} | tr '.' '-')/arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}_${SARCH}.tar"
@@ -195,9 +209,17 @@ download_compiler() {
 	    fi
 	    ;;
 	"icc" | "icx")
+	    INTEL_COMPILER_VERSION_YEAR=$(echo ${INTEL_COMPILER_VERSION} | cut -f1 -d.)
+	    if [ ${INTEL_COMPILER_VERSION_YEAR} -lt 2023 ]
+	    then
+		INTEL_DOWNLOAD_BASE_URL="https://registrationcenter-download.intel.com/akdlm/irc_nas"
+	    else
+		INTEL_DOWNLOAD_BASE_URL="https://registrationcenter-download.intel.com/akdlm/IRC_NAS"
+	    fi
+
 	    if [ ! -f ${INTEL_COMPILER_SRC} ]
             then
-		wget "https://registrationcenter-download.intel.com/akdlm/irc_nas/${INTEL_COMPILER_DL_ID}/${INTEL_COMPILER_SRC}"
+		wget "${INTEL_DOWNLOAD_BASE_URL}/${INTEL_COMPILER_DL_ID}/${INTEL_COMPILER_SRC}"
 		result=$?
 		if [ ${result} -ne 0 ]
 		then
@@ -208,23 +230,34 @@ download_compiler() {
 	    then
 		return
 	    else
-		wget "https://registrationcenter-download.intel.com/akdlm/irc_nas/${INTEL_HPC_COMPILER_DL_ID}/${INTEL_HPC_COMPILER_SRC}"
+		wget "${INTEL_DOWNLOAD_BASE_URL}/${INTEL_HPC_COMPILER_DL_ID}/${INTEL_HPC_COMPILER_SRC}"
 		return $?
 	    fi
 	    ;;
 	"amdclang")
+	    # aocc/aocl url
+	    # https://www.amd.com/en/developer/aocc.html
+	    # https://www.amd.com/en/developer/aocl.html
+	    # https://developer.amd.com/amd-aocc/#downloads
+	    # https://developer.amd.com/amd-aocl/#downloads
+	    # https://download.amd.com/developer/eula/aocc-compiler/aocc-compiler-4.0.0.tar
+	    # https://download.amd.com/developer/eula/aocl/aocl-4-0/aocl-linux-aocc-4.0.tar.gz
 	    if [ ! -f ${AMD_COMPILER_SRC} ]
 	    then
-		echo "Please go to https://developer.amd.com/amd-aocc/#downloads , download ${AMD_COMPILER_SRC} to $(pwd)/ and run the installation again" >&2
-		echo "Please go to https://developer.amd.com/amd-aocl/#downloads , download ${AMD_AOCL_SRC} to $(pwd)/ and run the installation again" >&2
-		exit 1
+		wget https://download.amd.com/developer/eula/aocc-compiler/${AMD_COMPILER_SRC}
+		result=$?
+		if [ ${result} -ne 0 ]
+		then
+		    return ${result}
+		fi
 	    fi
-	    if [ ! -f ${AMD_AOCL_SRC} ]
+	    if [ -f ${AMD_AOCL_SRC} ]
 	    then
-		echo "Please go to https://developer.amd.com/amd-aocl/#downloads , download ${AMD_AOCL_SRC} to $(pwd)/ and run the installation again" >&2
-		exit 1
+		return
+	    else
+		wget https://download.amd.com/developer/eula/aocl/aocl-$(echo ${AMD_AOCL_VERSION} | tr '.' '-')/${AMD_AOCL_SRC}
+		return $?
 	    fi
-	    return
 	    ;;
 	"gcc")
 	    if [ ! -f ${BINUTILS_SRC} ]
