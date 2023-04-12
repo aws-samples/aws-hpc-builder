@@ -1,7 +1,7 @@
 diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
 --- WRF-4.x.orig/arch/configure.defaults	2018-11-10 07:55:46.000000000 +0800
-+++ WRF-4.x/arch/configure.defaults	2023-03-15 14:41:42.541020451 +0800
-@@ -296,13 +296,13 @@
++++ WRF-4.x/arch/configure.defaults	2023-04-12 15:55:44.978310270 +0800
+@@ -296,21 +296,21 @@
  DESCRIPTION     =       INTEL ($SFC/$SCC)
  DMPARALLEL      =       # 1
  OMPCPP          =       # -D_OPENMP
@@ -19,3 +19,22 @@ diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
  FC              =       CONFIGURE_FC
  CC              =       CONFIGURE_CC
  LD              =       $(FC)
+ RWORDSIZE       =       CONFIGURE_RWORDSIZE
+ PROMOTION       =       -real-size `expr 8 \* $(RWORDSIZE)` -i4
+ ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_FUNC  -DWRF_USE_CLM
+-CFLAGS_LOCAL    =       -w -O3 -ip #-xHost -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -no-multibyte-chars
+-LDFLAGS_LOCAL   =       -ip #-xHost -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -align all -fno-alias -fno-common
++CFLAGS_LOCAL    =       -w -O3 -ip -xHost -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -no-multibyte-chars
++LDFLAGS_LOCAL   =       -ip -xHost -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -align all -fno-alias -fno-common
+ CPLUSPLUSLIB    =       
+ ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
+ FCOPTIM         =       -O3
+@@ -322,7 +322,7 @@
+ FCSUFFIX        =
+ BYTESWAPIO      =       -convert big_endian
+ RECORDLENGTH    =       -assume byterecl
+-FCBASEOPTS_NO_G =       -ip -fp-model precise -w -ftz -align all -fno-alias $(FORMAT_FREE) $(BYTESWAPIO) #-xHost -fp-model fast=2 -no-heap-arrays -no-prec-div -no-prec-sqrt -fno-common
++FCBASEOPTS_NO_G =       -ip -fp-model fast=2 -w -ftz -align all -fno-alias $(FORMAT_FREE) $(BYTESWAPIO) #-xHost -fp-model fast=2 -no-heap-arrays -no-prec-div -no-prec-sqrt -fno-common
+ FCBASEOPTS      =       $(FCBASEOPTS_NO_G) $(FCDEBUG)
+ MODULE_SRCH_FLAG =     
+ TRADFLAG        =      CONFIGURE_TRADFLAG

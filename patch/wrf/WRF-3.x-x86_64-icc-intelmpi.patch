@@ -1,7 +1,7 @@
 diff -urN WRF-3.x.orig/arch/configure_new.defaults WRF-3.x/arch/configure_new.defaults
 --- WRF-3.x.orig/arch/configure_new.defaults	2017-08-17 09:21:45.000000000 +0800
-+++ WRF-3.x/arch/configure_new.defaults	2023-03-15 21:08:24.732488771 +0800
-@@ -296,13 +296,13 @@
++++ WRF-3.x/arch/configure_new.defaults	2023-04-12 15:44:15.589139157 +0800
+@@ -296,21 +296,21 @@
  DESCRIPTION     =       INTEL ($SFC/$SCC)
  DMPARALLEL      =       # 1
  OMPCPP          =       # -D_OPENMP
@@ -19,3 +19,22 @@ diff -urN WRF-3.x.orig/arch/configure_new.defaults WRF-3.x/arch/configure_new.de
  FC              =       CONFIGURE_FC
  CC              =       CONFIGURE_CC
  LD              =       $(FC)
+ RWORDSIZE       =       CONFIGURE_RWORDSIZE
+ PROMOTION       =       -real-size `expr 8 \* $(RWORDSIZE)` -i4
+ ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_FUNC  -DWRF_USE_CLM
+-CFLAGS_LOCAL    =       -w -O3 -ip #-xHost -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -no-multibyte-chars
+-LDFLAGS_LOCAL   =       -ip #-xHost -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -align all -fno-alias -fno-common
++CFLAGS_LOCAL    =       -w -O3 -ip -xHost -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -no-multibyte-chars
++LDFLAGS_LOCAL   =       -ip -xHost -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -align all -fno-alias -fno-common
+ CPLUSPLUSLIB    =       
+ ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
+ FCOPTIM         =       -O3
+@@ -322,7 +322,7 @@
+ FCSUFFIX        =
+ BYTESWAPIO      =       -convert big_endian
+ RECORDLENGTH    =       -assume byterecl
+-FCBASEOPTS_NO_G =       -ip -fp-model precise -w -ftz -align all -fno-alias $(FORMAT_FREE) $(BYTESWAPIO) #-xHost -fp-model fast=2 -no-heap-arrays -no-prec-div -no-prec-sqrt -fno-common
++FCBASEOPTS_NO_G =       -ip -fp-model fast=2 -w -ftz -align all -fno-alias $(FORMAT_FREE) $(BYTESWAPIO) #-xHost -fp-model fast=2 -no-heap-arrays -no-prec-div -no-prec-sqrt -fno-common
+ FCBASEOPTS      =       $(FCBASEOPTS_NO_G) $(FCDEBUG)
+ MODULE_SRCH_FLAG =     
+ TRADFLAG        =      CONFIGURE_TRADFLAG

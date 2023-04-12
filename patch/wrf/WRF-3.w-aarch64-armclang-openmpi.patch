@@ -24,12 +24,12 @@ diff -urN WRF-3.w.orig/arch/configure_new.defaults WRF-3.w/arch/configure_new.de
 +LD              =       $(FC)
 +RWORDSIZE       =       CONFIGURE_RWORDSIZE
 +PROMOTION       =       #-fdefault-real-8
-+ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_SUBR  -DWRF_USE_CLM
-+CFLAGS_LOCAL    =       -mcpu=native -w -O3 -c  # -DRSL0_ONLY -I$(ARMPL_INCLUDES_LP64_MP)
-+LDFLAGS_LOCAL   =       -armpl -lamath -lm -lastring
++ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_SUBR -DWRF_USE_CLM
++CFLAGS_LOCAL    =       -Ofast -mcpu=native -w -c # -DRSL0_ONLY -I$(ARMPL_INCLUDES_LP64_MP)
++LDFLAGS_LOCAL   =       -Ofast -mcpu=native -armpl -lamath -lm -lastring
 +CPLUSPLUSLIB    =     
 +ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
-+FCOPTIM         =       -O3 -funroll-loops
++FCOPTIM         =       -Ofast -mcpu=native -funroll-loops
 +FCREDUCEDOPT    =       $(FCOPTIM)
 +FCNOOPT         =       -O0  
 +FCDEBUG         =       # -g $(FCNOOPT)  # -fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow
@@ -38,8 +38,8 @@ diff -urN WRF-3.w.orig/arch/configure_new.defaults WRF-3.w/arch/configure_new.de
 +FCSUFFIX        =     
 +FCCOMPAT        =     
 +BYTESWAPIO      =       -fconvert=big-endian -frecord-marker=4
-+FCBASEOPTS_NO_G =       -w $(FORMAT_FREE) $(BYTESWAPIO)
-+FCBASEOPTS      =       -mcpu=native $(OMP) $(FCBASEOPTS_NO_G) $(FCDEBUG)
++FCBASEOPTS_NO_G =       -mcpu=native -w $(FORMAT_FREE) $(BYTESWAPIO)
++FCBASEOPTS      =       $(OMP) $(FCBASEOPTS_NO_G) $(FCDEBUG)
 +MODULE_SRCH_FLAG =
 +TRADFLAG        =      -traditional
 +CPP             =      cpp -P

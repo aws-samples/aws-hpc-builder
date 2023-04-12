@@ -1,7 +1,7 @@
 diff -urN WRF-4.z.orig/arch/configure.defaults WRF-4.z/arch/configure.defaults
---- WRF-4.z.orig/arch/configure.defaults	2021-01-15 17:21:58.000000000 +0000
-+++ WRF-4.z/arch/configure.defaults	2022-11-29 10:35:24.000000000 +0000
-@@ -44,18 +44,18 @@
+--- WRF-4.z.orig/arch/configure.defaults	2021-01-16 01:21:58.000000000 +0800
++++ WRF-4.z/arch/configure.defaults	2023-04-12 18:15:46.610709438 +0800
+@@ -44,29 +44,29 @@
  CC_TOOLS        =      cc 
  
  ###########################################################
@@ -26,25 +26,28 @@ diff -urN WRF-4.z.orig/arch/configure.defaults WRF-4.z/arch/configure.defaults
  FC              =       CONFIGURE_FC
  CC              =       CONFIGURE_CC
  LD              =       $(FC)
-@@ -63,10 +63,10 @@
+ RWORDSIZE       =       CONFIGURE_RWORDSIZE
  PROMOTION       =       #-fdefault-real-8
  ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_SUBR  -DWRF_USE_CLM
- CFLAGS_LOCAL    =       -w -O3 -c  # -DRSL0_ONLY
+-CFLAGS_LOCAL    =       -w -O3 -c  # -DRSL0_ONLY
 -LDFLAGS_LOCAL   =
-+LDFLAGS_LOCAL   =	 -armpl -lamath -lm -lastring
++CFLAGS_LOCAL    =       -Ofast -mcpu=native -w -c  # -DRSL0_ONLY
++LDFLAGS_LOCAL   =	 -Ofast -mcpu=native -armpl -lamath -lm -lastring
  CPLUSPLUSLIB    =       
  ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
 -FCOPTIM         =       -O2 -ftree-vectorize -funroll-loops
-+FCOPTIM         =       -mcpu=native -O3 -funroll-loops
++FCOPTIM         =       -Ofast -mcpu=native -funroll-loops
  FCREDUCEDOPT	=       $(FCOPTIM)
  FCNOOPT         =       -O0
  FCDEBUG         =       # -g $(FCNOOPT)  # -fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow
-@@ -76,14 +76,14 @@
+@@ -75,15 +75,15 @@
+ FCSUFFIX        =       
  FCCOMPAT        =       
  BYTESWAPIO      =       -fconvert=big-endian -frecord-marker=4
- FCBASEOPTS_NO_G =       -w $(FORMAT_FREE) $(BYTESWAPIO) $(FCCOMPAT)
+-FCBASEOPTS_NO_G =       -w $(FORMAT_FREE) $(BYTESWAPIO) $(FCCOMPAT)
 -FCBASEOPTS      =       $(FCBASEOPTS_NO_G) $(FCDEBUG)
-+FCBASEOPTS      =       -mcpu=native $(OMP) $(FCBASEOPTS_NO_G) $(FCDEBUG)
++FCBASEOPTS_NO_G =       -mcpu=native -w $(FORMAT_FREE) $(BYTESWAPIO) $(FCCOMPAT)
++FCBASEOPTS      =       $(OMP) $(FCBASEOPTS_NO_G) $(FCDEBUG)
  MODULE_SRCH_FLAG =
  TRADFLAG        =      CONFIGURE_TRADFLAG
 -CPP             =      /lib/cpp CONFIGURE_CPPFLAGS
@@ -59,8 +62,8 @@ diff -urN WRF-4.z.orig/arch/configure.defaults WRF-4.z/arch/configure.defaults
  CC_TOOLS        =      $(SCC) 
  
 diff -urN WRF-4.z.orig/configure WRF-4.z/configure
---- WRF-4.z.orig/configure	2021-01-15 17:21:58.000000000 +0000
-+++ WRF-4.z/configure	2022-11-29 09:48:51.000000000 +0000
+--- WRF-4.z.orig/configure	2021-01-16 01:21:58.000000000 +0800
++++ WRF-4.z/configure	2023-04-12 18:14:27.206708681 +0800
 @@ -686,7 +686,7 @@
    foo=foo_$$
  
