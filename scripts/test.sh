@@ -18,10 +18,10 @@ ln -sf /fsx/wrf-${WARCH}/${WRF_COMPILER}/WRF-${WRF_VERSION}/main/wrf.exe  .
 
 ulimit -s unlimited
 
-if [ "$(uname -m)" == "x86_64" ]
+if [ "$(arch)" == "x86_64" ]
 then
     num_proc=$(echo $(nproc)/2 | bc)
-elif [ "$(uname -m)" == "aarch64" ]
+elif [ "$(arch)" == "aarch64" ]
 then
     num_proc=$(nproc)
 fi

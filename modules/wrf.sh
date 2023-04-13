@@ -139,9 +139,9 @@ patch_wrf()
     # 精度问题, patch GIT 版本(加上SARCH 只需给特定平台(如aarch64) 提供patch, clang 通过 ${HPC_COMPILER} 差异提供或不提供补丁
     if [ "$WRF_VERSION" == "git" ] 
     then
-	if [ -f "../../patch/wrf/WRF-${WRF_VERSION}-$(uname -m)-${HPC_COMPILER}-${HPC_MPI}.patch" ]
+	if [ -f "../../patch/wrf/WRF-${WRF_VERSION}-$(arch)-${HPC_COMPILER}-${HPC_MPI}.patch" ]
 	then
-	    patch -Np1 < "../../patch/wrf/WRF-${WRF_VERSION}-$(uname -m)-${HPC_COMPILER}-${HPC_MPI}.patch"
+	    patch -Np1 < "../../patch/wrf/WRF-${WRF_VERSION}-$(arch)-${HPC_COMPILER}-${HPC_MPI}.patch"
 	fi
 	if [ -f "../../patch/wrf/WRF-4.z-double-precision-${SARCH}-${HPC_MPI}.patch" ]
 	then
@@ -195,14 +195,21 @@ patch_wrf()
 	    fi
         fi
     # 编译器支持, intel and amd
-    # Intel 和 AMD, 如果使用clang 和 gcc 可以使用同样的 patch, 所以这里补丁变量使用 $(uname -m)
+    # Intel 和 AMD, 如果使用clang 和 gcc 可以使用同样的 patch, 所以这里补丁变量使用 $(arch)
     elif [ "${SARCH}" == "x86_64" ] || [ "${SARCH}" == "amd64" ]
-    then
-        if [ ${WRF_FORMATED_VERSION} -lt 40 ]
-        then
-	    if [ -f "../../patch/wrf/WRF-3.x-$(uname -m)-${HPC_COMPILER}-${HPC_MPI}.patch" ]
+    then 
+	# support building WRF 3.7.x with intel compiler and mpi
+	if [ ${WRF_FORMATED_VERSION} -lt 39 ]
+	then
+	    if [ -f "../../patch/wrf/WRF-3.w-$(arch)-${HPC_COMPILER}-${HPC_MPI}.patch" ]
 	    then
-		patch -Np1 < "../../patch/wrf/WRF-3.x-$(uname -m)-${HPC_COMPILER}-${HPC_MPI}.patch"
+		patch -Np1 < "../../patch/wrf/WRF-3.w-$(arch)-${HPC_COMPILER}-${HPC_MPI}.patch"
+	    fi
+        elif [ ${WRF_FORMATED_VERSION} -lt 40 ] 
+        then
+	    if [ -f "../../patch/wrf/WRF-3.x-$(arch)-${HPC_COMPILER}-${HPC_MPI}.patch" ]
+	    then
+		patch -Np1 < "../../patch/wrf/WRF-3.x-$(arch)-${HPC_COMPILER}-${HPC_MPI}.patch"
 	    fi
         elif [ ${WRF_FORMATED_VERSION} -lt 41 ]
         then
@@ -223,18 +230,18 @@ patch_wrf()
 		fi
 	    else 
 		# 对于gcc，或者clang 等编译器, 4.0.x 版本都使用相同的补丁
-		if [ -f "../../patch/wrf/WRF-4.x-$(uname -m)-${HPC_COMPILER}-${HPC_MPI}.patch" ]
+		if [ -f "../../patch/wrf/WRF-4.x-$(arch)-${HPC_COMPILER}-${HPC_MPI}.patch" ]
 		then
-		    patch -Np1 < "../../patch/wrf/WRF-4.x-$(uname -m)-${HPC_COMPILER}-${HPC_MPI}.patch"
+		    patch -Np1 < "../../patch/wrf/WRF-4.x-$(arch)-${HPC_COMPILER}-${HPC_MPI}.patch"
 		fi
 	    fi
 	else
-	    # 使用开源编译器，可以使用相同的patch，所以这里用 $(uname -m)
+	    # 使用开源编译器，可以使用相同的patch，所以这里用 $(arch)
 	    if [ "${HPC_COMPILER}" == "icc" ]
 	    then
-		patch -Np1 < "../../patch/wrf/WRF-4.z-$(uname -m)-${HPC_COMPILER}-${HPC_MPI}.patch"
+		patch -Np1 < "../../patch/wrf/WRF-4.z-$(arch)-${HPC_COMPILER}-${HPC_MPI}.patch"
 	    else
-		patch -Np1 < "../../patch/wrf/WRF-4.x-$(uname -m)-${HPC_COMPILER}-${HPC_MPI}.patch"
+		patch -Np1 < "../../patch/wrf/WRF-4.x-$(arch)-${HPC_COMPILER}-${HPC_MPI}.patch"
 	    fi
         fi
     fi

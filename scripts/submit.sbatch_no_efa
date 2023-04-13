@@ -76,9 +76,9 @@ echo "Running WRF on $(date)"
 cd ${JOB_DIR}
 ln -sf /fsx/wrf-${WARCH}/${WRF_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/main/wrf.exe  .
 
-echo "$(date +"%Y%m%d-%H:%M:%S")[$(date "+%s"]: StartJob - $(basename ${JOB_DIR}) - ${WRF_COMPILER} - ${HPC_MPI}" >> wrf_$(uname -m).times
+echo "$(date +"%Y%m%d-%H:%M:%S")[$(date "+%s"]: StartJob - $(basename ${JOB_DIR}) - ${WRF_COMPILER} - ${HPC_MPI}" >> wrf_$(arch).times
 #mpirun ${SHOW_BIND_OPTS} ./wrf.exe >> mpirun_${WARCH}_${WRF_COMPILER}_${HPC_MPI}_debug.log 2>&1
 mpirun --mca pml cm --mca mtl ofi --mca pml_base_verbose 10 --mca mtl_base_verbose 10 ./wrf.exe >> mpirun_${WARCH}_${WRF_COMPILER}_${HPC_MPI}_debug.log 2>&1
 #mpirun --mca pml cm --mca mtl ofi ${SHOW_BIND_OPTS} ./wrf.exe > mpirun_${WARCH}_${WRF_COMPILER}_${HPC_MPI}.log 2>&1
 echo nstasks=$SLURM_NTASKS
-echo "$(date +"%Y%m%d-%H:%M:%S"): JobEnd - $(basename ${JOB_DIR}) - ${WRF_COMPILER} - ${HPC_MPI}" >> wrf_$(uname -m).times
+echo "$(date +"%Y%m%d-%H:%M:%S"): JobEnd - $(basename ${JOB_DIR}) - ${WRF_COMPILER} - ${HPC_MPI}" >> wrf_$(arch).times

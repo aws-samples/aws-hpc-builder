@@ -1,0 +1,40 @@
+diff -urN WRF-3.w.orig/arch/configure_new.defaults WRF-3.w/arch/configure_new.defaults
+--- WRF-3.w.orig/arch/configure_new.defaults	2015-06-26 21:59:10.000000000 +0000
++++ WRF-3.w/arch/configure_new.defaults	2023-04-13 00:04:21.000000000 +0000
+@@ -290,21 +290,21 @@
+ DESCRIPTION     =       INTEL ($SFC/$SCC)
+ DMPARALLEL      =       # 1
+ OMPCPP          =       # -D_OPENMP
+-OMP             =       # -openmp -fpp -auto
+-OMPCC           =       # -openmp -fpp -auto
++OMP             =       # -qopenmp -fpp -auto
++OMPCC           =       # -qopenmp -fpp -auto
+ SFC             =       ifort
+ SCC             =       icc
+ CCOMP           =       icc
+-DM_FC           =       mpif90 -f90=$(SFC)
+-DM_CC           =       mpicc -cc=$(SCC)
++DM_FC           =       mpiifort
++DM_CC           =       mpiicc
+ FC              =       CONFIGURE_FC
+ CC              =       CONFIGURE_CC
+ LD              =       $(FC)
+ RWORDSIZE       =       CONFIGURE_RWORDSIZE
+ PROMOTION       =       -real-size `expr 8 \* $(RWORDSIZE)` -i4
+ ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_FUNC -DWRF_USE_CLM
+-CFLAGS_LOCAL    =       -w -O3 -ip #-xHost -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -no-multibyte-chars
+-LDFLAGS_LOCAL   =       -ip #-xHost -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -align all -fno-alias -fno-common
++CFLAGS_LOCAL    =       -w -O3 -ip -xHost -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -no-multibyte-chars
++LDFLAGS_LOCAL   =       -ip -xHost -fp-model fast=2 -no-prec-div -no-prec-sqrt -ftz -align all -fno-alias -fno-common
+ CPLUSPLUSLIB    =       
+ ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
+ FCOPTIM         =       -O3
+@@ -315,7 +315,7 @@
+ FORMAT_FREE     =       -FR
+ FCSUFFIX        =
+ BYTESWAPIO      =       -convert big_endian
+-FCBASEOPTS_NO_G =       -ip -fp-model precise -w -ftz -align all -fno-alias $(FORMAT_FREE) $(BYTESWAPIO) #-xHost -fp-model fast=2 -no-heap-arrays -no-prec-div -no-prec-sqrt -fno-common
++FCBASEOPTS_NO_G =       -ip -fp-model fast=2 -w -ftz -align all -fno-alias $(FORMAT_FREE) $(BYTESWAPIO) #-xHost -fp-model fast=2 -no-heap-arrays -no-prec-div -no-prec-sqrt -fno-common
+ FCBASEOPTS      =       $(FCBASEOPTS_NO_G) $(FCDEBUG)
+ MODULE_SRCH_FLAG =     
+ TRADFLAG        =      -traditional

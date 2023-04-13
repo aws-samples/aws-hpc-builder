@@ -4,7 +4,7 @@
 
 AMD_AOCL_VERSION=${2:-4.0}
 # to build the packages in the smame host, the first part of the TARGET much compatible(identical)
-TARGET=$(uname -m)-bing-linux
+TARGET=$(arch)-bing-linux
 #HOST=$(gcc -dumpmachine)
 #BUILD=${HOST}
 #TARGET=$(gcc -### 2>&1 | grep "^Target:" | awk '{print $2}')
