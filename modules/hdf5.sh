@@ -61,9 +61,9 @@ install_hdf5()
     cd "${HDF5_SRC%.tar.gz}"
     # https://forum.hdfgroup.org/t/compilation-with-aocc-clang-error/6148
     # https://stackoverflow.com/questions/4580789/ld-unknown-option-soname-on-os-x
-	    #--build=${WRF_TARGET} \
-	    #--host=${WRF_TARGET} \
-	    #--target=${WRF_TARGET} \
+	    #--build=${HPC_TARGET} \
+	    #--host=${HPC_TARGET} \
+	    #--target=${HPC_TARGET} \
     #CC=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/mpicc FC=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/mpif90 ./configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 
     # add intelmpi support

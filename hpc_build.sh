@@ -261,10 +261,10 @@ main()
     check_and_uninstall_gcc10
 
     # to build the packages in the same host, the first part of the TARGET much compatible(identical)
-    TARGET=$(arch)-bing-linux
-    #HOST=$(gcc -dumpmachine)
-    #BUILD=${HOST}
-    #TARGET=$(gcc -### 2>&1 | grep "^Target:" | awk '{print $2}')
+    HPC_TARGET=$(arch)-bing-linux
+    #HPC_HOST=$(gcc -dumpmachine)
+    #HPC_BUILD=${HPC_HOST}
+    #HPC_TARGET=$(gcc -### 2>&1 | grep "^Target:" | awk '{print $2}')
     # **************************************
 
     TARGET_MODULE_VERSION=${MODULE_VERSION}
@@ -295,6 +295,11 @@ main()
 
 	export PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/${HPC_TARGET}/bin:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/bin:${PATH}
 	export LD_LIBRARY_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib64:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/lib64:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/lib:${LD_LIBRARY_PATH}
+	# To support EFA, use libfabric provided by Amazon
+	if [ -d /opt/amazon/efa ]
+	then
+	    export LD_LIBRARY_PATH=/opt/amazon/efa/lib64:${LD_LIBRARY_PATH}
+	fi
 
 	build_hpc_module ${MODULES} ${TARGET_MODULE_VERSION}
     fi

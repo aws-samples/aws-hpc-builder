@@ -19,10 +19,10 @@ BINUTILS_VERSION=2.39
 ELFUTILS_VERSION=0.187
 
 # to build the packages in the smame host, the first part of the TARGET much compatible(identical)
-TARGET=$(arch)-bing-linux
-#HOST=$(gcc -dumpmachine)
-#BUILD=${HOST}
-#TARGET=$(gcc -### 2>&1 | grep "^Target:" | awk '{print $2}')
+HPC_TARGET=$(arch)-bing-linux
+#HPC_HOST=$(gcc -dumpmachine)
+#HPC_BUILD=${HOST}
+#HPC_TARGET=$(gcc -### 2>&1 | grep "^Target:" | awk '{print $2}')
 # **************************************
 
 # Intel OneAPI Base and HPC toolkits URLs
@@ -368,7 +368,7 @@ install_gcc_compiler()
     fi
     # after build binutils, use it for gcc build
     export OPATH=${PATH}
-    export PATH=${HPC_PREFIX}/tmp/${HPC_COMPILER}/${TARGET}/bin:${HPC_PREFIX}/tmp/${HPC_COMPILER}/bin:${PATH}
+    export PATH=${HPC_PREFIX}/tmp/${HPC_COMPILER}/${HPC_TARGET}/bin:${HPC_PREFIX}/tmp/${HPC_COMPILER}/bin:${PATH}
     export OLD_LIBRARY_PATH=${LD_LIBRARY_PATH}
     export LD_LIBRARY_PATH=${HPC_PREFIX}/tmp/${HPC_COMPILER}/lib64:${HPC_PREFIX}/${HPC_COMPILER}/tmp/lib:${LD_LIBRARY_PATH}
     build_binutils_stage_one
@@ -377,7 +377,7 @@ install_gcc_compiler()
     then
 	build_elfutils
     fi
-    export PATH=${HPC_PREFIX}/opt/gnu/${TARGET}/bin:${HPC_PREFIX}/opt/gnu/bin:${HPC_PREFIX}/tmp/${HPC_COMPILER}/${TARGET}/bin:${HPC_PREFIX}/tmp/${HPC_COMPILER}/bin:${PATH}
+    export PATH=${HPC_PREFIX}/opt/gnu/${HPC_TARGET}/bin:${HPC_PREFIX}/opt/gnu/bin:${HPC_PREFIX}/tmp/${HPC_COMPILER}/${HPC_TARGET}/bin:${HPC_PREFIX}/tmp/${HPC_COMPILER}/bin:${PATH}
     export LD_LIBRARY_PATH=${HPC_PREFIX}/opt/gnu/lib64:${HPC_PREFIX}/opt/gnu/lib:${LD_LIBRARY_PATH}
     export PKG_CONFIG_PATH=${HPC_PREFIX}/opt/gnu/lib64/pkgconfig:${HPC_PREFIX}/opt/gnu/lib/pkgconfig:${PKG_CONFIG_PATH}
     build_binutils
@@ -492,11 +492,11 @@ build_binutils_stage_one()
     # the binutils on RHEL/Centos/AL doesn't enable TARGET, if set build and host, fix error: "x86_64-redhat-linux-ar: Command not found"
 	    #--build=$(../config.guess)\
 	    #--host=${HOST} \
-	    #--target=${TARGET} \
+	    #--target=${HPC_TARGET} \
     ../configure --prefix=${HPC_PREFIX}/tmp/${HPC_COMPILER}  \
 	    --build=$(../config.guess) \
 	    --host=$(../config.guess) \
-	    --target=${TARGET} \
+	    --target=${HPC_TARGET} \
 	    --with-sysroot=/ \
 	    --enable-shared \
 	    --enable-gprofng=no \
@@ -521,14 +521,14 @@ build_binutils()
     cd "${BINUTILS_SRC%.tar.gz}"
     mkdir -p build
     cd build
-	    #--host=${HOST} \
-	    #--target=${TARGET} \
+	    #--host=${HPC_HOST} \
+	    #--target=${HPC_TARGET} \
 	    #--with-sysroot=/ \
 #    LD=$(which ld) \
     ../configure --prefix=${HPC_PREFIX}/opt/gnu \
-	    --build=${TARGET} \
-	    --host=${TARGET} \
-	    --target=${TARGET} \
+	    --build=${HPC_TARGET} \
+	    --host=${HPC_TARGET} \
+	    --target=${HPC_TARGET} \
 	    --with-sysroot=/ \
 	    --enable-gold --enable-ld=default \
 	    --enable-plugins --enable-shared \
@@ -603,14 +603,14 @@ build_gcc_stage_one()
     mkdir -p build
     cd build
     # the binutils on RHEL/Centos/AL doesn't enable TARGET, if set build and host, fix error: "x86_64-redhat-linux-ar: Command not found"
-	    #--target=${TARGET} --disable-lto \
+	    #--target=${HPC_TARGET} --disable-lto \
 	    #--build=$(../config.guess) \
 	    #--host=${HOST} \
-	    #--target=${TARGET} \
+	    #--target=${HPC_TARGET} \
     ../configure --prefix=${HPC_PREFIX}/tmp/${HPC_COMPILER} \
 	    --build=$(../config.guess) \
 	    --host=$(../config.guess) \
-	    --target=${TARGET} \
+	    --target=${HPC_TARGET} \
 	    --with-sysroot=/ \
 	    --enable-bootstrap \
 	    --disable-nls \
@@ -635,13 +635,13 @@ build_gcc()
     cd "${GCC_SRC%.tar.gz}"
     mkdir -p build
     cd build
-	    #--build=${TARGET} \
-	    #--host=${TARGET} \
-	    #--target=${TARGET} \
+	    #--build=${HPC_TARGET} \
+	    #--host=${HPC_TARGET} \
+	    #--target=${HPC_TARGET} \
     ../configure --prefix=${HPC_PREFIX}/opt/gnu \
-	    --build=${TARGET} \
-	    --host=${TARGET} \
-	    --target=${TARGET} \
+	    --build=${HPC_TARGET} \
+	    --host=${HPC_TARGET} \
+	    --target=${HPC_TARGET} \
 	    --with-sysroot=/ \
 	    --enable-bootstrap \
 	    --enable-shared \

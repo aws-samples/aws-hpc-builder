@@ -68,17 +68,17 @@ install_openmpi()
     cd build
     if [ -d /opt/amazon/efa ]
     then
-	    #--build=${WRF_TARGET} \
-	    #--host=${WRF_TARGET} \
-	    #--target=${WRF_TARGET} \
+	    #--build=${HPC_TARGET} \
+	    #--host=${HPC_TARGET} \
+	    #--target=${HPC_TARGET} \
 	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --enable-orterun-prefix-by-default \
             --enable-wrapper-rpath \
 	    --with-ofi=/opt/amazon/efa
     else
-	    #--build=${WRF_TARGET} \
-	    #--host=${WRF_TARGET} \
-	    #--target=${WRF_TARGET}
+	    #--build=${HPC_TARGET} \
+	    #--host=${HPC_TARGET} \
+	    #--target=${HPC_TARGET}
 	../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --enable-orterun-prefix-by-default \
             --enable-wrapper-rpath

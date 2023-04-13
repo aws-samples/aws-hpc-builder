@@ -30,9 +30,9 @@ install_netcdf_c()
     mkdir build
     cd build
     #cmake3 -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} -DCMAKE_INSTALL_LIBDIR=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib ..
-	    #--build=${WRF_TARGET} \
-	    #--host=${WRF_TARGET} \
-	    #--target=${WRF_TARGET} \
+	    #--build=${HPC_TARGET} \
+	    #--host=${HPC_TARGET} \
+	    #--target=${HPC_TARGET} \
     CPPFLAGS=-I${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include LDFLAGS=-L${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib  ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --libdir=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib \
 	    --enable-shared \

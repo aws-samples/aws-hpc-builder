@@ -59,9 +59,9 @@ install_netcdf_fortran()
     cd "${NETCDF_FORTRAN_SRC%.tar.gz}"
     mkdir build
     cd build
-	    #--build=${WRF_TARGET} \
-	    #--host=${WRF_TARGET} \
-	    #--target=${WRF_TARGET} \
+	    #--build=${HPC_TARGET} \
+	    #--host=${HPC_TARGET} \
+	    #--target=${HPC_TARGET} \
     #CC=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/mpicc FC=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/mpif90 F77=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/mpif77 \
     CPPFLAGS=-I${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include LDFLAGS=-L${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib \
     ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
