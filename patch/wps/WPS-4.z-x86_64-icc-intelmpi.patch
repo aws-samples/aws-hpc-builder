@@ -1,0 +1,14 @@
+diff -urN WPS-4.x.orig/arch/configure.defaults WPS-4.x/arch/configure.defaults
+--- WPS-4.x.orig/arch/configure.defaults	2020-04-23 19:31:06.000000000 +0000
++++ WPS-4.x/arch/configure.defaults	2023-04-13 02:25:36.000000000 +0000
+@@ -274,8 +274,8 @@
+ FDEFS               = CONFIGURE_FDEFS
+ SFC                 = ifort
+ SCC                 = icc
+-DM_FC               = mpif90
+-DM_CC               = mpicc
++DM_FC               = mpif90 -qopenmp
++DM_CC               = mpicc -qopenmp
+ FC                  = CONFIGURE_FC
+ CC                  = CONFIGURE_CC
+ LD                  = $(FC)

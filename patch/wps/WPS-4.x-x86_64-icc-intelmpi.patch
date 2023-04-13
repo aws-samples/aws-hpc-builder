@@ -1,0 +1,14 @@
+diff -urN WPS-3.x.orig/arch/configure.defaults WPS-3.x/arch/configure.defaults
+--- WPS-3.x.orig/arch/configure.defaults	2017-08-17 17:06:09.000000000 +0000
++++ WPS-3.x/arch/configure.defaults	2023-04-13 02:26:39.000000000 +0000
+@@ -231,8 +231,8 @@
+ FDEFS               = CONFIGURE_FDEFS
+ SFC                 = ifort
+ SCC                 = icc
+-DM_FC               = mpif90 -f90=ifort
+-DM_CC               = mpicc -cc=icc
++DM_FC               = mpif90 -f90=ifort -qopenmp
++DM_CC               = mpicc -cc=icc -qopenmp
+ FC                  = CONFIGURE_FC
+ CC                  = CONFIGURE_CC
+ LD                  = $(FC)

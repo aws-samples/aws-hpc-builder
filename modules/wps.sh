@@ -5,14 +5,13 @@
 #WRF_VERSION=git
 WRF_VERSION=4.4.2
 WPS_VERSION=${2:-4.4}
+# 官方开始支持ARM　版本有关（4.0.3 以后mpif90 mpicc 参数去掉)
+# WPS 4.3.1 版本以后开始才开始支持 gfortran 9
+WPS_FORMATED_VERSION=$(echo ${WPS_VERSION} | awk -F'.' '{print $1$2}')
 DISABLE_COMPILER_ENV=false
 
 # 读取命令行新的版本信息后再计算WRF的主要版本等信息
 WRF_MAJOR_VERSION=${WRF_VERSION%%.*}
-#　与官方开始支持ARM　版本有关（4.2 以后版本加入了 ARM )
-WRF_FORMATED_VERSION=$(echo ${WRF_VERSION} | awk -F'.' '{print $1$2}')
-# WPS 4.3.1 版本以后开始才开始支持 gfortran 9
-WPS_GNU_VERSION=$(echo ${WPS_VERSION} | awk -F'.' '{print $1$2}')
 
 WRF_SRC="WRF-${WRF_VERSION}.tar.gz"
 WPS_SRC="WPS-${WPS_VERSION}.tar.gz"
@@ -93,34 +92,47 @@ download_wps() {
     return -1
 }
 
-check_wrf_config()
+check_wps_config()
 {
     if [ "${SARCH}" == "aarch64" ]
     then
-	export WRF_CONFIG=4
-    elif [ "${SARCH}" == "x86_64" ] && [ "${HPC_COMPILER}" == "icc" ]
+        export WPS_CONFIG=3
+    elif [ "$(arch)" == "x86_64" ] && [ "${HPC_COMPILER}" == "icc" ]
     then
-    	export WRF_CONFIG=16
+        export WPS_CONFIG=19
     else
-	export WRF_CONFIG=35
+        export WPS_CONFIG=3
     fi
 }
 
-check_wps_config()
-{
-    export WPS_CONFIG=3
-}
 patch_wps()
 {
-    patch -Np1 < "../../patch/wps/WPS-${SARCH}-${HPC_COMPILER}.patch"
-    if [ ${WPS_GNU_VERSION} -lt 43 ]
+    if [ "${SARCH}" == "aarch64" ]
     then
-	patch -Np1 < "../../patch/wps/WPS-4.x-${HPC_COMPILER}.patch"
-    fi
-    
-    if [ ${WPS_GNU_VERSION} -lt 41 ]
-    then
-	patch -Np1 < "../../patch/wps/WPS-4.x-mismatch-integer-iand.patch"
+	# 所有　aarch64 使用同一补丁
+	if [ -f ../../patch/wps/WPS-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch ]
+	then
+	    patch -Np1 < "../../patch/wps/WPS-${SARCH}-${HPC_COMPILER}.patch"
+	fi
+    else
+	if [ ${WPS_FORMATED_VERSION} -lt 41 ] && [ "${WPS_VERSION}" != "4.0.3" ]
+        then
+	    # gfortran9+ 编译旧版本的支持
+	    if [ -f "../../patch/wps/WPS-4.x-gfortran.patch" ]
+	    then
+		patch -Np1 < "../../patch/wps/WPS-4.x-gfortran.patch"
+	    fi
+
+	    if [ -f "../../patch/wps/WPS-4.x-$(arch)-${HPC_COMPILER}-${HPC_MPI}.patch" ]
+	    then
+		patch -Np1 < "../../patch/wps/WPS-4.x-$(arch)-${HPC_COMPILER}-${HPC_MPI}.patch"
+	    fi
+	else
+	    if [ -f "../../patch/wps/WPS-4.z-$(arch)-${HPC_COMPILER}-${HPC_MPI}.patch" ]
+	    then
+		patch -Np1 < "../../patch/wps/WPS-4.z-$(arch)-${HPC_COMPILER}-${HPC_MPI}.patch"
+	    fi
+	fi
     fi
 }
 
@@ -147,7 +159,7 @@ install_wps()
     unset MPI_LIB
 
     # WPS 4.1 及以上的版本才支持 WRF_DIR, 旧版本会搜寻上级目录的WRFV3
-    if [ ${WPS_GNU_VERSION} -le 41 ]
+    if [ ${WPS_FORMATED_VERSION} -le 41 ]
     then
         ln -sf ${WRF_DIR} ../WRFV3
     else
