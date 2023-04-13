@@ -106,3 +106,4 @@ then
 fi
 
 export OMP_STACKSIZE=128M
+export KMP_STACKSIZE=128M

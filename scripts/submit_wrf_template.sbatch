@@ -69,7 +69,8 @@ mkdir -p ${LOGDIR}
 
 ulimit -s unlimited
 export MKL_NUM_THREADS=1
-export OMP_NUM_THREADS=1
+export OMP_NUM_THREADS=4
+#export WRF_NUM_TILES=64
 
 HPC_MPI_DEBUG=1
 # load MPI settings
