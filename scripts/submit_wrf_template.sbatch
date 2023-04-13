@@ -11,7 +11,7 @@
 #SBATCH -o XXPREFIXXX/log/wrf.out
 
 #--------------------------- customized Job env -----------------------------
-#SBATCH --nodes=6
+#SBATCH --nodes=2
 #SBATCH --partition=c6gn
 
 PREFIX=XXPREFIXXX
@@ -24,7 +24,7 @@ PREFIX=XXPREFIXXX
 #export JOB_DIR=${PREFIX}/spooler/v4_bench_conus12km
 #export JOB_DIR=${PREFIX}/spooler/v4_bench_conus2.5km
 
-export WRF_VERSION=4.4.1
+export WRF_VERSION=4.4.2
 export JOB_DIR=${PREFIX}/spooler/v4.4_bench_conus12km
 #export JOB_DIR=${PREFIX}/spooler/v4.4_bench_conus2.5km
 #----------------------------------------------------------------------------
@@ -69,7 +69,7 @@ mkdir -p ${LOGDIR}
 
 ulimit -s unlimited
 export MKL_NUM_THREADS=1
-export OMP_NUM_THREADS=4
+export OMP_NUM_THREADS=1
 #export WRF_NUM_TILES=64
 
 HPC_MPI_DEBUG=1
@@ -79,6 +79,7 @@ source ${PREFIX}/scripts/mpi_settings.sh
 echo "Running WRF on $(date)"
 cd ${JOB_DIR}
 #ln -sfn ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/run/{CAMtr_volume_mixing_ratio*,ozone*,RRTM*,*.TBL} .
+cp -anL ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/run/* .
 ln -sfn ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/main/wrf.exe .
 
 START_DATE=$(date)
