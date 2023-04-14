@@ -66,15 +66,19 @@ install_hdf5()
 	    #--target=${HPC_TARGET} \
     #CC=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/mpicc FC=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/mpif90 ./configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 
-    # add intelmpi support
-    if [ "${HPC_MPI}" == "intelmpi" ]
+    # support intelmpi and the combination of intelmpi + non-intel compilers
+    if [ "${HPC_MPI}" == "intelmpi" ] && [ "${HPC_COMPILER}" == "icc" ]
     then
-	LIBS_OPTS="-lmpi -lmpifort -L${I_MPI_ROOT}/lib -L${I_MPI_ROOT}/lib/release ${LIBS}"
-	CXX_OPTS=$(which mpiicpc)
+        LIBS_OPTS="-lmpi -lmpifort -L${I_MPI_ROOT}/lib -L${I_MPI_ROOT}/lib/release ${LIBS}"
+        CXX_OPTS=$(which mpiicpc)
+        FC_OPTS=$(which mpiifort)
+        CC_OPTS=$(which mpiicc)
     else
-	CXX_OPTS=$(which mpicxx)
+        CXX_OPTS=$(which mpicxx)
+        FC_OPTS=$(which mpif90)
+        CC_OPTS=$(which mpicc)
     fi
-    ./configure CXX=${CXX_OPTS} LIBS="${LIBS_OPTS}" --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+    ./configure CC=${CC_OPTS} CXX=${CXX_OPTS} FC=${FC_OPTS} LIBS="${LIBS_OPTS}" --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --libdir=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib \
 	    --enable-fortran \
 	    --enable-cxx \
