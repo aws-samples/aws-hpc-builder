@@ -11,6 +11,7 @@ CLANG_VERSION=${2:-15.0.2}
 ARM_COMPILER_VERSION=${2:-22.1}
 AMD_COMPILER_VERSION=${2:-4.0.0}
 NVIDIA_COMPILER_VERSION=22.11
+NVIDIA_COMPILER_MAJOR_VERSION=$(echo ${NVIDIA_COMPILER_VERSION} | cut -f1 -d'.')
 NVIDIA_CUDA_VERSION=11.8
 #AMD_COMPILER_VERSION=${2:-3.2.0}
 #AMD_AOCL_VERSION=${AMD_COMPILER_VERSION}
@@ -90,6 +91,25 @@ INTEL_HPC_COMPILER_DL_ID=18679
 #https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/22-1/arm-compiler-for-linux_22.1_Ubuntu-18.04_aarch64.tar
 #https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/22-1/arm-compiler-for-linux_22.1_Ubuntu-20.04_aarch64.tar
 
+# aocc/aocl url
+# https://www.amd.com/en/developer/aocc.html
+# https://www.amd.com/en/developer/aocl.html
+# https://developer.amd.com/amd-aocc/#downloads
+# https://developer.amd.com/amd-aocl/#downloads
+# 4.0.0/4.0
+# https://download.amd.com/developer/eula/aocc-compiler/aocc-compiler-4.0.0.tar
+# https://download.amd.com/developer/eula/aocl/aocl-4-0/aocl-linux-aocc-4.0.tar.gz
+# 3.2.0/3.2
+# https://download.amd.com/developer/eula/aocc-compiler/aocc-compiler-3.2.0.tar
+# https://download.amd.com/developer/eula/aocl/aocl-3-2/aocl-linux-aocc-3.2.0.tar.gz
+
+# NVIDIA HPC SDK
+# 23.3
+# https://developer.download.nvidia.com/hpc-sdk/23.3/nvhpc_2023_233_Linux_aarch64_cuda_12.0.tar.gz
+#
+# 22.11
+# https://developer.download.nvidia.com/hpc-sdk/22.11/nvhpc_2022_2211_Linux_aarch64_cuda_11.8.tar.gz
+
 if [ "${HPC_PACKAGE_TYPE}" == "rpm" ]
 then
     ARM_COMPILER_SRC=arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}_${SARCH}.tar
@@ -98,7 +118,7 @@ then
     ARM_COMPILER_SRC=arm-compiler-for-linux_${ARM_COMPILER_VERSION}_Ubuntu-${S_VERSION_ID}.04_${SARCH}.tar
 fi
 
-NVIDIA_COMPILER_SRC=nvhpc_2022_$(echo ${NVIDIA_COMPILER_VERSION} | sed 's/\.//g')_Linux_$(arch)_cuda_${NVIDIA_CUDA_VERSION}.tar.gz
+NVIDIA_COMPILER_SRC=nvhpc_20${NVIDIA_COMPILER_MAJOR_VERSION}_$(echo ${NVIDIA_COMPILER_VERSION} | sed 's/\.//g')_Linux_$(arch)_cuda_${NVIDIA_CUDA_VERSION}.tar.gz
 
 INTEL_COMPILER_SRC="l_BaseKit_p_${INTEL_COMPILER_VERSION}_offline.sh"
 INTEL_HPC_COMPILER_SRC="l_HPCKit_p_${INTEL_HPC_COMPILER_VERSION}_offline.sh"
@@ -255,7 +275,7 @@ download_compiler() {
 	    then
 		return
 	    else
-		wget https://download.amd.com/developer/eula/aocl/aocl-$(echo ${AMD_AOCL_VERSION} | tr '.' '-')/${AMD_AOCL_SRC}
+		wget https://download.amd.com/developer/eula/aocl/aocl-$(echo ${AMD_AOCL_VERSION} | awk -F'.' '{print $1"-"$2}')/${AMD_AOCL_SRC}
 		return $?
 	    fi
 	    ;;
