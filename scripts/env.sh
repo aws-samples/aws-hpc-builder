@@ -105,5 +105,5 @@ then
     export LD_LIBRARY_PATH=/opt/amazon/efa/lib64:${LD_LIBRARY_PATH}
 fi
 
-export OMP_STACKSIZE=128M
-export KMP_STACKSIZE=128M
+export OMP_STACKSIZE=512M
+export KMP_STACKSIZE=512M
