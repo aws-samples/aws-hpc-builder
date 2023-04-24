@@ -193,6 +193,11 @@ patch_wrf()
 	    then
 		patch -Np1 < "../../patch/wrf/WRF-4.z-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch"
 	    fi
+	    # WRF 4.4+ for armclang need a new patch 
+	    if [ ${WRF_FORMATED_VERSION} -ge 43 ] &&  [ "${HPC_COMPILER}" == "armclang" ]
+            then
+                patch -Np1 < "../../patch/wrf/WRF-4.z+-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch"
+            fi
         fi
     # 编译器支持, intel and amd
     # Intel 和 AMD, 如果使用clang 和 gcc 可以使用同样的 patch, 所以这里补丁变量使用 $(arch)
