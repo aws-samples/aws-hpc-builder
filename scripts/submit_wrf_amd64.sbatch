@@ -3,18 +3,18 @@
 # SPDX-License-Identifier: MIT
 
 #SBATCH --wait-all-nodes=1
-#SBATCH --ntasks-per-node=64
-#SBATCH --cpus-per-task=1
+#SBATCH --ntasks-per-node=24
+#SBATCH --cpus-per-task=4
 #SBATCH --ntasks-per-core=1
 #SBATCH --export=ALL
 #SBATCH --exclusive
-#SBATCH -o XXPREFIXXX/log/wrf.out
+#SBATCH -o /fsx/log/wrf.out
 
 #--------------------------- customized Job env -----------------------------
 #SBATCH --nodes=2
-#SBATCH --partition=c6gn
+#SBATCH --partition=hpc6anpg
 
-PREFIX=XXPREFIXXX
+PREFIX=/fsx
 
 #export WRF_VERSION=3.9.1
 #export JOB_DIR=${PREFIX}/spooler/bench_12km
@@ -61,16 +61,16 @@ export JOB_DIR=${PREFIX}/spooler/v4.4_bench_conus12km
 # env.sh 1 0   ## select GNU/GCC compilers with openmpi
 # env.sh ...
 
-source ${PREFIX}/scripts/env.sh 1 0
+source ${PREFIX}/scripts/env.sh 3 2
 #----------------------------------------------------------------------------
 LOGDIR=${PREFIX}/log
 WRF_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_wrf-${WRF_VERSION}.log
 mkdir -p ${LOGDIR}
 
 ulimit -s unlimited
-export MKL_NUM_THREADS=1
-export OMP_NUM_THREADS=1
-#export WRF_NUM_TILES=64
+export MKL_NUM_THREADS=4
+export OMP_NUM_THREADS=4
+#export WRF_NUM_TILES=1
 
 HPC_MPI_DEBUG=1
 # load MPI settings
@@ -79,7 +79,7 @@ source ${PREFIX}/scripts/mpi_settings.sh
 echo "Running WRF on $(date)"
 cd ${JOB_DIR}
 #ln -sfn ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/run/{CAMtr_volume_mixing_ratio*,ozone*,RRTM*,*.TBL} .
-cp -anL ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/run/* .
+#cp -anL ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/run/* .
 ln -sfn ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/main/wrf.exe .
 
 START_DATE=$(date)

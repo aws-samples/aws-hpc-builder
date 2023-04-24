@@ -167,10 +167,10 @@ build_hpc_module()
 		update_world ${HPC_COMPILER}-${HPC_MPI}-${module}-${MODULE_VERSION}
 	    fi
 	
-	    if [ -f ../scripts/submit_${module}_template.sbatch ]
+	    if [ -f ../scripts/submit_${module}_template.sbatch ] || [ -f ../scripts/submit_${module}_${SARCH}_template.sbatch ]
 	    then 
 		install_module_script sbatch
-	    elif [ -f ../scripts/submit_${module}_template.sh ]
+	    elif [ -f ../scripts/submit_${module}_template.sh ] || [ -f ../scripts/submit_${module}_${SARCH}_template.sh ]
 	    then
 		install_module_script sh
 	    fi
@@ -204,9 +204,17 @@ install_sys_scripts()
 
 install_module_script()
 {
-    sed s"%XXPREFIXXX%${PREFIX}%g" ../scripts/submit_${module}_template.${1} > /tmp/submit_${module}.${1}
-    sudo install -m 755 -D -t ${PREFIX}/scripts /tmp/submit_${module}.${1}
+    if [ -f ../scripts/submit_${module}_${SARCH}_template.${1} ]
+    then
+	sed s"%XXPREFIXXX%${PREFIX}%g" ../scripts/submit_${module}_${SARCH}_template.${1} > /tmp/submit_${module}_${SARCH}.${1}
+	sudo install -m 755 -D -t ${PREFIX}/scripts /tmp/submit_${module}_${SARCH}.${1}
+    fi
 
+    if [ -f ../scripts/submit_${module}_template.${1} ]
+    then
+	sed s"%XXPREFIXXX%${PREFIX}%g" ../scripts/submit_${module}_template.${1} > /tmp/submit_${module}.${1}
+	sudo install -m 755 -D -t ${PREFIX}/scripts /tmp/submit_${module}.${1}
+    fi
 }
 
 check_and_uninstall_gcc10()

@@ -3,18 +3,18 @@
 # SPDX-License-Identifier: MIT
 
 #SBATCH --wait-all-nodes=1
-#SBATCH --ntasks-per-node=64
-#SBATCH --cpus-per-task=1
+#SBATCH --ntasks-per-node=8
+#SBATCH --cpus-per-task=8
 #SBATCH --ntasks-per-core=1
 #SBATCH --export=ALL
 #SBATCH --exclusive
-#SBATCH -o /fsx/log/wrf.out
+#SBATCH -o XXPREFIXXX/log/wrf.out
 
 #--------------------------- customized Job env -----------------------------
 #SBATCH --nodes=2
 #SBATCH --partition=c6gn
 
-PREFIX=/fsx
+PREFIX=XXPREFIXXX
 
 #export WRF_VERSION=3.9.1
 #export JOB_DIR=${PREFIX}/spooler/bench_12km
@@ -61,15 +61,15 @@ export JOB_DIR=${PREFIX}/spooler/v4.4_bench_conus12km
 # env.sh 1 0   ## select GNU/GCC compilers with openmpi
 # env.sh ...
 
-source ${PREFIX}/scripts/env.sh 1 0
+source ${PREFIX}/scripts/env.sh 7 1
 #----------------------------------------------------------------------------
 LOGDIR=${PREFIX}/log
 WRF_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_wrf-${WRF_VERSION}.log
 mkdir -p ${LOGDIR}
 
 ulimit -s unlimited
-export MKL_NUM_THREADS=1
-export OMP_NUM_THREADS=1
+export MKL_NUM_THREADS=8
+export OMP_NUM_THREADS=8
 #export WRF_NUM_TILES=64
 
 HPC_MPI_DEBUG=1
