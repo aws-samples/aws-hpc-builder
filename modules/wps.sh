@@ -112,7 +112,7 @@ patch_wps()
 	# 所有　aarch64 使用同一补丁
 	if [ -f ../../patch/wps/WPS-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch ]
 	then
-	    patch -Np1 < "../../patch/wps/WPS-${SARCH}-${HPC_COMPILER}.patch"
+	    patch -Np1 < "../../patch/wps/WPS-${SARCH}-${HPC_COMPILER}-${HPC_MPI}.patch"
 	fi
     else
 	if [ ${WPS_FORMATED_VERSION} -lt 41 ] && [ "${WPS_VERSION}" != "4.0.3" ]
