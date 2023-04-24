@@ -40,7 +40,7 @@ install_netcdf_c()
 	    --enable-large-file-tests \
 	    --enable-largefile  \
 	    --enable-parallel-tests \
-	    --enable-netcdf-4  \
+	    --disable-netcdf-4  \
 	    --with-pic \
 	    --disable-doxygen \
 	    --disable-dap

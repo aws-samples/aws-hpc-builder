@@ -103,7 +103,7 @@ set_wrf_build_env()
     export JASPERLIB=/usr/lib64
     export JASPERINC=/usr/include
     export WRFIO_NCD_LARGE_FILE_SUPPORT=1
-    #export NETCDF_classic=1
+    export NETCDF_classic=1
 }
 
 build_wrf_dependency()
