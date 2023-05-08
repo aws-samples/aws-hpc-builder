@@ -15,7 +15,7 @@ check_os_version()
 		2|7)
 		    S_VERSION_ID=7
 		    ;;
-		3|8|2022)
+		3|8|2022|2023)
 		    S_VERSION_ID=8
 		    ;;
 		*)

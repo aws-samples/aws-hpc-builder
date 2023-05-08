@@ -155,7 +155,7 @@ patch_wrf()
 	patch -Np1 < "../../patch/wrf/WRF-${WRF_MAJOR_VERSION}.x-double-precision-${SARCH}-${HPC_MPI}.patch"
     fi
     
-    # Amazon Linux 2022/RHEL8/Centos8/Oracle Linux 8's tirpc issue
+    # Amazon Linux 2023/RHEL8/Centos8/Oracle Linux 8's tirpc issue
     if [ ${WRF_FORMATED_VERSION} -lt 42 ] && [ ${S_VERSION_ID} -eq 8 ]
     then
 	patch -Np1 < "../../patch/wrf/WRF-tirpc.patch"

@@ -34,13 +34,15 @@ esac
 
 case ${HPC_MPI} in
     "intelmpi")
-	WM_MPILIB="INTELMPI"
+	export MPI_ROOT=${I_MPI_ROOT}
+        export MPI_ARCH_FLAGS="-DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX"
+	WM_MPLIB="INTELMPI"
 	;;
     "mpich"|"mvapich"|"openmpi")
 	export MPI_ROOT=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
 	export MPI_ARCH_FLAGS="-DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX"
 	export MPI_ARCH_INC="-isystem ${MPI_ROOT}/include"
-	WM_MPILIB="SYSTEMMPI"
+	WM_MPLIB="SYSTEMMPI"
 	if [ "${HPC_MPI}" == "openmpi" ]
 	then 
 	    export MPI_ARCH_LIBS="-L${MPI_ROOT}/lib -lmpi"
@@ -54,5 +56,5 @@ case ${HPC_MPI} in
 	;;
 esac
 
-. "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/OpenFOAM-v${OPENFOAM_VERSION}/etc/bashrc" WM_COMPILER=${WM_COMPILER} WM_MPLIB=${WM_MPILIB}
+. "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/OpenFOAM/OpenFOAM-${OPENFOAM_VERSION}/etc/bashrc" WM_COMPILER=${WM_COMPILER} WM_MPLIB=${WM_MPLIB}
 
