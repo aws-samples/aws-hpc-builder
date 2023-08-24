@@ -82,6 +82,34 @@ icx-mpich:mpich,b-eff
 icx-mvapich:mvapich,b-eff
 icx-intelmpi:b-eff
 
+# ior's dependencies
+amdclang-openmpi:openmpi,ior
+amdclang-mpich:mpich,ior
+amdclang-mvapich:mvapich,ior
+amdclang-intelmpi:ior
+armgcc-openmpi:openmpi,ior
+armgcc-mpich:mpich,ior
+armgcc-mvapich:mvapich,ior
+armclang-openmpi:openmpi,ior
+armclang-mpich:mpich,ior
+armclang-mvapich:mvapich,ior
+clang-openmpi:openmpi,ior
+clang-mpich:mpich,ior
+clang-mvapich:mvapich,ior
+clang-intelmpi:ior
+gcc-openmpi:openmpi,ior
+gcc-mpich:mpich,ior
+gcc-mvapich:mvapich,ior
+gcc-intelmpi:ior
+icc-openmpi:openmpi,ior
+icc-mpich:mpich,ior
+icc-mvapich:mvapich,ior
+icc-intelmpi:ior
+icx-openmpi:openmpi,ior
+icx-mpich:mpich,ior
+icx-mvapich:mvapich,ior
+icx-intelmpi:ior
+
 # gpcnet's dependencies
 amdclang-openmpi:openmpi,gpcnet
 amdclang-mpich:mpich,gpcnet
