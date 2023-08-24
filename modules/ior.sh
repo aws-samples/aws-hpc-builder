@@ -82,6 +82,7 @@ install_ior()
     then
 	./bootstrap
     fi
+    export CC=$(which mpicc)
     ./configure --prefix="${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}"
     make && sudo --preserve-env=PATH,LD_LIBRARY_PATH,I_MPI_CC,I_MPI_CXX,I_MPI_FC,I_MPI_F77,I_MPI_F90 env make install && cd ..
 }
