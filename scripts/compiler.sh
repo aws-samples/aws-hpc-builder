@@ -291,6 +291,7 @@ then
 fi
 
 get_compiler
+export PROG_MODEL=lp64
 
 export HPC_PREFIX="${PREFIX}/${SARCH}"
 
@@ -332,6 +333,10 @@ case ${HPC_COMPILER} in
 	armgcc_lib_search_loc=$(echo /fsx/aarch64/opt/*Generic-AArch64*/lib/gcc/aarch64-linux-gnu)
 	sysgcc_lib_search_loc="/usr/lib/gcc/${HPC_HOST_TARGET}"
 
+	export HPC_LLIBS="-L${ARMPL_DIR}/lib -armpl=${PROG_MODEL} -lamath -lastring"
+	export HPC_INCS="-I${ARMPL_DIR}/include"
+	export HPC_CFLAGS="-Ofast -mcpu=native"
+
 	## https://unix.stackexchange.com/questions/207294/create-symlink-overwrite-if-one-exists
 	##If a directory, or symlink to a directory, already exists with the target name, the symlink will be created inside it
 	##(so you'd end up with /path/to/recent/file/file in the example above). The -n option, available in some versions of ln,
@@ -356,11 +361,18 @@ case ${HPC_COMPILER} in
 	source ${HPC_PREFIX}/opt/intel/oneapi/compiler/latest/env/vars.sh
 	source ${HPC_PREFIX}/opt/intel/oneapi/mkl/latest/env/vars.sh
         export HPC_TARGET=$(${HPC_COMPILER} -dumpmachine)
+	export HPC_LLIBS="-L${MKLROOT}/lib/intel64 -lmkl_scalapack_${PROG_MODEL} -lmkl_cdft_core -lmkl_intel_${PROG_MODEL} -lmkl_intel_thread -lmkl_core -lmkl_blacs_intelmpi_${PROG_MODEL} -liomp5 -lpthread -lm -ldl"
+	export HPC_CFLAGS="-xHOST -fma -ftz -fomit-frame-pointer"
+	export HPC_INCS="-I${MKLROOT}/include"
 	;;
     "amdclang")
 	source ${HPC_PREFIX}/opt/setenv_AOCC.sh
 	source $(ls ${HPC_PREFIX}/opt/[0-9.]*/amd-libs.cfg)
         export HPC_TARGET=$(clang -dumpmachine)
+	export HPC_CFLAGS="-O3 -march=znver3 -mfma -fvectorize -mfma -mavx2 -m3dnow -floop-unswitch-aggressive -fuse-ld=lld"
+	export HPC_CCFLAGS="-O3 -march=znver3 -mfma -fvectorize -mfma -mavx2 -m3dnow -fuse-ld=lld"
+	export HPC_INCS="-I${AOCL_ROOT}/include"
+	export HPC_LLIBS="-L${AOCL_ROOT}/lib -lblis-mt -lflame -lscalapack -lfftw3 -lfftw3_omp -lalm -lm"
 	;;
     "nvc")
         export MODULEPATH=${MODULEPATH}:${HPC_PREFIX}/opt/nvidia/modulefiles

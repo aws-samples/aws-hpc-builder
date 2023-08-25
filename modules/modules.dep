@@ -110,6 +110,34 @@ icx-mpich:mpich,ior
 icx-mvapich:mvapich,ior
 icx-intelmpi:ior
 
+# hpcc's dependencies
+amdclang-openmpi:openmpi,hpcc
+amdclang-mpich:mpich,hpcc
+amdclang-mvapich:mvapich,hpcc
+amdclang-intelmpi:hpcc
+armgcc-openmpi:openmpi,hpcc
+armgcc-mpich:mpich,hpcc
+armgcc-mvapich:mvapich,hpcc
+armclang-openmpi:openmpi,hpcc
+armclang-mpich:mpich,hpcc
+armclang-mvapich:mvapich,hpcc
+clang-openmpi:openmpi,hpcc
+clang-mpich:mpich,hpcc
+clang-mvapich:mvapich,hpcc
+clang-intelmpi:hpcc
+gcc-openmpi:openmpi,hpcc
+gcc-mpich:mpich,hpcc
+gcc-mvapich:mvapich,hpcc
+gcc-intelmpi:hpcc
+icc-openmpi:openmpi,hpcc
+icc-mpich:mpich,hpcc
+icc-mvapich:mvapich,hpcc
+icc-intelmpi:hpcc
+icx-openmpi:openmpi,hpcc
+icx-mpich:mpich,hpcc
+icx-mvapich:mvapich,hpcc
+icx-intelmpi:hpcc
+
 # gpcnet's dependencies
 amdclang-openmpi:openmpi,gpcnet
 amdclang-mpich:mpich,gpcnet
