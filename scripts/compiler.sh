@@ -373,7 +373,10 @@ case ${HPC_COMPILER} in
 	;;
     "amdclang")
 	source ${HPC_PREFIX}/opt/setenv_AOCC.sh
-	source $(ls ${HPC_PREFIX}/opt/[0-9.]*/amd-libs.cfg)
+	# acocc 4.0.0
+	#source $(ls ${HPC_PREFIX}/opt/[0-9.]*/amd-libs.cfg)
+	# acocc 4.1.0
+	source $(ls ${HPC_PREFIX}/opt/[0-9.]*/aocc/amd-libs.cfg)
         export HPC_TARGET=$(clang -dumpmachine)
 	export HPC_CFLAGS="-O3 -march=znver3 -mfma -fvectorize -mfma -mavx2 -m3dnow -floop-unswitch-aggressive -fuse-ld=lld"
 	export HPC_CCFLAGS="-O3 -march=znver3 -mfma -fvectorize -mfma -mavx2 -m3dnow -fuse-ld=lld"

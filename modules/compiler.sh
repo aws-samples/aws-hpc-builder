@@ -9,13 +9,13 @@ GCC_VERSION=${2:-12.2.0}
 CMAKE_VERSION=3.25.1
 CLANG_VERSION=${2:-15.0.2}
 ARM_COMPILER_VERSION=${2:-22.1}
-AMD_COMPILER_VERSION=${2:-4.0.0}
+AMD_COMPILER_VERSION=${2:-4.1.0}
 NVIDIA_COMPILER_VERSION=22.11
 NVIDIA_COMPILER_MAJOR_VERSION=$(echo ${NVIDIA_COMPILER_VERSION} | cut -f1 -d'.')
 NVIDIA_CUDA_VERSION=11.8
 #AMD_COMPILER_VERSION=${2:-3.2.0}
 #AMD_AOCL_VERSION=${AMD_COMPILER_VERSION}
-AMD_AOCL_VERSION=4.0
+AMD_AOCL_VERSION=4.1.0
 BINUTILS_VERSION=2.39
 ELFUTILS_VERSION=0.187
 
@@ -264,7 +264,9 @@ download_compiler() {
 	    # https://download.amd.com/developer/eula/aocl/aocl-4-0/aocl-linux-aocc-4.0.tar.gz
 	    if [ ! -f ${AMD_COMPILER_SRC} ]
 	    then
-		wget https://download.amd.com/developer/eula/aocc-compiler/${AMD_COMPILER_SRC}
+		# 4.0
+		#wget https://download.amd.com/developer/eula/aocc-compiler/${AMD_COMPILER_SRC}
+		wget https://download.amd.com/developer/eula/aocc/aocc-$(echo ${AMD_COMPILER_VERSION} | awk -F'.' '{print $1"-"$2}')/${AMD_COMPILER_SRC}
 		result=$?
 		if [ ${result} -ne 0 ]
 		then
@@ -365,6 +367,7 @@ install_amd_compiler()
     popd
     tar xf ${AMD_AOCL_SRC}
     cd ${AMD_AOCL_SRC%.tar.gz}
+
     sudo bash ./install.sh -t ${HPC_PREFIX}/opt -i lp64
     cd ..
 }
