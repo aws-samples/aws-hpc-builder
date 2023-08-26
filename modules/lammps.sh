@@ -88,10 +88,11 @@ install_lammps()
 	    -DWITH_JPEG=yes -DWITH_GZIP=yes \
 	    -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
     else
-	cmake ../cmake -DFFT=FFTW3 -DFFTW3_LIBRARY="${HPC_LLIBS}" -DFFTW3_INCLUDE_DIR="${HPC_INC_DIR}" \
+	cmake ../cmake -DFFT=FFTW3 -DFFTW3_LIBRARY="${HPC_FFT_LIB}" -DFFTW3_INCLUDE_DIR="${HPC_INC_DIR}" \
 	    -DBUILD_MPI=yes \
 	    -DPKG_REPLICA=yes -DPKG_KSPACE=yes -DPKG_MANYBODY=yes \
 	    -DWITH_JPEG=yes -DWITH_GZIP=yes \
+	    -DCMAKE_EXE_LINKER_FLAGS="${HPC_LLIBS}" \
 	    -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
     fi
 	cmake --build .  -j $(nproc) && \

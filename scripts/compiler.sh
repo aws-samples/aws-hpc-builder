@@ -337,6 +337,7 @@ case ${HPC_COMPILER} in
 	export HPC_INC_DIR="${ARMPL_DIR}/include"
 	export HPC_INCS="-I${ARMPL_DIR}/include"
 	export HPC_CFLAGS="-Ofast -mcpu=native"
+	export HPC_FFT_LIB="${ARMPL_DIR}/lib/libarmpl.so"
 
 	## https://unix.stackexchange.com/questions/207294/create-symlink-overwrite-if-one-exists
 	##If a directory, or symlink to a directory, already exists with the target name, the symlink will be created inside it
@@ -379,6 +380,7 @@ case ${HPC_COMPILER} in
 	export HPC_INC_DIR="${AOCL_ROOT}/include"
 	export HPC_INCS="-I${AOCL_ROOT}/include"
 	export HPC_LLIBS="-L${AOCL_ROOT}/lib -lblis-mt -lflame -lscalapack -lfftw3 -lfftw3_omp -lalm -lm"
+	export HPC_FFT_LIB="${AOCL_ROOT}/lib/libfftw3.so"
 	;;
     "nvc")
         export MODULEPATH=${MODULEPATH}:${HPC_PREFIX}/opt/nvidia/modulefiles
