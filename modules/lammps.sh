@@ -82,11 +82,18 @@ install_lammps()
     mkdir -p build && cd build
     if [ "${HPC_COMPILER}" == "icc" ]
     then
-	FFT_OPTS="-DFFT=MKL -DFFT_MKL_THREADS=on"
+	cmake ../cmake -DFFT=MKL -DFFT_MKL_THREADS=on \
+	    -DBUILD_MPI=yes \
+	    -DPKG_REPLICA=yes -DPKG_KSPACE=yes -DPKG_MANYBODY=yes \
+	    -DWITH_JPEG=yes -DWITH_GZIP=yes \
+	    -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
     else
-	FFT_OPTS=$"-DFFT=FFTW3 -DFFTW3_LIBRARY=\"${HPC_LLIBS}\" -DFFTW3_INCLUDE_DIR=\"${HPC_INC_DIR}\""
+	cmake ../cmake -DFFT=FFTW3 -DFFTW3_LIBRARY="${HPC_LLIBS}" -DFFTW3_INCLUDE_DIR="${HPC_INC_DIR}" \
+	    -DBUILD_MPI=yes \
+	    -DPKG_REPLICA=yes -DPKG_KSPACE=yes -DPKG_MANYBODY=yes \
+	    -DWITH_JPEG=yes -DWITH_GZIP=yes \
+	    -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
     fi
-    cmake ../cmake ${FFT_OPTS} -DBUILD_MPI=yes -DPKG_REPLICA=yes -DPKG_KSPACE=yes -DPKG_MANYBODY=yes -DWITH_JPEG=yes -DWITH_GZIP=yes -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} && \
 	cmake --build .  -j $(nproc) && \
 	sudo --preserve-env=PATH,LD_LIBRARY_PATH,I_MPI_CC,I_MPI_CXX,I_MPI_FC,I_MPI_F77,I_MPI_F90 env make install && \
 	cd ../..
