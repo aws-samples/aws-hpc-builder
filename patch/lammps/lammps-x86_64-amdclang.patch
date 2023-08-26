@@ -1,0 +1,12 @@
+diff -urN lammps.orig/src/image.cpp lammps/src/image.cpp
+--- lammps.orig/src/image.cpp	2023-08-26 12:43:08.000000000 +0000
++++ lammps/src/image.cpp	2023-08-26 12:41:29.000000000 +0000
+@@ -34,7 +34,7 @@
+ 
+ #ifdef LAMMPS_PNG
+ #include <png.h>
+-#include <zlib.h>
++#include </usr/include/zlib.h>
+ #include <csetjmp>
+ #include "version.h"
+ #endif

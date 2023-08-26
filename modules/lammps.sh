@@ -66,6 +66,7 @@ install_lammps()
     echo "zzz *** $(date) *** Build lammps-${LAMMPS_VERSION}"
     if [ "${LAMMPS_VERSION}" == "git" ]
     then
+	rm -rf lammps-${LAMMPS_VERSION}
 	mv lammps lammps-${LAMMPS_VERSION}
     else
 	rm -rf ${LAMMPS_SRC%.tar.gz}
@@ -74,9 +75,9 @@ install_lammps()
 
     cd ${LAMMPS_SRC%.tar.gz}
 
-    if [ -f ../../patch/lammps/lammps-${LAMMPS_VERSION}.patch ]
+    if [ -f ../../patch/lammps/lammps-$(arch)-${HPC_COMPILER}.patch ]
     then
-	patch -Np1 < ../../patch/lammps/lammps-${LAMMPS_VERSION}.patch
+        patch -Np1 < ../../patch/lammps/lammps-$(arch)-${HPC_COMPILER}.patch
     fi
 
     mkdir -p build && cd build
