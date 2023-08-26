@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 #SBATCH --wait-all-nodes=1
-#SBATCH --ntasks-per-node=16
+#SBATCH --ntasks-per-node=64
 #SBATCH --cpus-per-task=1
 #SBATCH --ntasks-per-core=1
 #SBATCH --export=ALL
@@ -12,9 +12,9 @@
 
 #--------------------------- customized Job env -----------------------------
 #SBATCH --nodes=2
-#SBATCH --partition=c6g4x
+#SBATCH --partition=c6ipg
 
-export HPCC_VERSION=4.0.0rc1
+export HPCC_VERSION=1.5.0
 
 #----------------------------------------------------------------------------
 
@@ -51,7 +51,7 @@ export HPCC_VERSION=4.0.0rc1
 # env.sh ...
 
 PREFIX=XXPREFIXXX
-source ${PREFIX}/scripts/env.sh 1 0
+source ${PREFIX}/scripts/env.sh 3 2
 #----------------------------------------------------------------------------
 LOGDIR=${PREFIX}/log
 HPCC_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_hpcc-${HPCC_VERSION}.log
@@ -78,7 +78,9 @@ echo "zzz *** ${START_DATE} *** - JobStart - hpcc - ${HPC_COMPILER} - ${HPC_MPI}
 #export OMPI_MCA_coll_tuned_use_dynamic_rules=1
 ##export OMPI_MCA_coll_tuned_bcast_algorithm=1
 ln -sfn ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/hpcc-${HPCC_VERSION}/hpcc .
+#srun ${MPI_SHOW_BIND_OPTS} --mpi=pmi2 ./hpcc >> ${HPCC_LOG} 2>&1
 mpirun ${MPI_SHOW_BIND_OPTS} ./hpcc >> ${HPCC_LOG} 2>&1
+mv hpcccoutf.txt hpccoutf.txt.${SLURM_JOB_NAME}.${SLURM_JOB_ID}
 
 END_DATE=$(date)
 echo "zzz *** ${END_DATE} *** - JobEnd - hpcc - ${HPC_COMPILER} - ${HPC_MPI}" >> ${HPCC_LOG} 2>&1

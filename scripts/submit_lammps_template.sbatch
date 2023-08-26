@@ -8,13 +8,13 @@
 #SBATCH --ntasks-per-core=1
 #SBATCH --export=ALL
 #SBATCH --exclusive
-#SBATCH -o /fsx/log/hpcc.out
+#SBATCH -o XXPREFIXXX/log/lammps.out
 
 #--------------------------- customized Job env -----------------------------
 #SBATCH --nodes=2
 #SBATCH --partition=c6ipg
 
-export HPCC_VERSION=1.5.0
+export LAMMPS_VERSION=git
 
 #----------------------------------------------------------------------------
 
@@ -50,15 +50,15 @@ export HPCC_VERSION=1.5.0
 # env.sh 1 0   ## select GNU/GCC compilers with openmpi
 # env.sh ...
 
-PREFIX=/fsx
+PREFIX=XXPREFIXXX
 source ${PREFIX}/scripts/env.sh 3 2
 #----------------------------------------------------------------------------
 LOGDIR=${PREFIX}/log
-HPCC_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_hpcc-${HPCC_VERSION}.log
+LAMMPS_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_lammps-${LAMMPS_VERSION}.log
 
 mkdir -p ${LOGDIR}
 
-JOBDIR=${PREFIX}/spooler/hpcc
+JOBDIR=${PREFIX}/spooler/lammps
 mkdir -p ${JOBDIR}
 cd ${JOBDIR}
 
@@ -70,20 +70,18 @@ HPC_MPI_DEBUG=1
 # load MPI settings
 source ${PREFIX}/scripts/mpi_settings.sh
 
-echo "Running hpcc on $(date)"
+echo "Running lammps on $(date)"
 
 START_DATE=$(date)
-echo "zzz *** ${START_DATE} *** - JobStart - hpcc - ${HPC_COMPILER} - ${HPC_MPI}" >> ${HPCC_LOG} 2>&1
+echo "zzz *** ${START_DATE} *** - JobStart - lammps - ${HPC_COMPILER} - ${HPC_MPI}" >> ${LAMMPS_LOG} 2>&1
 
 #export OMPI_MCA_coll_tuned_use_dynamic_rules=1
 ##export OMPI_MCA_coll_tuned_bcast_algorithm=1
-ln -sfn ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/hpcc-${HPCC_VERSION}/hpcc .
-#srun ${MPI_SHOW_BIND_OPTS} --mpi=pmi2 ./hpcc >> ${HPCC_LOG} 2>&1
-mpirun ${MPI_SHOW_BIND_OPTS} ./hpcc >> ${HPCC_LOG} 2>&1
-mv hpccoutf.txt hpccoutf.txt.${SLURM_JOB_NAME}.${SLURM_JOB_ID}
+#srun ${MPI_SHOW_BIND_OPTS} --mpi=pmi2 lammps -in cu.in >> ${LAMMPS_LOG} 2>&1
+mpirun ${MPI_SHOW_BIND_OPTS} lmp -in cu.in >> ${LAMMPS_LOG} 2>&1
 
 END_DATE=$(date)
-echo "zzz *** ${END_DATE} *** - JobEnd - hpcc - ${HPC_COMPILER} - ${HPC_MPI}" >> ${HPCC_LOG} 2>&1
+echo "zzz *** ${END_DATE} *** - JobEnd - lammps - ${HPC_COMPILER} - ${HPC_MPI}" >> ${LAMMPS_LOG} 2>&1
 
 JOB_FINISH_TIME=$(($(date -d "${END_DATE}" +%s)-$(date -d "${START_DATE}" +%s)))
-echo "zzz *** $(date) *** - Job hpcc took ${JOB_FINISH_TIME} seconds($(echo "scale=5;${JOB_FINISH_TIME}/3600" | bc) hours)." >> ${HPCC_LOG} 2>&1
+echo "zzz *** $(date) *** - Job lammps took ${JOB_FINISH_TIME} seconds($(echo "scale=5;${JOB_FINISH_TIME}/3600" | bc) hours)." >> ${LAMMPS_LOG} 2>&1

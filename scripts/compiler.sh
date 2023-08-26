@@ -362,7 +362,10 @@ case ${HPC_COMPILER} in
 	source ${HPC_PREFIX}/opt/intel/oneapi/mkl/latest/env/vars.sh
         export HPC_TARGET=$(${HPC_COMPILER} -dumpmachine)
 	export HPC_LLIBS="-L${MKLROOT}/lib/intel64 -lmkl_scalapack_${PROG_MODEL} -lmkl_cdft_core -lmkl_intel_${PROG_MODEL} -lmkl_intel_thread -lmkl_core -lmkl_blacs_intelmpi_${PROG_MODEL} -liomp5 -lpthread -lm -ldl"
-	export HPC_CFLAGS="-xHOST -fma -ftz -fomit-frame-pointer"
+	#export HPC_CFLAGS="-xHOST -fma -ftz -fomit-frame-pointer"
+	#export HPC_CFLAGS="-Ofast -ipo -mavx -axCORE-AVX2,CORE-AVX512"
+	#export HPC_CFLAGS="-Ofast -ipo -mavx -axCORE-AVX2,CORE-AVX512 -march=icelake-server"
+	export HPC_CFLAGS="-Ofast -ipo -mavx -axCORE-AVX2,CORE-AVX512"
 	export HPC_INCS="-I${MKLROOT}/include"
 	;;
     "amdclang")
