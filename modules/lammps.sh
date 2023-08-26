@@ -83,6 +83,8 @@ install_lammps()
     if [ "${HPC_COMPILER}" == "icc" ]
     then
 	FFT_OPTS="-DFFT=MKL -DFFT_MKL_THREADS=on"
+    else
+	FFT_OPTS=$"-DFFT=FFTW3 -DFFTW3_LIBRARY=\"${HPC_LLIBS}\" -DFFTW3_INCLUDE_DIR=\"${HPC_INC_DIR}\""
     fi
     cmake ../cmake ${FFT_OPTS} -DBUILD_MPI=yes -DPKG_REPLICA=yes -DPKG_KSPACE=yes -DPKG_MANYBODY=yes -DWITH_JPEG=yes -DWITH_GZIP=yes -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} && \
 	cmake --build .  -j $(nproc) && \

@@ -334,6 +334,7 @@ case ${HPC_COMPILER} in
 	sysgcc_lib_search_loc="/usr/lib/gcc/${HPC_HOST_TARGET}"
 
 	export HPC_LLIBS="-L${ARMPL_DIR}/lib -armpl=${PROG_MODEL} -lamath -lastring"
+	export HPC_INC_DIR="${ARMPL_DIR}/include"
 	export HPC_INCS="-I${ARMPL_DIR}/include"
 	export HPC_CFLAGS="-Ofast -mcpu=native"
 
@@ -367,6 +368,7 @@ case ${HPC_COMPILER} in
 	#export HPC_CFLAGS="-Ofast -ipo -mavx -axCORE-AVX2,CORE-AVX512 -march=icelake-server"
 	export HPC_CFLAGS="-Ofast -ipo -mavx -axCORE-AVX2,CORE-AVX512"
 	export HPC_INCS="-I${MKLROOT}/include"
+	export HPC_INC_DIR="${MKLROOT}/include"
 	;;
     "amdclang")
 	source ${HPC_PREFIX}/opt/setenv_AOCC.sh
@@ -374,6 +376,7 @@ case ${HPC_COMPILER} in
         export HPC_TARGET=$(clang -dumpmachine)
 	export HPC_CFLAGS="-O3 -march=znver3 -mfma -fvectorize -mfma -mavx2 -m3dnow -floop-unswitch-aggressive -fuse-ld=lld"
 	export HPC_CCFLAGS="-O3 -march=znver3 -mfma -fvectorize -mfma -mavx2 -m3dnow -fuse-ld=lld"
+	export HPC_INC_DIR="${AOCL_ROOT}/include"
 	export HPC_INCS="-I${AOCL_ROOT}/include"
 	export HPC_LLIBS="-L${AOCL_ROOT}/lib -lblis-mt -lflame -lscalapack -lfftw3 -lfftw3_omp -lalm -lm"
 	;;
