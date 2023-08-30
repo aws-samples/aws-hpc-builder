@@ -6,11 +6,11 @@ import lief
 import argparse
 
 parser = argparse.ArgumentParser(description='This program fix AOCL could not find GLIBC_2.27 on Amazon Linux')
-parser.add_argument('-p', '--prefix', type=str, help='prefix name', default='/fsx')
+parser.add_argument('-p', '--prefix', type=str, help='prefix name(default: /fsx/amd64)', default='/fsx/amd64')
 parser.add_argument('-a', '--aversion', type=str, help='aocl version', default='4.1.0')
 args = parser.parse_args()
 
-binary = lief.parse(args.prefix + '/x86_64/opt/' + args.aversion + '/aocc/lib/libscalapack.so')
+binary = lief.parse(args.prefix + '/opt/' + args.aversion + '/aocc/lib/libscalapack.so')
 
 glibc_aux = None
 

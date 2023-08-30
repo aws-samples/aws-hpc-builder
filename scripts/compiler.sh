@@ -2,6 +2,103 @@
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 # SPDX-License-Identifier: MIT
 
+if [ -n "${HPC_PREFIX:-}" ]
+then
+    echo $"AWS HPC Builder environment has been set, deactivate it with \"hpc_deactivate\" first."
+    return
+fi
+
+hpc_deactivate () {
+    # reset old environment variables
+    if [ -n "${_OLD_PATH:-}" ]
+    then
+        export PATH="${_OLD_PATH:-}"
+	export MANPATH="${_OLD_MANPATH:-}"
+	export LD_LIBRARY_PATH="${_OLD_LD_LIBRARY_PATH:-}"
+	export LIBRARY_PATH="${_OLD_LIBRARY_PATH:-}"
+	export PKG_CONFIG_PATH="${_OLD_PKG_CONFIG_PATH:-}"
+	export MODULEPATH="${_OLD_MODULEPATH:-}"
+	export LOADEDMODULES="${_OLD_LOADEDMODULES:-}"
+	unset _OLD_PATH
+	unset _OLD_MANPATH
+	unset _OLD_LD_LIBRARY_PATH
+	unset _OLD_LIBRARY_PATH
+	unset _OLD_PKG_CONFIG_PATH
+	unset _OLD_MODULEPATH
+	unset _OLD_LOADEDMODULES
+
+	unset PREFIX
+	unset SARCH
+	unset HPC_PREFIX
+	unset HPC_TARGET
+	unset HPC_HOST_TARGET
+	unset HPC_COMPILER
+	unset HPC_MPI
+	unset HPC_CFLAGS
+	unset HPC_FFT_LIB
+	unset HPC_INCS
+	unset HPC_INC_DIR
+	unset HPC_LLIBS
+	unset PROG_MODEL
+
+	unset -f check_and_install_gcc10
+	unset -f fix_clang_ld
+	unset -f get_compiler
+	unset -f set_compiler_env
+	unset -f unset_compiler_env
+	unset -f use_vendor_compiler
+	unset -f validate_compiler
+	unset -f check_and_use_intelmpi
+	unset -f check_and_use_nvidiampi
+    fi
+
+    # This should detect bash and zsh, which have a hash command that must
+    # be called to get it to forget past commands.  Without forgetting
+    # past commands the $PATH changes we made may not be respected
+    if [ -n "${BASH:-}" -o -n "${ZSH_VERSION:-}" ]
+    then
+        hash -r 2> /dev/null
+    fi
+
+    if [ -n "${_OLD_PS1:-}" ]
+    then
+        export PS1="${_OLD_PS1:-}"
+        unset _OLD_PS1
+    fi
+
+    if [ ! "${1:-}" = "nondestructive" ]
+    then
+    # Self destruct!
+        unset -f hpc_deactivate
+    fi
+}
+
+# unset irrelevant variables
+hpc_deactivate nondestructive
+
+export _OLD_PATH="${PATH}"
+export _OLD_MANPATH="${_OLD_MANPATH}"
+export _OLD_LD_LIBRARY_PATH="${LD_LIBRARY_PATH}"
+export _OLD_LIBRARY_PATH="${LIBRARY_PATH}"
+export _OLD_PKG_CONFIG_PATH="${PKG_CONFIG_PATH}"
+
+if [ -z "${HPC_ENV_DISABLE_PROMPT:-}" ]
+then
+    export _OLD_PS1="${PS1}"
+    PS1="(AWS HPC Builder) ${PS1:-}"
+    export PS1
+    HPC_ENV_PROMPT="(AWS HPC Builder) "
+    export HPC_ENV_PROMPT
+fi
+
+# This should detect bash and zsh, which have a hash command that must
+# be called to get it to forget past commands.  Without forgetting
+# past commands the $PATH changes we made may not be respected
+if [ -n "${BASH:-}" -o -n "${ZSH_VERSION:-}" ]
+then
+    hash -r 2> /dev/null
+fi
+
 fix_clang_ld()
 {
     if [ "${HPC_COMPILER}" == "clang" ] || [ "${HPC_COMPILER}" == "armclang" ] || [ "${HPC_COMPILER}" == "amdclang" ]
