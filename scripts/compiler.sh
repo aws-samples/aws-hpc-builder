@@ -50,6 +50,8 @@ hpc_deactivate () {
 	unset -f validate_compiler
 	unset -f check_and_use_intelmpi
 	unset -f check_and_use_nvidiampi
+	unset -f print_msg
+	unset -f print_mark
 
 	unset HPC_ENV_SET
     fi
@@ -75,6 +77,24 @@ hpc_deactivate () {
     fi
 }
 
+{
+    if [ "$1" == "msg" ]
+    then
+        echo -e "\e[1m\e[92m${2}\e[0m"
+    elif [ "$1" == "inf" ]
+    then
+        echo -e "\e[1m\e[93m${2}\e[0m"
+    elif [ "$1" == "err" ]
+    then
+        echo -e "\e[1m\e[31m${2}\e[0m" 1>&2
+    fi
+}
+
+print_mark()
+{
+    print_msg msg "==================================================="
+}
+
 # unset irrelevant variables
 hpc_deactivate nondestructive
 
@@ -87,7 +107,7 @@ export _OLD_PKG_CONFIG_PATH="${PKG_CONFIG_PATH}"
 if [ -z "${HPC_ENV_DISABLE_PROMPT:-}" ]
 then
     export _OLD_PS1="${PS1}"
-    PS1="(AWS HPC Builder) ${PS1:-}"
+    PS1="\e[1m\e[93m(AWS HPC Builder)\e[0m ${PS1:-}"
     export PS1
     HPC_ENV_PROMPT="(AWS HPC Builder) "
     export HPC_ENV_PROMPT
