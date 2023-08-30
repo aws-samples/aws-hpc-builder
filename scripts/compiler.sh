@@ -2,7 +2,7 @@
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 # SPDX-License-Identifier: MIT
 
-if [ -n "${HPC_ENV_SET:-}" ]
+if [ "${HPC_ENV_SET}" == "yes" ]
 then
     echo $"AWS HPC Builder environment has been set, deactivate it with \"hpc_deactivate\" first."
     return
@@ -511,4 +511,4 @@ then
 fi
 
 export LD_LIBRARY_PATH=${LIBRARY_PATH}:${LD_LIBRARY_PATH}
-export HPC_ENV_SET=yes
+export HPC_ENV_SET="yes"
