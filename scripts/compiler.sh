@@ -398,6 +398,8 @@ export HPC_PREFIX="${PREFIX}/${SARCH}"
 
 if [ ! -f ${PREFIX}/${SARCH}/.world ] || (! grep -q "^${HPC_COMPILER}" ${PREFIX}/${SARCH}/.world)
 then
+    echo -e "\e[1m\e[31mCompiler not found, deactivate AWS HPC Builder environment.\e[0m"
+    hpc_deactivate
     return
 fi
 
