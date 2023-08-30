@@ -77,24 +77,6 @@ hpc_deactivate () {
     fi
 }
 
-{
-    if [ "$1" == "msg" ]
-    then
-        echo -e "\e[1m\e[92m${2}\e[0m"
-    elif [ "$1" == "inf" ]
-    then
-        echo -e "\e[1m\e[93m${2}\e[0m"
-    elif [ "$1" == "err" ]
-    then
-        echo -e "\e[1m\e[31m${2}\e[0m" 1>&2
-    fi
-}
-
-print_mark()
-{
-    print_msg msg "==================================================="
-}
-
 # unset irrelevant variables
 hpc_deactivate nondestructive
 
