@@ -2,7 +2,7 @@
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 # SPDX-License-Identifier: MIT
 
-if [ -n "${HPC_PREFIX:-}" ]
+if [ -n "${HPC_ENV_SET:-}" ]
 then
     echo $"AWS HPC Builder environment has been set, deactivate it with \"hpc_deactivate\" first."
     return
@@ -50,6 +50,8 @@ hpc_deactivate () {
 	unset -f validate_compiler
 	unset -f check_and_use_intelmpi
 	unset -f check_and_use_nvidiampi
+
+	unset HPC_ENV_SET
     fi
 
     # This should detect bash and zsh, which have a hash command that must
@@ -509,3 +511,4 @@ then
 fi
 
 export LD_LIBRARY_PATH=${LIBRARY_PATH}:${LD_LIBRARY_PATH}
+export HPC_ENV_SET=yes
