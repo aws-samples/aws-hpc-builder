@@ -27,6 +27,12 @@ install_netcdf_c()
     sudo rm -rf "${NETCDF_C_SRC%.tar.gz}"
     tar xf "${NETCDF_C_SRC}"
     cd "${NETCDF_C_SRC%.tar.gz}"
+
+    if [ -f ../../patch/netcdf-c/netcdf-c-$(arch)-${HPC_COMPILER}.patch ]
+    then
+        patch -Np1 < ../../patch/netcdf-c/netcdf-c-$(arch)-${HPC_COMPILER}.patch
+    fi
+
     mkdir build
     cd build
     #cmake3 -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} -DCMAKE_INSTALL_LIBDIR=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib ..

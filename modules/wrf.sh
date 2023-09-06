@@ -242,7 +242,7 @@ patch_wrf()
 	    fi
 	else
 	    # 使用开源编译器，可以使用相同的patch，所以这里用 $(arch)
-	    if [ "${HPC_COMPILER}" == "icc" ]
+	    if [ "${HPC_COMPILER}" == "icc" ] || [ "${HPC_COMPILER}" == "amdclang" ]
 	    then
 		patch -Np1 < "../../patch/wrf/WRF-4.z-$(arch)-${HPC_COMPILER}-${HPC_MPI}.patch"
 	    else
