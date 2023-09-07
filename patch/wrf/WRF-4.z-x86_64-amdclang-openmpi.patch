@@ -1,15 +1,17 @@
 diff -urN WRF-4.z.orig/arch/configure.defaults WRF-4.z/arch/configure.defaults
 --- WRF-4.z.orig/arch/configure.defaults	2022-12-19 17:37:16.000000000 +0000
-+++ WRF-4.z/arch/configure.defaults	2023-09-06 05:26:50.000000000 +0000
-@@ -771,16 +771,16 @@
++++ WRF-4.z/arch/configure.defaults	2023-09-07 01:47:44.000000000 +0000
+@@ -771,46 +771,53 @@
  NETCDFPAR_BUILD	=      CONFIGURE_NETCDFPAR_BUILD
  
  ###########################################################
 -#ARCH    Linux x86_64 ppc64le, gfortran compiler with gcc  #serial smpar dmpar dm+sm
-+#ARCH    Linux x86_64 ppc64le, flang compiler with clang #serial smpar dmpar dm+sm
++#ARCH    AMD Linux x86_64, AOCC flang compiler with AOCC clang  #serial smpar dmpar dm+sm
++# Supported AMDARCH are znver1, znver2 and znver3 for ZEN1, ZEN2 and ZEN3 respectively
++# For optimized AMDFCFLAGS and AMDLDFLAGS, please reach out to toolchainsupport@amd.com
  #
 -DESCRIPTION     =       GNU ($SFC/$SCC)
-+DESCRIPTION     =       AMD AOCC ($SFC/$SCC)
++DESCRIPTION     =       AMD ($SFC/$SCC) :  AMD ZEN1/ ZEN2/ ZEN3 Architectures
  DMPARALLEL      =       # 1
  OMPCPP          =       # -D_OPENMP
  OMP             =       # -fopenmp
@@ -23,24 +25,29 @@ diff -urN WRF-4.z.orig/arch/configure.defaults WRF-4.z/arch/configure.defaults
  DM_FC           =       mpif90 -f90=$(SFC)
  DM_CC           =       mpicc -cc=$(SCC)
  FC              =       CONFIGURE_FC
-@@ -789,28 +789,29 @@
+ CC              =       CONFIGURE_CC
+ LD              =       $(FC)
  RWORDSIZE       =       CONFIGURE_RWORDSIZE
++
++AMDARCH         =       -march=znver3
++AMDMATHLIB      =       -fveclib=AMDLIBM
++AMDLDFLAGS      =       -Wl,-mllvm -Wl,-enable-loop-reversal -Wl,-mllvm -Wl,-enable-gather -Wl,-mllvm -Wl,-vectorize-non-contiguous-memory-aggressively
++AMDFCFLAGS      =
++
  PROMOTION       =       #-fdefault-real-8
  ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_SUBR  CONFIGURE_D_CTSM
 -CFLAGS_LOCAL    =       -w -O3 -c  # -DRSL0_ONLY
 -LDFLAGS_LOCAL   =       
-+LIBMVEC         =       -mllvm -vector-library=LIBMVEC-X86 -mllvm -enable-loop-vectorization-with-conditions -Mstack_arrays
-+AOCCOPT         =       -O3 -m64 -Ofast -ffast-math
-+CFLAGS_LOCAL    =       -w $(AOCCOPT) # -DRSL0_ONLY
-+LDFLAGS_LOCAL   =       -ltirpc -lalm -lamdlibm -lm -ljemalloc -lmvec $(AOCCOPT)
++CFLAGS_LOCAL    =       -w -c -m64 -Ofast -ffast-math $(AMDARCH) -ltirpc
++LDFLAGS_LOCAL   =       -m64 -Ofast -Mstack_arrays $(AMDARCH) $(AMDLDFLAGS) $(AMDMATHLIB) -lamdlibm -lomp
  CPLUSPLUSLIB    =       
  ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
 -FCOPTIM         =       -O2 -ftree-vectorize -funroll-loops
 -FCREDUCEDOPT	=       $(FCOPTIM)
 -FCNOOPT		=       -O0
-+FCOPTIM         =       $(AOCCOPT) -fopenmp
-+FCREDUCEDOPT    =       -O2 -Ofast -ffast-math
-+FCNOOPT         =       -O0 -DFCNOOPT -fopenmp
++FCOPTIM         =       -Ofast -ffast-math $(AMDARCH) -Mbyteswapio -Mstack_arrays -ftree-vectorize -Mbyteswapio -funroll-loops -finline-aggressive -finline-hint-functions $(AMDMATHLIB) $(AMDFCFLAGS)
++FCREDUCEDOPT    =       -O3 $(AMDARCH) -ffast-math -Mstack_arrays -DFCREDUCEDOPT
++FCNOOPT         =       -O0 -DFCNOOPT
  FCDEBUG         =       # -g $(FCNOOPT) # -ggdb -fbacktrace -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow
 -FORMAT_FIXED    =       -ffixed-form
 -FORMAT_FREE     =       -ffree-form -ffree-line-length-none
@@ -56,8 +63,8 @@ diff -urN WRF-4.z.orig/arch/configure.defaults WRF-4.z/arch/configure.defaults
 -CPP             =      /lib/cpp CONFIGURE_CPPFLAGS
 -AR              =      ar
 +BYTESWAPIO      =       -Mbyteswapio
-+FCBASEOPTS_NO_G =       -w $(FORMAT_FREE) $(BYTESWAPIO) -fopenmp
-+FCBASEOPTS      =       $(FCBASEOPTS_NO_G) $(FCDEBUG) -DBASEOPTS -fopenmp
++FCBASEOPTS_NO_G =       -w $(FORMAT_FREE) $(BYTESWAPIO)
++FCBASEOPTS      =       -Ofast -ffast-math $(FCBASEOPTS_NO_G) $(FCDEBUG)
 +TRADFLAG        =      -traditional
 +CPP             =      /lib/cpp -P
 +AR              =      llvm-ar
