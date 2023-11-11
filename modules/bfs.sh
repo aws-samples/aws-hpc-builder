@@ -35,6 +35,7 @@ install_bfs()
     cd src
     make graph500_reference_bfs
     sudo install -m 755 -D -t ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin ./graph500_reference_bfs
+    cd ../..
 }
 
 update_bfs_version()
