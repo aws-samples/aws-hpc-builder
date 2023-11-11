@@ -65,6 +65,14 @@ source ${PREFIX}/scripts/mpi_settings.sh
 
 echo "Running bfs on $(date)"
 
+# greatly speed up BFS running
+export SKIP_VALIDATION=1
+
+# save graph file - ref: https://github.com/graph500/graph500
+# TMPFILE=<filename> and also REUSEFILE=1 to keep the file.
+# REUSEFILE=1
+# TMPFILE=/fsx/spooler/bfs/graph29-2
+
 START_DATE=$(date)
 echo "zzz *** ${START_DATE} *** - JobStart - bfs - ${HPC_COMPILER} - ${HPC_MPI}" >> ${BFS_LOG} 2>&1
 
