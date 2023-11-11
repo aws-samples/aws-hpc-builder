@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
-MPICH_VERSION=${2:-4.1}
+MPICH_VERSION=${2:-4.1.2}
 MPICH_SRC="mpich-${MPICH_VERSION}.tar.gz"
 DISABLE_COMPILER_ENV=false
 
@@ -49,7 +49,7 @@ download_mpich() {
     then
         return
     else
-	wget "https://www.mpich.org/static/downloads/${MPICH_VERSION}/${MPICH_SRC}"
+	curl -JLOk "https://www.mpich.org/static/downloads/${MPICH_VERSION}/${MPICH_SRC}"
 	return $?
     fi
 }

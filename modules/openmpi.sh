@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
-OPENMPI_VERSION=${2:-4.1.4}
+OPENMPI_VERSION=${2:-4.1.6}
 OPENMPI_SRC="openmpi-${OPENMPI_VERSION}.tar.gz"
 DISABLE_COMPILER_ENV=false
 
@@ -48,7 +48,7 @@ download_openmpi() {
     then
         return
     else
-	wget "https://download.open-mpi.org/release/open-mpi/v${OPENMPI_VERSION%.*}/${OPENMPI_SRC}"
+	curl -JLOk "https://download.open-mpi.org/release/open-mpi/v${OPENMPI_VERSION%.*}/${OPENMPI_SRC}"
 	return $?
     fi
 }
