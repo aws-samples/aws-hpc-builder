@@ -2,18 +2,6 @@
 # Copyright # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 # SPDX-License-Identifier: MIT
 
-#SBATCH --wait-all-nodes=1
-#SBATCH --ntasks-per-node=64
-#SBATCH --cpus-per-task=1
-#SBATCH --ntasks-per-core=1
-#SBATCH --export=ALL
-#SBATCH --exclusive
-#SBATCH -o /fsx/log/hpcc.out
-
-#--------------------------- customized Job env -----------------------------
-#SBATCH --nodes=2
-#SBATCH --partition=c6ipg
-
 export HPCC_VERSION=1.5.0
 
 #----------------------------------------------------------------------------
@@ -51,7 +39,7 @@ export HPCC_VERSION=1.5.0
 # env.sh ...
 
 PREFIX=/fsx
-source ${PREFIX}/scripts/env.sh 3 2
+source ${PREFIX}/scripts/env.sh 7 1
 #----------------------------------------------------------------------------
 LOGDIR=${PREFIX}/log
 HPCC_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_hpcc-${HPCC_VERSION}.log
@@ -154,8 +142,8 @@ echo "zzz *** ${START_DATE} *** - JobStart - hpcc - ${HPC_COMPILER} - ${HPC_MPI}
 #export OMPI_MCA_coll_tuned_use_dynamic_rules=1
 ##export OMPI_MCA_coll_tuned_bcast_algorithm=1
 ln -sfn ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/hpcc-${HPCC_VERSION}/hpcc .
-srun ${MPI_SHOW_BIND_OPTS} --mpi=pmi2 ./hpcc >> ${HPCC_LOG} 2>&1
-#mpirun ${MPI_SHOW_BIND_OPTS} ./hpcc >> ${HPCC_LOG} 2>&1
+#srun ${MPI_SHOW_BIND_OPTS} --mpi=pmi2 ./hpcc >> ${HPCC_LOG} 2>&1
+mpirun ${MPI_SHOW_BIND_OPTS} ./hpcc >> ${HPCC_LOG} 2>&1
 mv hpccoutf.txt hpccoutf.txt.${SLURM_JOB_NAME}.${SLURM_JOB_ID}
 
 END_DATE=$(date)
