@@ -70,7 +70,7 @@ hpc_deactivate () {
         unset _OLD_PS1
     fi
 
-    if [ ! "${1:-}" = "nondestructive" ]
+    if [ ! "${1:-}" == "nondestructive" ]
     then
     # Self destruct!
         unset -f hpc_deactivate
