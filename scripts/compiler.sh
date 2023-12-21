@@ -410,6 +410,11 @@ case ${HPC_COMPILER} in
 	export LD_LIBRARY_PATH=${HPC_PREFIX}/opt/gnu/lib64:${HPC_PREFIX}/opt/gnu/lib:${LD_LIBRARY_PATH}
 	export PATH=${HPC_PREFIX}/opt/gnu/${HPC_TARGET}/bin:${HPC_PREFIX}/opt/gnu/bin:${PATH}
 	export MANPATH=:${HPC_PREFIX}/opt/gnu/share/man${MANPATH}
+	export HPC_LLIBS="-L${HPC_PREFIX}/lib64 -lblas -lopenblas -llapack"
+	export HPC_INC_DIR="${HPC_PREFIX}/include"
+	export HPC_INCS="-I${HPC_PREFIX}/include"
+	export HPC_CFLAGS="-Ofast -march=native"
+	export HPC_FFT_LIB="-L${HPC_PREFIX}/lib -llftw3"
 	;;
     "armgcc")
         source /etc/profile.d/modules.sh
