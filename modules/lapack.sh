@@ -61,7 +61,7 @@ install_lapack()
     cd build
     cmake .. -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} -DBUILD_SHARED_LIBS=ON
     cmake --build .  -j $(nproc)
-    sudo cmake --install . && cd ../..
+    sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env cmake --install . && cd ../..
 }
 
 update_lapack_version()
