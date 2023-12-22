@@ -413,7 +413,12 @@ case ${HPC_COMPILER} in
 	export HPC_LLIBS="-L${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib64 -lblas -lopenblas -llapack"
 	export HPC_INC_DIR="${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include"
 	export HPC_INCS="-I${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include"
-	export HPC_CFLAGS="-Ofast -march=native"
+	if [ "$(arch)" == "aarch64" ]
+	then
+	    export HPC_CFLAGS="-Ofast -mcpu=native"
+	else
+	    export HPC_CFLAGS="-Ofast -march=native"
+	fi
 	export HPC_FFT_LIB="-L${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib -llftw3"
 	;;
     "armgcc")
