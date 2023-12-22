@@ -143,7 +143,7 @@ echo "zzz *** ${START_DATE} *** - JobStart - hpcc - ${HPC_COMPILER} - ${HPC_MPI}
 ln -sfn ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/hpcc-${HPCC_VERSION}/hpcc .
 #srun ${MPI_SHOW_BIND_OPTS} --mpi=pmi2 ./hpcc >> ${HPCC_LOG} 2>&1
 mpirun -n ${MPI_NUM_THREADS} ${MPI_SHOW_BIND_OPTS} ./hpcc >> ${HPCC_LOG} 2>&1
-mv hpccoutf.txt hpccoutf.txt.$(date +'%Y-%m-%d_%H-%M-%S')
+mv hpcccoutf.txt hpccoutf.txt.${SLURM_JOB_NAME}.${SLURM_JOB_ID}
 
 END_DATE=$(date)
 echo "zzz *** ${END_DATE} *** - JobEnd - hpcc - ${HPC_COMPILER} - ${HPC_MPI}" >> ${HPCC_LOG} 2>&1
