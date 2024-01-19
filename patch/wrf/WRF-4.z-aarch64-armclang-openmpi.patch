@@ -31,12 +31,12 @@ diff -urN WRF-4.z.orig/arch/configure.defaults WRF-4.z/arch/configure.defaults
  ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_SUBR  -DWRF_USE_CLM
 -CFLAGS_LOCAL    =       -w -O3 -c  # -DRSL0_ONLY
 -LDFLAGS_LOCAL   =
-+CFLAGS_LOCAL    =       -Ofast -mcpu=native -w -c  # -DRSL0_ONLY
++CFLAGS_LOCAL    =       -Ofast -mcpu=native -w -c  -Wno-error=incompatible-function-pointer-types -Wno-error=implicit-function-declaration -Wno-error=implicit-int # -DRSL0_ONLY
 +LDFLAGS_LOCAL   =	 -Ofast -mcpu=native -armpl -lamath -lm -lastring
  CPLUSPLUSLIB    =       
  ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
 -FCOPTIM         =       -O2 -ftree-vectorize -funroll-loops
-+FCOPTIM         =       -Ofast -mcpu=native -funroll-loops
++FCOPTIM         =       -Ofast -mcpu=native -funroll-loops -Wno-error=incompatible-function-pointer-types -Wno-error=implicit-function-declaration -Wno-error=implicit-int 
  FCREDUCEDOPT	=       $(FCOPTIM)
  FCNOOPT         =       -O0
  FCDEBUG         =       # -g $(FCNOOPT)  # -fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow
@@ -59,8 +59,10 @@ diff -urN WRF-4.z.orig/arch/configure.defaults WRF-4.z/arch/configure.defaults
 -RANLIB          =      ranlib
 +RANLIB          =      armllvm-ranlib
  RLFLAGS		=	
- CC_TOOLS        =      $(SCC) 
- 
+-CC_TOOLS        =      $(SCC)
++CC_TOOLS        =      $(SCC) -Wno-error=incompatible-function-pointer-types -Wno-error=implicit-function-declaration -Wno-error=implicit-int
+
+ ###########################################################
 diff -urN WRF-4.z.orig/configure WRF-4.z/configure
 --- WRF-4.z.orig/configure	2021-01-16 01:21:58.000000000 +0800
 +++ WRF-4.z/configure	2023-04-12 18:14:27.206708681 +0800

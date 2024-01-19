@@ -23,11 +23,11 @@ diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
 +RWORDSIZE       =       CONFIGURE_RWORDSIZE
 +PROMOTION       =       #-fdefault-real-8
 +ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_SUBR -DWRF_USE_CLM
-+CFLAGS_LOCAL    =       -Ofast -mcpu=native -w -c # -DRSL0_ONLY
++CFLAGS_LOCAL    =       -Ofast -mcpu=native -w -c -Wno-error=incompatible-function-pointer-types -Wno-error=implicit-function-declaration -Wno-error=implicit-int # -DRSL0_ONLY
 +LDFLAGS_LOCAL   =       -Ofast -mcpu=native -armpl -lamath -lm -lastring
 +CPLUSPLUSLIB    =       
 +ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
-+FCOPTIM         =       -Ofast -mcpu=native -funroll-loops
++FCOPTIM         =       -Ofast -mcpu=native -funroll-loops -Wno-error=incompatible-function-pointer-types -Wno-error=implicit-function-declaration -Wno-error=implicit-int 
 +FCREDUCEDOPT	=       $(FCOPTIM)
 +FCNOOPT         =       -O0
 +FCDEBUG         =       # -g $(FCNOOPT)  # -fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow
@@ -46,7 +46,7 @@ diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
 +M4              =      m4 -B 14000
 +RANLIB          =      armllvm-ranlib
 +RLFLAGS		=	
-+CC_TOOLS        =      $(SCC) 
++CC_TOOLS        =      $(SCC) -Wno-error=incompatible-function-pointer-types -Wno-error=implicit-function-declaration -Wno-error=implicit-int 
 +NETCDFPAR_BUILD	=      CONFIGURE_NETCDFPAR_BUILD
 +
 +###########################################################
@@ -75,11 +75,11 @@ diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
 +RWORDSIZE       =       CONFIGURE_RWORDSIZE
 +PROMOTION       =       #-fdefault-real-8
 +ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_SUBR  -DWRF_USE_CLM
-+CFLAGS_LOCAL    =       -mcpu=native -w -O3 -c # -DRSL0_ONLY
++CFLAGS_LOCAL    =       -mcpu=native -w -O3 -c -Wno-error=incompatible-function-pointer-types -Wno-error=implicit-function-declaration -Wno-error=implicit-int # -DRSL0_ONLY
 +LDFLAGS_LOCAL   =	 -armpl -lamath -lm -lastring
 +CPLUSPLUSLIB    =
 +ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
-+FCOPTIM         =       -O3 -funroll-loops
++FCOPTIM         =       -O3 -funroll-loops -Wno-error=incompatible-function-pointer-types -Wno-error=implicit-function-declaration -Wno-error=implicit-int
 +FCREDUCEDOPT    =       $(FCOPTIM)
 +FCNOOPT         =       -O0
 +FCDEBUG         =       # -g $(FCNOOPT)  # -fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow
@@ -97,7 +97,7 @@ diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
 +M4              =      m4 -G
 +RANLIB          =      armllvm-ranlib
 +RLFLAGS         =
-+CC_TOOLS        =      $(SCC)
++CC_TOOLS        =      $(SCC) -Wno-error=incompatible-function-pointer-types -Wno-error=implicit-function-declaration -Wno-error=implicit-int
 +NETCDFPAR_BUILD	=      CONFIGURE_NETCDFPAR_BUILD
 +
 +###########################################################
