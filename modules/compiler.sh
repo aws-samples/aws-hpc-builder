@@ -8,7 +8,7 @@
 GCC_VERSION=${2:-12.2.0}
 CMAKE_VERSION=3.25.1
 CLANG_VERSION=${2:-15.0.2}
-ARM_COMPILER_VERSION=${2:-22.1}
+ARM_COMPILER_VERSION=${2:-23.10}
 AMD_COMPILER_VERSION=${2:-4.1.0}
 NVIDIA_COMPILER_VERSION=22.11
 NVIDIA_COMPILER_MAJOR_VERSION=$(echo ${NVIDIA_COMPILER_VERSION} | cut -f1 -d'.')
@@ -83,9 +83,24 @@ INTEL_HPC_COMPILER_DL_ID=18679
 #https://registrationcenter-download.intel.com/akdlm/IRC_NAS/7deeaac4-f605-4bcf-a81b-ea7531577c61/l_BaseKit_p_2023.1.0.46401_offline.sh
 #https://registrationcenter-download.intel.com/akdlm/IRC_NAS/1ff1b38a-8218-4c53-9956-f0b264de35a4/l_HPCKit_p_2023.1.0.46346_offline.sh
 
-# ArmPL 22.02
+# ARM Compiler
+# https://developer.arm.com/downloads/-/arm-compiler-for-linux
+#
+# ARM Compiler 23.10
+#https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-compiler-for-linux/$(echo ${ARM_COMPILER_VERSION} | tr '.' '-')/arm-compiler-for-linux_${ARM_COMPILER_VERSION}_{OS}-${S_VERSION_ID}_${SARCH}.tar"
+#https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-compiler-for-linux/23-10/arm-compiler-for-linux_23.10_AmazonLinux-2_aarch64.tar
+#https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-compiler-for-linux/23-10/arm-compiler-for-linux_23.10_AmazonLinux-2023_aarch64.tar
+#https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-compiler-for-linux/23-10/arm-compiler-for-linux_23.10_RHEL-7_aarch64.tar
+#https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-compiler-for-linux/23-10/arm-compiler-for-linux_23.10_RHEL-8_aarch64.tar
+#https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-compiler-for-linux/23-10/arm-compiler-for-linux_23.10_RHEL-9_aarch64.tar
+#https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-compiler-for-linux/23-10/arm-compiler-for-linux_23.10_SLES-15_aarch64.tar
+#https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-compiler-for-linux/23-10/arm-compiler-for-linux_23.10_Ubuntu-20.04_aarch64.tar
+#https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-compiler-for-linux/23-10/arm-compiler-for-linux_23.10_Ubuntu-22.04_aarch64.tar
+
+# ARM Compiler 22.02
 #https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-allinea-studio/$(echo ${ARM_COMPILER_VERSION} | tr '.' '-')/arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}_${SARCH}.tar"
-# ArmPL 22.1
+#
+# ARM Compiler 22.1
 #https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/22-1/arm-compiler-for-linux_22.1_RHEL-7_aarch64.tar
 #https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/22-1/arm-compiler-for-linux_22.1_RHEL-8_aarch64.tar
 #https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/22-1/arm-compiler-for-linux_22.1_Ubuntu-18.04_aarch64.tar
@@ -112,7 +127,15 @@ INTEL_HPC_COMPILER_DL_ID=18679
 
 if [ "${HPC_PACKAGE_TYPE}" == "rpm" ]
 then
-    ARM_COMPILER_SRC=arm-compiler-for-linux_${ARM_COMPILER_VERSION}_RHEL-${S_VERSION_ID}_${SARCH}.tar
+    # Amazon Linux 使用真实系统版本，其他 RPM 系统使用 RHEL 的系统版本
+    if [ "${S_NAME}" == "Amazon Linux" ]
+    then
+	S_TYPE="AmazonLinux"
+	ARM_COMPILER_SRC=arm-compiler-for-linux_${ARM_COMPILER_VERSION}_${S_TYPE}-${VERSION_ID}_${SARCH}.tar
+    else
+	S_TYPE="RHEL"
+	ARM_COMPILER_SRC=arm-compiler-for-linux_${ARM_COMPILER_VERSION}_${S_TYPE}-${S_VERSION_ID}_${SARCH}.tar
+    fi
 elif [ "${HPC_PACKAGE_TYPE}" == "deb" ]
 then
     ARM_COMPILER_SRC=arm-compiler-for-linux_${ARM_COMPILER_VERSION}_Ubuntu-${S_VERSION_ID}.04_${SARCH}.tar
@@ -224,7 +247,7 @@ download_compiler() {
 	    then
 		return
 	    else
-		wget "https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/$(echo ${ARM_COMPILER_VERSION} | tr '.' '-')/${ARM_COMPILER_SRC}"
+		curl -JLOk "https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/$(echo ${ARM_COMPILER_VERSION} | tr '.' '-')/${ARM_COMPILER_SRC}"
 		return $?
 	    fi
 	    ;;
