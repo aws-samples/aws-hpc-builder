@@ -13,7 +13,7 @@ diff -urN WPS.orig/arch/configure.defaults WPS/arch/configure.defaults
 +SFC                 = armflang
 +SCC                 = armclang
 +DM_FC               = mpif90 -fopenmp
-+DM_CC               = mpicc -fopenmp
++DM_CC               = mpicc -fopenmp -Wno-error=incompatible-function-pointer-types -Wno-error=implicit-function-declaration -Wno-error=implicit-int
 +FC                  = CONFIGURE_FC 
 +CC                  = CONFIGURE_CC
 +LD                  = $(FC)
