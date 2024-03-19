@@ -3,8 +3,8 @@
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
 #WRF_VERSION=git
-WRF_VERSION=4.4.2
-WPS_VERSION=${2:-4.4}
+WRF_VERSION=4.5.2
+WPS_VERSION=${2:-4.5}
 # 官方开始支持ARM　版本有关（4.0.3 以后mpif90 mpicc 参数去掉)
 # WPS 4.3.1 版本以后开始才开始支持 gfortran 9
 WPS_FORMATED_VERSION=$(echo ${WPS_VERSION} | awk -F'.' '{print $1$2}')
@@ -84,7 +84,7 @@ download_wps() {
 	    then
 		return
 	    else
-		wget "https://github.com/wrf-model/WPS/archive/refs/tags/v${WPS_VERSION}.tar.gz" -O "${WPS_SRC}"
+		curl -JLOk "https://github.com/wrf-model/WPS/archive/refs/tags/v${WPS_VERSION}.tar.gz"
 		return $?
 	    fi
 	fi

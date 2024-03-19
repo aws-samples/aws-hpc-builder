@@ -3,7 +3,7 @@
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
 #WRF_VERSION=git
-WRF_VERSION=${2:-4.4.2}
+WRF_VERSION=${2:-4.5.2}
 DISABLE_COMPILER_ENV=false
 
 # 读取命令行新的版本信息后再计算WRF的主要版本等信息
@@ -65,10 +65,10 @@ download_wrf() {
 	else
             if [ ${WRF_MAJOR_VERSION} -gt 3 ]
 	    then
-	        wget "https://github.com/wrf-model/WRF/archive/refs/tags/v${WRF_VERSION}.tar.gz" -O "${WRF_SRC}"
+	        curl -JLOk "https://github.com/wrf-model/WRF/archive/refs/tags/v${WRF_VERSION}.tar.gz"
 		return $?
 	    else 
-	        wget "https://github.com/wrf-model/WRF/archive/refs/tags/V${WRF_VERSION}.tar.gz" -O "${WRF_SRC}"
+	        curl -JLOk "https://github.com/wrf-model/WRF/archive/refs/tags/V${WRF_VERSION}.tar.gz"
 		return $?
 	    fi
        	fi

@@ -83,6 +83,15 @@ INTEL_HPC_COMPILER_DL_ID=18679
 #https://registrationcenter-download.intel.com/akdlm/IRC_NAS/7deeaac4-f605-4bcf-a81b-ea7531577c61/l_BaseKit_p_2023.1.0.46401_offline.sh
 #https://registrationcenter-download.intel.com/akdlm/IRC_NAS/1ff1b38a-8218-4c53-9956-f0b264de35a4/l_HPCKit_p_2023.1.0.46346_offline.sh
 
+# Intel OneAPI 2024.0.1
+#INTEL_COMPILER_VERSION=${2:-2024.0.1.46}
+#INTEL_HPC_COMPILER_VERSION=2024.0.1.38
+#INTEL_COMPILER_DL_ID=163da6e4-56eb-4948-aba3-debcec61c064
+#INTEL_HPC_COMPILER_DL_ID=67c08c98-f311-4068-8b85-15d79c4f277a
+#https://registrationcenter-download.intel.com/akdlm/IRC_NAS/163da6e4-56eb-4948-aba3-debcec61c064/l_BaseKit_p_2024.0.1.46_offline.sh
+#https://registrationcenter-download.intel.com/akdlm/IRC_NAS/67c08c98-f311-4068-8b85-15d79c4f277a/l_HPCKit_p_2024.0.1.38_offline.sh
+#
+
 # ARM Compiler
 # https://developer.arm.com/downloads/-/arm-compiler-for-linux
 #
@@ -106,15 +115,21 @@ INTEL_HPC_COMPILER_DL_ID=18679
 #https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/22-1/arm-compiler-for-linux_22.1_Ubuntu-18.04_aarch64.tar
 #https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/22-1/arm-compiler-for-linux_22.1_Ubuntu-20.04_aarch64.tar
 
-# aocc/aocl url
+# AMD AOCC/AOCL
 # https://www.amd.com/en/developer/aocc.html
 # https://www.amd.com/en/developer/aocl.html
 # https://developer.amd.com/amd-aocc/#downloads
 # https://developer.amd.com/amd-aocl/#downloads
-# 4.0.0/4.0
+#
+# aocc/aocl 4.1.0/4.1.0
+# https://download.amd.com/developer/eula/aocc/aocc-4-1/aocc-compiler-4.1.0.tar
+# https://download.amd.com/developer/eula/aocl/aocl-4-1/aocl-linux-aocc-4.1.0.tar.gz
+#
+# aocc/aocl 4.0.0/4.0
 # https://download.amd.com/developer/eula/aocc-compiler/aocc-compiler-4.0.0.tar
 # https://download.amd.com/developer/eula/aocl/aocl-4-0/aocl-linux-aocc-4.0.tar.gz
-# 3.2.0/3.2
+# 
+# aocc/aocl 3.2.0/3.2
 # https://download.amd.com/developer/eula/aocc-compiler/aocc-compiler-3.2.0.tar
 # https://download.amd.com/developer/eula/aocl/aocl-3-2/aocl-linux-aocc-3.2.0.tar.gz
 
@@ -233,7 +248,7 @@ install_sys_dependency_for_compiler()
 download_compiler() {
     if [ ! -f ${CMAKE_SRC} ] && ([ ${S_VERSION_ID} -eq 7 ] || [ ${S_VERSION_ID} -eq 18 ])
     then
-	wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/${CMAKE_SRC}
+	curl -JLOk https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/${CMAKE_SRC}
 	result=$?
 	if [ ${result} -ne 0 ]
 	then
@@ -262,7 +277,7 @@ download_compiler() {
 
 	    if [ ! -f ${INTEL_COMPILER_SRC} ]
             then
-		wget "${INTEL_DOWNLOAD_BASE_URL}/${INTEL_COMPILER_DL_ID}/${INTEL_COMPILER_SRC}"
+		curl -JLOk "${INTEL_DOWNLOAD_BASE_URL}/${INTEL_COMPILER_DL_ID}/${INTEL_COMPILER_SRC}"
 		result=$?
 		if [ ${result} -ne 0 ]
 		then
@@ -273,23 +288,17 @@ download_compiler() {
 	    then
 		return
 	    else
-		wget "${INTEL_DOWNLOAD_BASE_URL}/${INTEL_HPC_COMPILER_DL_ID}/${INTEL_HPC_COMPILER_SRC}"
+		curl -JLOk "${INTEL_DOWNLOAD_BASE_URL}/${INTEL_HPC_COMPILER_DL_ID}/${INTEL_HPC_COMPILER_SRC}"
 		return $?
 	    fi
 	    ;;
 	"amdclang")
-	    # aocc/aocl url
-	    # https://www.amd.com/en/developer/aocc.html
-	    # https://www.amd.com/en/developer/aocl.html
-	    # https://developer.amd.com/amd-aocc/#downloads
-	    # https://developer.amd.com/amd-aocl/#downloads
-	    # https://download.amd.com/developer/eula/aocc-compiler/aocc-compiler-4.0.0.tar
-	    # https://download.amd.com/developer/eula/aocl/aocl-4-0/aocl-linux-aocc-4.0.tar.gz
 	    if [ ! -f ${AMD_COMPILER_SRC} ]
 	    then
-		# 4.0
-		#wget https://download.amd.com/developer/eula/aocc-compiler/${AMD_COMPILER_SRC}
-		wget https://download.amd.com/developer/eula/aocc/aocc-$(echo ${AMD_COMPILER_VERSION} | awk -F'.' '{print $1"-"$2}')/${AMD_COMPILER_SRC}
+		# <= 4.0.0
+		#curl -JLOk https://download.amd.com/developer/eula/aocc-compiler/${AMD_COMPILER_SRC}
+		# 4.1.0
+		curl -JLOk https://download.amd.com/developer/eula/aocc/aocc-$(echo ${AMD_COMPILER_VERSION} | awk -F'.' '{print $1"-"$2}')/${AMD_COMPILER_SRC}
 		result=$?
 		if [ ${result} -ne 0 ]
 		then
@@ -300,14 +309,14 @@ download_compiler() {
 	    then
 		return
 	    else
-		wget https://download.amd.com/developer/eula/aocl/aocl-$(echo ${AMD_AOCL_VERSION} | awk -F'.' '{print $1"-"$2}')/${AMD_AOCL_SRC}
+		curl -JLOk https://download.amd.com/developer/eula/aocl/aocl-$(echo ${AMD_AOCL_VERSION} | awk -F'.' '{print $1"-"$2}')/${AMD_AOCL_SRC}
 		return $?
 	    fi
 	    ;;
 	"gcc")
 	    if [ ! -f ${BINUTILS_SRC} ]
 	    then
-		wget "https://ftp.gnu.org/gnu/binutils/${BINUTILS_SRC}"
+		curl -JLOk "https://ftp.gnu.org/gnu/binutils/${BINUTILS_SRC}"
 		result=$?
 		if [ ${result} -ne 0 ]
 		then
@@ -316,7 +325,7 @@ download_compiler() {
 	    fi
 	    if [ ! -f ${ELFUTILS_SRC} ]
 	    then
-		wget "https://sourceware.org/elfutils/ftp/${ELFUTILS_VERSION}/${ELFUTILS_SRC}"
+		curl -JLOk "https://sourceware.org/elfutils/ftp/${ELFUTILS_VERSION}/${ELFUTILS_SRC}"
 		result=$?
 		if [ ${result} -ne 0 ]
 		then
@@ -327,7 +336,7 @@ download_compiler() {
 	    then
 		return
 	    else
-		wget "https://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/${GCC_SRC}"
+		curl -JLOk "https://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/${GCC_SRC}"
 		return $?
 	    fi
 	    ;;
@@ -336,7 +345,7 @@ download_compiler() {
 	    then
 		return
 	    else
-		wget "https://github.com/llvm/llvm-project/archive/refs/tags/${CLANG_SRC}"
+		curl -JLOk "https://github.com/llvm/llvm-project/archive/refs/tags/${CLANG_SRC}"
 		return $?
 	    fi
 	    ;;
@@ -345,7 +354,7 @@ download_compiler() {
 	    then
 		return
 	    else
-		wget https://developer.download.nvidia.com/hpc-sdk/${NVIDIA_COMPILER_VERSION}/${NVIDIA_COMPILER_SRC}
+		curl -JLOk https://developer.download.nvidia.com/hpc-sdk/${NVIDIA_COMPILER_VERSION}/${NVIDIA_COMPILER_SRC}
 		return $?
 	    fi
 	    ;;

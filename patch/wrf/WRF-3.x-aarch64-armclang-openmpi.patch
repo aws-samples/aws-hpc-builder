@@ -24,7 +24,7 @@ diff -urN WRF-3.x.orig/arch/configure_new.defaults WRF-3.x/arch/configure_new.de
 +PROMOTION       =       #-fdefault-real-8
 +ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_SUBR -DWRF_USE_CLM
 +CFLAGS_LOCAL    =       -Ofast -mcpu=native -w -c -Wno-error=incompatible-function-pointer-types -Wno-error=implicit-function-declaration -Wno-error=implicit-int # -DRSL0_ONLY -I$(ARMPL_INCLUDES_LP64_MP)
-+LDFLAGS_LOCAL   =       -Ofast -mcpu=native -armpl -lamath -lm -lastring
++LDFLAGS_LOCAL   =       -Ofast -mcpu=native -fopenmp -armpl -lamath -lm -lastring
 +CPLUSPLUSLIB    =       
 +ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
 +FCOPTIM         =       -Ofast -mcpu=native -funroll-loops -Wno-error=incompatible-function-pointer-types -Wno-error=implicit-function-declaration -Wno-error=implicit-int 
