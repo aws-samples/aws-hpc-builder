@@ -31,12 +31,12 @@ diff -urN WRF-4.z.orig/arch/configure.defaults WRF-4.z/arch/configure.defaults
  ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_SUBR  -DWRF_USE_CLM
 -CFLAGS_LOCAL    =       -w -O3 -c  # -DRSL0_ONLY
 -LDFLAGS_LOCAL   =
-+CFLAGS_LOCAL    =       -Ofast -mcpu=native -w -c  -Wno-error=incompatible-function-pointer-types -Wno-error=implicit-function-declaration -Wno-error=implicit-int # -DRSL0_ONLY
-+LDFLAGS_LOCAL   =	 -Ofast -mcpu=native -fopenmp -armpl -lamath -lm -lastring
++CFLAGS_LOCAL    =       -w -O3 -c -Wno-implicit-function-declaration -Wno-int-conversion -Wno-implicit-int # -DRSL0_ONLY
++LDFLAGS_LOCAL   =	 -fopenmp -armpl -lamath -lm -lastring
  CPLUSPLUSLIB    =       
  ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
 -FCOPTIM         =       -O2 -ftree-vectorize -funroll-loops
-+FCOPTIM         =       -Ofast -mcpu=native -funroll-loops -Wno-error=incompatible-function-pointer-types -Wno-error=implicit-function-declaration -Wno-error=implicit-int 
++FCOPTIM         =       -Ofast -mcpu=native -funroll-loops -fno-simdmath
  FCREDUCEDOPT	=       $(FCOPTIM)
  FCNOOPT         =       -O0
  FCDEBUG         =       # -g $(FCNOOPT)  # -fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow
@@ -45,7 +45,7 @@ diff -urN WRF-4.z.orig/arch/configure.defaults WRF-4.z/arch/configure.defaults
  RANLIB          =      ranlib
  RLFLAGS		=	
 -CC_TOOLS        =      $(SCC) 
-+CC_TOOLS        =      $(SCC) -Wno-error=incompatible-function-pointer-types -Wno-error=implicit-function-declaration -Wno-error=implicit-int
++CC_TOOLS        =      $(SCC) -Wno-implicit-function-declaration -Wno-int-conversion -Wno-implicit-int
  
  ###########################################################
  #ARCH    Linux i486 i586 i686, g95 compiler with gcc #serial dmpar

@@ -1,1 +1,16 @@
-WRF-4.z-aarch64-gcc-openmpi.patch
+diff -urN WRF-4.z.orig/arch/configure.defaults WRF-4.z/arch/configure.defaults
+--- WRF-4.z.orig/arch/configure.defaults	2021-01-16 01:21:58.000000000 +0800
++++ WRF-4.z/arch/configure.defaults	2024-04-01 22:45:18.497913627 +0800
+@@ -63,10 +63,10 @@
+ PROMOTION       =       #-fdefault-real-8
+ ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_SUBR  -DWRF_USE_CLM
+ CFLAGS_LOCAL    =       -w -O3 -c  # -DRSL0_ONLY
+-LDFLAGS_LOCAL   =
++LDFLAGS_LOCAL   =	-fopenmp -larmpl_lp64 -lamath -lm -lastring
+ CPLUSPLUSLIB    =       
+ ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
+-FCOPTIM         =       -O2 -ftree-vectorize -funroll-loops
++FCOPTIM         =       -Ofast -mcpu=native -ftree-vectorize -funroll-loops -fno-expensive-optimizations -fno-reciprocal-math -fsigned-zeros -fno-unsafe-math-optimizations
+ FCREDUCEDOPT	=       $(FCOPTIM)
+ FCNOOPT         =       -O0
+ FCDEBUG         =       # -g $(FCNOOPT)  # -fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow
