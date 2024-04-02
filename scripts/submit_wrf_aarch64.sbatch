@@ -14,6 +14,10 @@
 #SBATCH --nodes=2
 #SBATCH --partition=c6gn
 
+export OMP_NUM_THREADS=8
+#export MKL_NUM_THREADS=8
+#export WRF_NUM_TILES=1
+
 PREFIX=/fsx
 
 #export WRF_VERSION=3.9.1
@@ -61,16 +65,13 @@ export JOB_DIR=${PREFIX}/spooler/v4.4_bench_conus12km
 # env.sh 1 0   ## select GNU/GCC compilers with openmpi
 # env.sh ...
 
-source ${PREFIX}/scripts/env.sh 7 1
+source ${PREFIX}/scripts/env.sh 6 0
 #----------------------------------------------------------------------------
 LOGDIR=${PREFIX}/log
 WRF_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_wrf-${WRF_VERSION}.log
 mkdir -p ${LOGDIR}
 
 ulimit -s unlimited
-export MKL_NUM_THREADS=8
-export OMP_NUM_THREADS=8
-#export WRF_NUM_TILES=1
 
 HPC_MPI_DEBUG=1
 # load MPI settings
@@ -80,12 +81,15 @@ echo "Running WRF on $(date)"
 cd ${JOB_DIR}
 #ln -sfn ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/run/{CAMtr_volume_mixing_ratio*,ozone*,RRTM*,*.TBL} .
 #cp -anL ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/run/* .
+ln -sfn ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/main/real.exe .
 ln -sfn ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/WRF-${WRF_VERSION}/main/wrf.exe .
 
 START_DATE=$(date)
 echo "zzz *** ${START_DATE} *** - JobStart - $(basename ${JOB_DIR}) - ${HPC_COMPILER} - ${HPC_MPI}" >> ${WRF_LOG} 2>&1
 
-mpirun ${MPI_SHOW_BIND_OPTS} ./wrf.exe >> ${WRF_LOG} 2>&1
+#mpirun ${MPI_SHOW_BIND_OPTS} ./wrf.exe >> ${WRF_LOG} 2>&1
+#mpirun ${MPI_SHOW_BIND_OPTS} -map-by socket:PE=${OMP_NUM_THREADS} ./real.exe >> ${WRF_LOG} 2>&1
+mpirun ${MPI_SHOW_BIND_OPTS} -map-by socket:PE=${OMP_NUM_THREADS} ./wrf.exe >> ${WRF_LOG} 2>&1
 
 END_DATE=$(date)
 echo "zzz *** ${END_DATE} *** - JobEnd - $(basename ${JOB_DIR}) - ${HPC_COMPILER} - ${HPC_MPI}" >> ${WRF_LOG} 2>&1
