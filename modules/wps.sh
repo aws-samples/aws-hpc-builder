@@ -107,6 +107,12 @@ check_wps_config()
 
 patch_wps()
 {
+
+    if [ ${WPS_FORMATED_VERSION} -lt 41 ]
+    then
+	patch -Np1 < "../../patch/wps/WPS-mismatch-integer-iand.patch"
+    fi
+
     if [ "${SARCH}" == "aarch64" ]
     then
 	# 所有　aarch64 使用同一补丁
