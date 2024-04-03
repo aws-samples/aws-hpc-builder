@@ -14,10 +14,6 @@
 #SBATCH --nodes=2
 #SBATCH --partition=c6gn
 
-export OMP_NUM_THREADS=8
-#export MKL_NUM_THREADS=8
-#export WRF_NUM_TILES=1
-
 PREFIX=/fsx
 
 #export WRF_VERSION=3.9.1
@@ -72,6 +68,10 @@ WRF_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_wrf-${WRF_VERSION}.
 mkdir -p ${LOGDIR}
 
 ulimit -s unlimited
+
+export OMP_NUM_THREADS=8
+#export MKL_NUM_THREADS=8
+#export WRF_NUM_TILES=1
 
 HPC_MPI_DEBUG=1
 # load MPI settings
