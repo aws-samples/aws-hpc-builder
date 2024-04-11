@@ -64,7 +64,9 @@ INTEL_HPC_COMPILER_DL_ID=18679
 #https://registrationcenter-download.intel.com/akdlm/irc_nas/18673/l_BaseKit_p_2022.2.0.262_offline.sh
 #https://registrationcenter-download.intel.com/akdlm/irc_nas/18679/l_BaseKit_p_2022.2.0.191_offline.sh
 
-# Intel OneAPI 2022.3
+# Intel OneAPI 2022.3 
+# icc: remark #10441: The Intel(R) C++ Compiler Classic (ICC) is deprecated and will be removed from product release in the second half of 2023. The Intel(R) oneAPI DPC++/C++ Compiler (ICX) is the recommended compiler moving forward. Please transition to use this compiler. Use '-diag-disable=10441' to disable this message.
+
 #INTEL_COMPILER_VERSION=${2:-2022.3.1.17310}
 #INTEL_HPC_COMPILER_VERSION=2022.3.1.16997
 #INTEL_COMPILER_DL_ID=18970
@@ -91,6 +93,17 @@ INTEL_HPC_COMPILER_DL_ID=18679
 #https://registrationcenter-download.intel.com/akdlm/IRC_NAS/163da6e4-56eb-4948-aba3-debcec61c064/l_BaseKit_p_2024.0.1.46_offline.sh
 #https://registrationcenter-download.intel.com/akdlm/IRC_NAS/67c08c98-f311-4068-8b85-15d79c4f277a/l_HPCKit_p_2024.0.1.38_offline.sh
 #
+
+
+# Intel OneAPI 2024.1.0
+#INTEL_COMPILER_VERSION=${2:-2024.1.0.596}
+#INTEL_HPC_COMPILER_VERSION=2024.1.0.560
+#INTEL_COMPILER_DL_ID=fdc7a2bc-b7a8-47eb-8876-de6201297144
+#INTEL_HPC_COMPILER_DL_ID=7f096850-dc7b-4c35-90b5-36c12abd9eaa
+#
+#https://registrationcenter-download.intel.com/akdlm/IRC_NAS/fdc7a2bc-b7a8-47eb-8876-de6201297144/l_BaseKit_p_2024.1.0.596_offline.sh
+#https://registrationcenter-download.intel.com/akdlm/IRC_NAS/7f096850-dc7b-4c35-90b5-36c12abd9eaa/l_HPCKit_p_2024.1.0.560_offline.sh
+
 
 # ARM Compiler
 # https://developer.arm.com/downloads/-/arm-compiler-for-linux
@@ -287,7 +300,8 @@ download_compiler() {
 
 	    if [ ! -f ${INTEL_COMPILER_SRC} ]
             then
-		curl --retry 3 -JLOk "${INTEL_DOWNLOAD_BASE_URL}/${INTEL_COMPILER_DL_ID}/${INTEL_COMPILER_SRC}"
+		#curl --retry 3 -JLOk "${INTEL_DOWNLOAD_BASE_URL}/${INTEL_COMPILER_DL_ID}/${INTEL_COMPILER_SRC}"
+		curl --retry 3 -JLOk "https://aws-hpc-builder.s3.amazonaws.com/project/src/${INTEL_COMPILER_SRC}"
 		result=$?
 		if [ ${result} -ne 0 ]
 		then
@@ -298,7 +312,8 @@ download_compiler() {
 	    then
 		return
 	    else
-		curl --retry 3 -JLOk "${INTEL_DOWNLOAD_BASE_URL}/${INTEL_HPC_COMPILER_DL_ID}/${INTEL_HPC_COMPILER_SRC}"
+		#curl --retry 3 -JLOk "${INTEL_DOWNLOAD_BASE_URL}/${INTEL_HPC_COMPILER_DL_ID}/${INTEL_HPC_COMPILER_SRC}"
+		curl --retry 3 -JLOk "https://aws-hpc-builder.s3.amazonaws.com/project/src/${INTEL_HPC_COMPILER_SRC}"
 		return $?
 	    fi
 	    ;;
