@@ -67,9 +67,9 @@ download_openfoam()
     then
         if [ ${OPENFOAM_MAJOR_VERSION} -gt 1000 ]
 	then
-	    wget https://dl.openfoam.com/source/v${OPENFOAM_VERSION}/${OPENFOAM_SRC}
+	    curl --retry 3 -JLOk https://dl.openfoam.com/source/v${OPENFOAM_VERSION}/${OPENFOAM_SRC}
         else
-            wget https://dl.openfoam.org/source/$(echo ${OPENFOAM_VERSION} | tr '.' '-') -O ${OPENFOAM_SRC}
+            curl --retry 3 -JLOk https://dl.openfoam.org/source/$(echo ${OPENFOAM_VERSION} | tr '.' '-')
 	fi
 	result=$?
 	if [ ${result} -ne 0 ]
@@ -83,9 +83,9 @@ download_openfoam()
     else
         if [  ${OPENFOAM_MAJOR_VERSION} -gt 1000 ]
 	then
-	    wget https://dl.openfoam.com/source/v${OPENFOAM_VERSION}/${THIRDPARTY_SRC}
+	    curl --retry 3 -JLOk https://dl.openfoam.com/source/v${OPENFOAM_VERSION}/${THIRDPARTY_SRC}
         else
-            wget https://dl.openfoam.org/third-party/$(echo ${OPENFOAM_VERSION} | tr '.' '-') -O ${THIRDPARTY_SRC}
+            curl --retry 3 -JLOk https://dl.openfoam.org/third-party/$(echo ${OPENFOAM_VERSION} | tr '.' '-')
 	fi
 	return $?
     fi

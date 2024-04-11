@@ -18,7 +18,7 @@ download_qd()
     then
         return
     else
-         wget https://www.davidhbailey.com/dhbsoftware/${QD_SRC}
+         curl --retry 3 -JLOk https://www.davidhbailey.com/dhbsoftware/${QD_SRC}
          return $?
     fi
 }

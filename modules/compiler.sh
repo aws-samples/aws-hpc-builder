@@ -8,7 +8,7 @@
 GCC_VERSION=${2:-12.3.0}
 CMAKE_VERSION=3.25.1
 CLANG_VERSION=${2:-15.0.2}
-ARM_COMPILER_VERSION=${2:-23.10}
+ARM_COMPILER_VERSION=${2:-24.04}
 AMD_COMPILER_VERSION=${2:-4.1.0}
 NVIDIA_COMPILER_VERSION=22.11
 NVIDIA_COMPILER_MAJOR_VERSION=$(echo ${NVIDIA_COMPILER_VERSION} | cut -f1 -d'.')
@@ -94,6 +94,16 @@ INTEL_HPC_COMPILER_DL_ID=18679
 
 # ARM Compiler
 # https://developer.arm.com/downloads/-/arm-compiler-for-linux
+#
+# ARM Compiler 24.10
+#https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-compiler-for-linux/24-04/arm-compiler-for-linux_24.04_AmazonLinux-2_aarch64.tar
+#https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-compiler-for-linux/24-04/arm-compiler-for-linux_24.04_AmazonLinux-2023_aarch64.tar
+#https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-compiler-for-linux/24-04/arm-compiler-for-linux_24.04_RHEL-7_aarch64.tar
+#https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-compiler-for-linux/24-04/arm-compiler-for-linux_24.04_RHEL-8_aarch64.tar
+#https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-compiler-for-linux/24-04/arm-compiler-for-linux_24.04_RHEL-9_aarch64.tar
+#https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-compiler-for-linux/24-04/arm-compiler-for-linux_24.04_SLES-15_aarch64.tar
+#https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-compiler-for-linux/24-04/arm-compiler-for-linux_24.04_Ubuntu-20.04_aarch64.tar
+#https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-compiler-for-linux/24-04/arm-compiler-for-linux_24.04_Ubuntu-22.04_aarch64.tar
 #
 # ARM Compiler 23.10
 #https://armkeil.blob.core.windows.net/developer/Files/downloads/hpc/arm-compiler-for-linux/$(echo ${ARM_COMPILER_VERSION} | tr '.' '-')/arm-compiler-for-linux_${ARM_COMPILER_VERSION}_{OS}-${S_VERSION_ID}_${SARCH}.tar"
@@ -248,7 +258,7 @@ install_sys_dependency_for_compiler()
 download_compiler() {
     if [ ! -f ${CMAKE_SRC} ] && ([ ${S_VERSION_ID} -eq 7 ] || [ ${S_VERSION_ID} -eq 18 ])
     then
-	curl -JLOk https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/${CMAKE_SRC}
+	curl --retry 3 -JLOk https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/${CMAKE_SRC}
 	result=$?
 	if [ ${result} -ne 0 ]
 	then
@@ -262,7 +272,7 @@ download_compiler() {
 	    then
 		return
 	    else
-		curl -JLOk "https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/$(echo ${ARM_COMPILER_VERSION} | tr '.' '-')/${ARM_COMPILER_SRC}"
+		curl --retry 3 -JLOk "https://developer.arm.com/-/media/Files/downloads/hpc/arm-compiler-for-linux/$(echo ${ARM_COMPILER_VERSION} | tr '.' '-')/${ARM_COMPILER_SRC}"
 		return $?
 	    fi
 	    ;;
@@ -277,7 +287,7 @@ download_compiler() {
 
 	    if [ ! -f ${INTEL_COMPILER_SRC} ]
             then
-		curl -JLOk "${INTEL_DOWNLOAD_BASE_URL}/${INTEL_COMPILER_DL_ID}/${INTEL_COMPILER_SRC}"
+		curl --retry 3 -JLOk "${INTEL_DOWNLOAD_BASE_URL}/${INTEL_COMPILER_DL_ID}/${INTEL_COMPILER_SRC}"
 		result=$?
 		if [ ${result} -ne 0 ]
 		then
@@ -288,7 +298,7 @@ download_compiler() {
 	    then
 		return
 	    else
-		curl -JLOk "${INTEL_DOWNLOAD_BASE_URL}/${INTEL_HPC_COMPILER_DL_ID}/${INTEL_HPC_COMPILER_SRC}"
+		curl --retry 3 -JLOk "${INTEL_DOWNLOAD_BASE_URL}/${INTEL_HPC_COMPILER_DL_ID}/${INTEL_HPC_COMPILER_SRC}"
 		return $?
 	    fi
 	    ;;
@@ -298,7 +308,7 @@ download_compiler() {
 		# <= 4.0.0
 		#curl -JLOk https://download.amd.com/developer/eula/aocc-compiler/${AMD_COMPILER_SRC}
 		# 4.1.0
-		curl -JLOk https://download.amd.com/developer/eula/aocc/aocc-$(echo ${AMD_COMPILER_VERSION} | awk -F'.' '{print $1"-"$2}')/${AMD_COMPILER_SRC}
+		curl --retry 3 -JLOk https://download.amd.com/developer/eula/aocc/aocc-$(echo ${AMD_COMPILER_VERSION} | awk -F'.' '{print $1"-"$2}')/${AMD_COMPILER_SRC}
 		result=$?
 		if [ ${result} -ne 0 ]
 		then
@@ -309,14 +319,14 @@ download_compiler() {
 	    then
 		return
 	    else
-		curl -JLOk https://download.amd.com/developer/eula/aocl/aocl-$(echo ${AMD_AOCL_VERSION} | awk -F'.' '{print $1"-"$2}')/${AMD_AOCL_SRC}
+		curl --retry 3 -JLOk https://download.amd.com/developer/eula/aocl/aocl-$(echo ${AMD_AOCL_VERSION} | awk -F'.' '{print $1"-"$2}')/${AMD_AOCL_SRC}
 		return $?
 	    fi
 	    ;;
 	"gcc")
 	    if [ ! -f ${BINUTILS_SRC} ]
 	    then
-		curl -JLOk "https://ftp.gnu.org/gnu/binutils/${BINUTILS_SRC}"
+		curl --retry 3 -JLOk "https://ftp.gnu.org/gnu/binutils/${BINUTILS_SRC}"
 		result=$?
 		if [ ${result} -ne 0 ]
 		then
@@ -325,7 +335,7 @@ download_compiler() {
 	    fi
 	    if [ ! -f ${ELFUTILS_SRC} ]
 	    then
-		curl -JLOk "https://sourceware.org/elfutils/ftp/${ELFUTILS_VERSION}/${ELFUTILS_SRC}"
+		curl --retry 3 -JLOk "https://sourceware.org/elfutils/ftp/${ELFUTILS_VERSION}/${ELFUTILS_SRC}"
 		result=$?
 		if [ ${result} -ne 0 ]
 		then
@@ -336,7 +346,7 @@ download_compiler() {
 	    then
 		return
 	    else
-		curl -JLOk "https://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/${GCC_SRC}"
+		curl --retry 3 -JLOk "https://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/${GCC_SRC}"
 		return $?
 	    fi
 	    ;;
@@ -345,7 +355,7 @@ download_compiler() {
 	    then
 		return
 	    else
-		curl -JLOk "https://github.com/llvm/llvm-project/archive/refs/tags/${CLANG_SRC}"
+		curl --retry 3 -JLOk "https://github.com/llvm/llvm-project/archive/refs/tags/${CLANG_SRC}"
 		return $?
 	    fi
 	    ;;
@@ -354,7 +364,7 @@ download_compiler() {
 	    then
 		return
 	    else
-		curl -JLOk https://developer.download.nvidia.com/hpc-sdk/${NVIDIA_COMPILER_VERSION}/${NVIDIA_COMPILER_SRC}
+		curl --retry 3 -JLOk https://developer.download.nvidia.com/hpc-sdk/${NVIDIA_COMPILER_VERSION}/${NVIDIA_COMPILER_SRC}
 		return $?
 	    fi
 	    ;;

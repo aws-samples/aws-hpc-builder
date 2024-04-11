@@ -47,7 +47,7 @@ download_pnetcdf() {
     then
 	return
     else
-	wget "https://parallel-netcdf.github.io/Release/${PNETCDF_SRC}"
+	curl --retry 3 -JLOk "https://parallel-netcdf.github.io/Release/${PNETCDF_SRC}"
 	return $?
     fi
 }

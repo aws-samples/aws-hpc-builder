@@ -49,7 +49,7 @@ download_aws_ofi_nccl()
     then
         return
     else
-	wget "https://github.com/aws/aws-ofi-nccl/archive/refs/tags/v1.4.0-aws.tar.gz" -O ${AWS_OFI_NCCL_SRC}
+	curl --retry 3 -JLOk "https://github.com/aws/aws-ofi-nccl/archive/refs/tags/v${AWS_OFI_NCCL_VERSION}-aws.tar.gz"
 	return $?
     fi
 }

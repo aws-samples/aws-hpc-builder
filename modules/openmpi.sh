@@ -48,7 +48,7 @@ download_openmpi() {
     then
         return
     else
-	curl -JLOk "https://download.open-mpi.org/release/open-mpi/v${OPENMPI_VERSION%.*}/${OPENMPI_SRC}"
+	curl --retry 3 -JLOk "https://download.open-mpi.org/release/open-mpi/v${OPENMPI_VERSION%.*}/${OPENMPI_SRC}"
 	return $?
     fi
 }

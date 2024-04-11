@@ -54,7 +54,7 @@ download_hpcc() {
        	then
             return
 	else
-	    curl -JLOk "https://hpcchallenge.org/projectsfiles/hpcc/download/hpcc-${HPCC_VERSION}.tar.gz"
+	    curl --retry 3 -JLOk "https://hpcchallenge.org/projectsfiles/hpcc/download/hpcc-${HPCC_VERSION}.tar.gz"
 	    #curl -JLOk "https://github.com/icl-utk-edu/hpcc/archive/refs/tags/${HPCC_VERSION}.tar.gz"
 	    return $?
        	fi

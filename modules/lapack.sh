@@ -47,7 +47,7 @@ download_lapack() {
     then
         return
     else
-	curl -JLOk https://github.com/Reference-LAPACK/lapack/archive/refs/tags/v${LAPACK_VERSION}.tar.gz
+	curl --retry 3 -JLOk https://github.com/Reference-LAPACK/lapack/archive/refs/tags/v${LAPACK_VERSION}.tar.gz
 	return $?
     fi
 }

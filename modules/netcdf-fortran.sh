@@ -46,7 +46,7 @@ download_netcdf_fortran() {
     then
 	return
     else
-	wget "https://downloads.unidata.ucar.edu/netcdf-fortran/${NETCDF_FORTRAN_VERSION}/${NETCDF_FORTRAN_SRC}"
+	curl --retry 3 -JLOk "https://downloads.unidata.ucar.edu/netcdf-fortran/${NETCDF_FORTRAN_VERSION}/${NETCDF_FORTRAN_SRC}"
 	return $?
     fi
 }

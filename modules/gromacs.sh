@@ -18,8 +18,8 @@ download_gromacs()
     then
         return
     else
-         wget https://ftp.gromacs.org/gromacs/${GROMACS_SRC}
-         return $?
+        curl --retry 3 -JLOk https://ftp.gromacs.org/gromacs/${GROMACS_SRC}
+        return $?
     fi
 }
 

@@ -50,7 +50,7 @@ download_mvapich() {
     then
         return
     else
-	curl -JLOk https://mvapich.cse.ohio-state.edu/download/mvapich/mv2/${MVAPICH_SRC}
+	curl --retry 3 -JLOk https://mvapich.cse.ohio-state.edu/download/mvapich/mv2/${MVAPICH_SRC}
 	return $?
     fi
 }

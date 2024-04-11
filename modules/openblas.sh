@@ -47,7 +47,7 @@ download_openblas() {
     then
         return
     else
-	curl -JLOk https://github.com/OpenMathLib/OpenBLAS/archive/refs/tags/v${OPENBLAS_VERSION}.tar.gz
+	curl --retry 3 -JLOk https://github.com/OpenMathLib/OpenBLAS/archive/refs/tags/v${OPENBLAS_VERSION}.tar.gz
 	return $?
     fi
 }

@@ -16,7 +16,8 @@ download_mt_dgemm()
     then
         return
     else
-         wget https://www.lanl.gov/projects/crossroads/_assets/docs/micro/mtdgemm-crossroads-v${MT_DEGMM_VERSION}.tgz -O ${MT_DEGMM_SRC}
+         #curl --retry 3 -JLk https://www.lanl.gov/projects/crossroads/_assets/docs/micro/mtdgemm-crossroads-v${MT_DEGMM_VERSION}.tgz -o ${MT_DEGMM_SRC}
+         curl --retry 3 -JLk http://phoronix-test-suite.com/benchmark-files/mtdgemm-crossroads-v${MT_DEGMM_VERSION}.tgz -o ${MT_DEGMM_SRC}
          return $?
     fi
 }

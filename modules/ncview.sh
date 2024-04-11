@@ -49,7 +49,7 @@ download_ncview()
     then
         return
     else
-	wget "ftp://cirrus.ucsd.edu/pub/ncview/ncview-${NCVIEW_VERSION}.tar.gz" -O ${NCVIEW_SRC}
+	curl --retry 3 -JLOk "ftp://cirrus.ucsd.edu/pub/ncview/ncview-${NCVIEW_VERSION}.tar.gz"
 	return $?
     fi
 }

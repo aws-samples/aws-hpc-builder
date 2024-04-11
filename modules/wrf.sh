@@ -65,10 +65,10 @@ download_wrf() {
 	else
             if [ ${WRF_MAJOR_VERSION} -gt 3 ]
 	    then
-	        curl -JLOk "https://github.com/wrf-model/WRF/archive/refs/tags/v${WRF_VERSION}.tar.gz"
+	        curl --retry 3 -JLOk "https://github.com/wrf-model/WRF/archive/refs/tags/v${WRF_VERSION}.tar.gz"
 		return $?
 	    else 
-	        curl -JLOk "https://github.com/wrf-model/WRF/archive/refs/tags/V${WRF_VERSION}.tar.gz"
+	        curl --retry 3 -JLOk "https://github.com/wrf-model/WRF/archive/refs/tags/V${WRF_VERSION}.tar.gz"
 		return $?
 	    fi
        	fi

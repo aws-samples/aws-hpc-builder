@@ -25,7 +25,7 @@ download_gpcnet()
     then
         return
     else
-	 https://github.com/netbench/GPCNET/archive/refs/tags/${GPCNET_VERSION}.tar.gz -O ${GPCNET_SRC}
+	 curl --retry 3 -JLOk https://github.com/netbench/GPCNET/archive/refs/tags/${GPCNET_VERSION}.tar.gz
          return $?
     fi
 }

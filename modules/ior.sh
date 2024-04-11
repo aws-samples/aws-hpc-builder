@@ -54,7 +54,7 @@ download_ior() {
        	then
             return
 	else
-	    curl -JLOk "https://github.com/hpc/ior/archive/refs/tags/${IOR_VERSION}.tar.gz"
+	    curl --retry 3 -JLOk "https://github.com/hpc/ior/archive/refs/tags/${IOR_VERSION}.tar.gz"
 	    return $?
        	fi
     fi

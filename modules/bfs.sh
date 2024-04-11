@@ -18,7 +18,7 @@ download_bfs()
     then
         return
     else
-	 curl -JLOk https://github.com/graph500/graph500/archive/refs/tags/${BFS_VERSION}.tar.gz
+	 curl --retry 3 -JLOk https://github.com/graph500/graph500/archive/refs/tags/${BFS_VERSION}.tar.gz
          return $?
     fi
 }

@@ -47,7 +47,7 @@ download_scalapack() {
     then
         return
     else
-	wget "https://github.com/Reference-ScaLAPACK/scalapack/archive/refs/tags/v${SCALAPACK_VERSION}.tar.gz" -O ${SCALAPACK_SRC}
+	curl --retry 3 -JLOk "https://github.com/Reference-ScaLAPACK/scalapack/archive/refs/tags/v${SCALAPACK_VERSION}.tar.gz"
 	return $?
     fi
 }

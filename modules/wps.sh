@@ -84,7 +84,7 @@ download_wps() {
 	    then
 		return
 	    else
-		curl -JLOk "https://github.com/wrf-model/WPS/archive/refs/tags/v${WPS_VERSION}.tar.gz"
+		curl --retry 3 -JLOk "https://github.com/wrf-model/WPS/archive/refs/tags/v${WPS_VERSION}.tar.gz"
 		return $?
 	    fi
 	fi

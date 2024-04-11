@@ -49,7 +49,7 @@ download_wgrib2()
     then
         return
     else
-	wget https://www.ftp.cpc.ncep.noaa.gov/wd51we/wgrib2/${WGRIB2_SRC}
+	curl --retry 3 -JLOk https://www.ftp.cpc.ncep.noaa.gov/wd51we/wgrib2/${WGRIB2_SRC}
 	return $?
     fi
 }

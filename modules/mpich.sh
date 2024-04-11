@@ -49,7 +49,7 @@ download_mpich() {
     then
         return
     else
-	curl -JLOk "https://www.mpich.org/static/downloads/${MPICH_VERSION}/${MPICH_SRC}"
+	curl --retry 3 -JLOk "https://www.mpich.org/static/downloads/${MPICH_VERSION}/${MPICH_SRC}"
 	return $?
     fi
 }

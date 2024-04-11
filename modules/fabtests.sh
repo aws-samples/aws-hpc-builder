@@ -49,7 +49,7 @@ download_fabtests() {
     then
         return
     else
-	wget "https://github.com/ofiwg/libfabric/archive/refs/tags/v${FABTESTS_VERSION}.tar.gz" -O ${FABTESTS_SRC}
+	curl --retry 3 -JLOk "https://github.com/ofiwg/libfabric/archive/refs/tags/v${FABTESTS_VERSION}.tar.gz"
 	return $?
     fi
 }

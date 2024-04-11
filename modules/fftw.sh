@@ -47,7 +47,7 @@ download_fftw() {
     then
         return
     else
-	curl -JLOk https://fftw.org/pub/fftw/fftw-${FFTW_VERSION}.tar.gz
+	curl --retry 3 -JLOk https://fftw.org/pub/fftw/fftw-${FFTW_VERSION}.tar.gz
 	return $?
     fi
 }

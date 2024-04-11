@@ -49,7 +49,7 @@ download_nccl()
     then
         return
     else
-	wget "https://github.com/NVIDIA/nccl/archive/refs/tags/v${NCCL_VERSION}.tar.gz" -O ${NCCL_SRC}
+	curl --retry 3 -JLOk "https://github.com/NVIDIA/nccl/archive/refs/tags/v${NCCL_VERSION}.tar.gz"
 	return $?
     fi
 }

@@ -56,7 +56,7 @@ download_cuda() {
     then
         return
     else
-	wget "https://developer.download.nvidia.com/compute/cuda/$(echo ${CUDA_VERSION} | cut -d_ -f1)/local_installers/${CUDA_SRC}"
+	curl --retry 3 -JLOk "https://developer.download.nvidia.com/compute/cuda/$(echo ${CUDA_VERSION} | cut -d_ -f1)/local_installers/${CUDA_SRC}"
 	return $?
     fi
 }

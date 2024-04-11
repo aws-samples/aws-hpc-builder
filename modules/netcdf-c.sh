@@ -16,7 +16,7 @@ download_netcdf_c() {
     then
 	return
     else
-	wget "https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_C_VERSION}/${NETCDF_C_SRC}"
+	curl --retry 3 -JLOk "https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_C_VERSION}/${NETCDF_C_SRC}"
 	return $?
     fi
 }

@@ -17,12 +17,12 @@ download_b_eff()
     if [ "${B_EFF_VERSION}" == "latest" ]
     then
 	rm -f ${B_EFF_SRC} b_eff
-	wget https://fs.hlrs.de/projects/par/mpi/b_eff/b_eff.c
+	curl --retry 3 -JLOk https://fs.hlrs.de/projects/par/mpi/b_eff/b_eff.c
 	return $?
     fi
 
     rm -f ${B_EFF_SRC} b_eff
-    wget https://fs.hlrs.de/projects/par/mpi/b_eff/b_eff_${B_EFF_VERSION}/${B_EFF_SRC}
+    curl --retry 3 -JLOk  https://fs.hlrs.de/projects/par/mpi/b_eff/b_eff_${B_EFF_VERSION}/${B_EFF_SRC}
     return $?
 }
 

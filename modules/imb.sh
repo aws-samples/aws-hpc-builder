@@ -18,7 +18,7 @@ download_imb()
     then
         return
     else
-         wget https://github.com/intel/mpi-benchmarks/archive/refs/tags/${IMB_SRC}
+         curl --retry 3 -JLOk https://github.com/intel/mpi-benchmarks/archive/refs/tags/${IMB_SRC}
          return $?
     fi
 }

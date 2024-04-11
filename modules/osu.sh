@@ -18,7 +18,7 @@ download_osu()
     then
         return
     else
-         wget https://mvapich.cse.ohio-state.edu/download/mvapich/${OSU_SRC}
+         curl --retry 3 -JLOk https://mvapich.cse.ohio-state.edu/download/mvapich/${OSU_SRC}
          return $?
     fi
 }
