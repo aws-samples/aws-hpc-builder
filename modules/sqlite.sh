@@ -54,7 +54,7 @@ download_sqlite() {
        	then
             return
 	else
-	    curl --retry 3 -JLOk "https://github.com/sqlite/sqlite/archive/refs/tags/${SQLITE_VERSION}.tar.gz"
+	    curl --retry 3 -JLOk "https://github.com/sqlite/sqlite/archive/refs/tags/version-${SQLITE_VERSION}.tar.gz"
 	    return $?
        	fi
     fi
