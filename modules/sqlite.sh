@@ -77,13 +77,10 @@ install_sqlite()
     then
 	patch -Np1 < ../../patch/sqlite/sqlite-${SQLITE_VERSION}.patch
     fi
+     
+    ./configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
+     make && sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && cd ..
 
-    mkdir build
-    cd build
-
-    cmake .. -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
-    cmake --build .  -j $(nproc)
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env cmake --install . && cd ../..
 }
 
 update_sqlite_version()

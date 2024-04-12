@@ -79,6 +79,7 @@ install_eccodes()
     fi
 
     mkdir build
+    cd build
 
     cmake .. -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
     cmake --build . -j $(nproc)
