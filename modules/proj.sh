@@ -13,6 +13,7 @@ install_sys_dependency_for_proj()
     # packages for build proj
     case ${S_VERSION_ID} in
 	7)
+	    sudo yum -y install libtiff-devel
 	    return
 	    case  "${S_NAME}" in
 		"Alibaba Cloud Linux (Aliyun Linux)"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
@@ -24,6 +25,7 @@ install_sys_dependency_for_proj()
 	    esac
 	    ;;
 	8)
+	    sudo dnf -y install libtiff-devel
 	    return
 	    case  "${S_NAME}" in
 		"Alibaba Cloud Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
@@ -35,6 +37,7 @@ install_sys_dependency_for_proj()
 	    esac
 	    ;;
 	18|20)
+	    sudo apt-get -y install libtiff-dev
 	    return
 	    ;;
 	*)
@@ -81,7 +84,7 @@ install_proj()
     mkdir build
     cd build
 
-    cmake .. -Wno-dev -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
+    cmake .. -Wno-dev -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} -DCMAKE_PREFIX_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
     cmake --build .  -j $(nproc)
     sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env cmake --install . && cd ../..
 }
