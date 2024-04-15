@@ -3,16 +3,17 @@
 # SPDX-License-Identifier: MIT
 
 #SBATCH --wait-all-nodes=1
-#SBATCH --ntasks-per-node=16
+#SBATCH --ntasks-per-node=4
 #SBATCH --cpus-per-task=1
 #SBATCH --ntasks-per-core=1
+#SBATCH --constraint=c7g
 #SBATCH --export=ALL
 #SBATCH --exclusive
 #SBATCH -o /fsx/log/ior.out
 
 #--------------------------- customized Job env -----------------------------
 #SBATCH --nodes=2
-#SBATCH --partition=c6g4x
+#SBATCH --partition=gxlarge
 
 export IOR_VERSION=4.0.0rc1
 

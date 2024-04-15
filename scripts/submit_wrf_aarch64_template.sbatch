@@ -13,7 +13,7 @@
 
 #--------------------------- customized Job env -----------------------------
 #SBATCH --nodes=2
-#SBATCH --partition=g16xlarge
+#SBATCH --partition=g16xlargeefa
 
 PREFIX=XXPREFIXXX
 
