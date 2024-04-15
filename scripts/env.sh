@@ -43,28 +43,28 @@ case $1 in
 	HPC_USE_VENDOR_COMPILER=true
 	;;
     1)
-	HPC_COMPILER=gcc
+	export HPC_COMPILER=gcc
 	;;
     2)
-	HPC_COMPILER=clang
+	export HPC_COMPILER=clang
 	;;
     3)
-	HPC_COMPILER=icc
+	export HPC_COMPILER=icc
 	;;
     4)
-	HPC_COMPILER=icx
+	export HPC_COMPILER=icx
 	;;
     5)
-	HPC_COMPILER=amdclang
+	export HPC_COMPILER=amdclang
 	;;
     6)
-	HPC_COMPILER=armgcc
+	export HPC_COMPILER=armgcc
 	;;
     7)
-	HPC_COMPILER=armclang
+	export HPC_COMPILER=armclang
 	;;
     8)
-	HPC_COMPILER=nvc
+	export HPC_COMPILER=nvc
 	;;
     *)
 	echo "unknown compiler"
@@ -73,19 +73,19 @@ esac
 
 case $2 in 
     0)
-	HPC_MPI=openmpi
+	export HPC_MPI=openmpi
 	;;
     1)
-	HPC_MPI=mpich
+	export HPC_MPI=mpich
 	;;
     2)
-	HPC_MPI=intelmpi
+	export HPC_MPI=intelmpi
 	;;
     3)
-	HPC_MPI=mvapich
+	export HPC_MPI=mvapich
 	;;
     4)
-	HPC_MPI=nvidiampi
+	export HPC_MPI=nvidiampi
 	;;
     *)
 	echo "unknown MPI"

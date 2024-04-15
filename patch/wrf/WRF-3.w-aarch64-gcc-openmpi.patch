@@ -15,7 +15,7 @@ diff -urN WRF-3.w.orig/arch/configure_new.defaults WRF-3.w/arch/configure_new.de
  CPLUSPLUSLIB    =       
  ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
 -FCOPTIM         =       -O2 -ftree-vectorize -funroll-loops
-+FCOPTIM         =       -O2 -ftree-vectorize -funroll-loops -fallow-argument-mismatch -fallow-invalid-boz
++FCOPTIM         =       -Ofast -mcpu=native -ftree-vectorize -funroll-loops -fallow-argument-mismatch -fallow-invalid-boz
  FCREDUCEDOPT	=       $(FCOPTIM)
  FCNOOPT         =       -O0
  FCDEBUG         =       # -g $(FCNOOPT)  # -fbacktrace -ggdb -fbounds-check -ffpe-trap=invalid,zero,overflow

@@ -27,7 +27,7 @@ diff -urN WRF-4.x.orig/arch/configure.defaults WRF-4.x/arch/configure.defaults
 +LDFLAGS_LOCAL   =       -fopenmp -armpl -lamath -lm -lastring
 +CPLUSPLUSLIB    =       
 +ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
-+FCOPTIM         =       -Ofast -mcpu=native -funroll-loops -fno-simdmath
++FCOPTIM         =       -Ofast -mcpu=native -funroll-loops
 +FCREDUCEDOPT	=       $(FCOPTIM)
 +FCNOOPT         =       -O0
 +FCDEBUG         =       # -g $(FCNOOPT)  # -fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow

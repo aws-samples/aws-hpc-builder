@@ -6,7 +6,7 @@ diff -urN WRF-4.z.orig/arch/configure.defaults WRF-4.z/arch/configure.defaults
  CPLUSPLUSLIB    =       
  ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
 -FCOPTIM         =       -O2 -ftree-vectorize -funroll-loops
-+FCOPTIM         =       -O3 -ftree-vectorize -funroll-loops -march=native
++FCOPTIM         =       -Ofast -mcpu=native -ftree-vectorize -funroll-loops
  FCREDUCEDOPT	=       $(FCOPTIM)
  FCNOOPT         =       -O0
  FCDEBUG         =       # -g $(FCNOOPT)  # -fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow

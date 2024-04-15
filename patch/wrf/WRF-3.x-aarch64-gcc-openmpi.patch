@@ -24,10 +24,10 @@ diff -urN WRF-3.x.orig/arch/configure_new.defaults WRF-3.x/arch/configure_new.de
 +PROMOTION       =       #-fdefault-real-8
 +ARCH_LOCAL      =       -DNONSTANDARD_SYSTEM_SUBR  -DWRF_USE_CLM
 +CFLAGS_LOCAL    =       -w -O3 -c  # -DRSL0_ONLY
-+LDFLAGS_LOCAL   =	 
++LDFLAGS_LOCAL   =	 -fopenmp
 +CPLUSPLUSLIB    =       
 +ESMF_LDFLAG     =       $(CPLUSPLUSLIB)
-+FCOPTIM         =       -O3 -ftree-vectorize -funroll-loops -march=native
++FCOPTIM         =       -Ofast -mcpu=native -ftree-vectorize -funroll-loops
 +FCREDUCEDOPT	=       $(FCOPTIM)
 +FCNOOPT         =       -O0
 +FCDEBUG         =       # -g $(FCNOOPT)  # -fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow

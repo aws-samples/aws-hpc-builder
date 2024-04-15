@@ -6,13 +6,14 @@
 #SBATCH --ntasks-per-node=8
 #SBATCH --cpus-per-task=8
 #SBATCH --ntasks-per-core=1
+#SBATCH --constraint=c7g
 #SBATCH --export=ALL
 #SBATCH --exclusive
 #SBATCH -o XXPREFIXXX/log/wrf.out
 
 #--------------------------- customized Job env -----------------------------
 #SBATCH --nodes=2
-#SBATCH --partition=c6gn
+#SBATCH --partition=g16xlarge
 
 PREFIX=XXPREFIXXX
 
