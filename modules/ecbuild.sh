@@ -81,7 +81,7 @@ install_ecbuild()
     mkdir build
     cd build
 
-    ../bin/ecbuild --prefix=/path/to/install/ecbuild ..
+    ../bin/ecbuild --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} ..
     ctest
     sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && cd ../..
 }
