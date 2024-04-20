@@ -52,7 +52,7 @@ export IOR_VERSION=4.0.0rc1
 # env.sh ...
 
 PREFIX=/fsx
-source ${PREFIX}/scripts/env.sh 1 0
+source ${PREFIX}/scripts/env.sh 6 0
 #----------------------------------------------------------------------------
 LOGDIR=${PREFIX}/log
 IOR_LOG=${LOGDIR}/mpirun_${SARCH}_${HPC_COMPILER}_${HPC_MPI}_ior-${IOR_VERSION}.log
