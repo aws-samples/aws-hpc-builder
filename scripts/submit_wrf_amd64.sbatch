@@ -16,7 +16,8 @@
 
 PREFIX=/fsx
 
-#export WRF_VERSION=3.9.1
+export WRF_VERSION=3.9.1
+export JOB_DIR=${PREFIX}/spooler/wrf_sample_3.9
 #export JOB_DIR=${PREFIX}/spooler/bench_12km
 #export JOB_DIR=${PREFIX}/spooler/bench_2.5km
 
@@ -24,8 +25,8 @@ PREFIX=/fsx
 #export JOB_DIR=${PREFIX}/spooler/v4_bench_conus12km
 #export JOB_DIR=${PREFIX}/spooler/v4_bench_conus2.5km
 
-export WRF_VERSION=4.4.2
-export JOB_DIR=${PREFIX}/spooler/v4.4_bench_conus12km
+#export WRF_VERSION=4.4.2
+#export JOB_DIR=${PREFIX}/spooler/v4.4_bench_conus12km
 #export JOB_DIR=${PREFIX}/spooler/v4.4_bench_conus2.5km
 #----------------------------------------------------------------------------
 

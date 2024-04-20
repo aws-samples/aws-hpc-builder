@@ -6,13 +6,14 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=1
 #SBATCH --ntasks-per-core=1
+#SBATCH --constraint=c7g
 #SBATCH --export=ALL
 #SBATCH --exclusive
 #SBATCH -o XXPREFIXXX/log/osu.out
 
 #--------------------------- customized Job env -----------------------------
 #SBATCH --nodes=2
-#SBATCH --partition=c6g
+#SBATCH --partition=g16xlargeefa
 
 export OSU_VERSION=6.1
 
