@@ -89,7 +89,8 @@ export _OLD_PKG_CONFIG_PATH="${PKG_CONFIG_PATH}"
 if [ -z "${HPC_ENV_DISABLE_PROMPT:-}" ]
 then
     export _OLD_PS1="${PS1}"
-    PS1="\e[1m\e[93m(AWS HPC Builder)\e[0m ${PS1:-}"
+    # line overwrite | Break line: https://stackoverflow.com/questions/14220848/break-line-in-terminal-ps1-fix
+    PS1="\[\e[1m\e[93m\](AWS HPC Builder)\[\e[0m\] ${PS1:-}"
     export PS1
     HPC_ENV_PROMPT="(AWS HPC Builder) "
     export HPC_ENV_PROMPT
