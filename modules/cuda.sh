@@ -66,7 +66,7 @@ install_cuda()
     export IGNORE_CC_MISMATCH=1
     sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,IGNORE_CC_MISMATCH bash ${CUDA_SRC} \
 	--silent --override \
-	--toolkitpath=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/cuda-$(echo ${CUDA_VERSION} | cut -d. -f1)
+	--toolkitpath=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/cuda-$(echo ${CUDA_VERSION} | cut -d. -f1) || exit 1
     sudo ln -sfn ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/cuda-$(echo ${CUDA_VERSION} | cut -d. -f1) ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/cuda
 }
 

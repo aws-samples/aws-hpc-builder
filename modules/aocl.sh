@@ -36,8 +36,8 @@ install_aocl()
     fi
     tar xf ${AMD_AOCL_SRC}
     cd ${AMD_AOCL_SRC%.tar.gz}
-    sudo bash ./install.sh -t ${HPC_PREFIX}/opt -i lp64
-    cd ..
+    sudo bash ./install.sh -t ${HPC_PREFIX}/opt -i lp64 && \
+    cd .. || exit 1
 }
 
 update_aocl_version()

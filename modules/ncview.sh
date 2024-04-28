@@ -65,9 +65,10 @@ install_ncview()
 	--prefix=${PREFIX} \
 	--with-udunits2_incdir=/usr/include/udunits2
 	
-    make
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB,PREFIX make install && \
-	cd ..
+    make && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB,PREFIX make install && \
+	cd .. && \
+	sudo rm -rf "${NCVIEW_SRC%.tar.gz}" || exit 1
 }
 
 update_ncview_version()

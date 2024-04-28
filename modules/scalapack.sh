@@ -69,7 +69,10 @@ install_scalapack()
         echo "Not supported compiler"
         exit 1
     fi
-    make && sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && cd ../..
+    make && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && \
+	cd ../.. && \
+	sudo rm -rf "${SCALAPACK_SRC%.tar.gz}" || exit 1
 }
 
 update_scalapack_version()

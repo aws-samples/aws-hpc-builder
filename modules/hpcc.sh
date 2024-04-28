@@ -68,7 +68,7 @@ install_hpcc()
     then
 	mv hpcc hpcc-${HPCC_VERSION}
     else
-	rm -rf ${HPCC_SRC%.tar.gz}
+	sudo rm -rf ${HPCC_SRC%.tar.gz}
 	tar xf ${HPCC_SRC}
     fi
 
@@ -84,8 +84,9 @@ install_hpcc()
 	-e s"%^CCFLAGS      = $(HPL_DEFS).*%CCFLAGS      = \$(HPL_DEFS) ${HPC_CFLAGS}%g" \
 	hpl/setup/Make.LinuxIntelIA64Itan2_eccMKL > hpl/Make.Linux
 
-    make -j $(nproc) arch=Linux && cd .. && sudo mv "hpcc-${HPCC_VERSION}" "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}"
-    return $?
+    make -j $(nproc) arch=Linux && \
+	cd .. && \
+	sudo mv "hpcc-${HPCC_VERSION}" "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}" || exit 1
 }
 
 update_hpcc_version()

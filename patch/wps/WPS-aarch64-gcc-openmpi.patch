@@ -48,6 +48,6 @@ diff -urN WPS.orig/arch/configure.defaults WPS/arch/configure.defaults
                          -L$(WRF_DIR)/external/io_int -lwrfio_int \
                          -L$(WRF_DIR)/external/io_netcdf -lwrfio_nf \
 -                        -L$(NETCDF)/lib CONFIGURE_NETCDFF_LIB -lnetcdf
-+                        -L$(NETCDF)/lib -L$(NETCDF)/lib64 CONFIGURE_NETCDFF_LIB -lnetcdf -lnetcdff -lgomp
++                        -L$(NETCDF)/lib -L$(NETCDF)/lib64 CONFIGURE_NETCDFF_LIB -lnetcdf -lnetcdff -lgomp -lhdf5_hl -lhdf5
 
  #### Architecture specific settings ####

@@ -67,7 +67,7 @@ install_ecbuild()
     then
 	mv ecbuild ecbuild-${ECBUILD_VERSION}
     else
-	rm -rf ${ECBUILD_SRC%.tar.gz}
+	sudo rm -rf ${ECBUILD_SRC%.tar.gz}
 	tar xf ${ECBUILD_SRC}
     fi
 
@@ -81,9 +81,9 @@ install_ecbuild()
     mkdir build
     cd build
 
-    ../bin/ecbuild --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} ..
-    ctest
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && cd ../..
+    ../bin/ecbuild --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} .. && \
+	ctest && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && cd ../.. && sudo rm -rf ${ECBUILD_SRC%.tar.gz} || exit 1
 }
 
 update_ecbuild_version()

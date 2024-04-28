@@ -70,7 +70,7 @@ install_proj()
     then
 	mv PROJ PROJ-${PROJ_VERSION}
     else
-	rm -rf ${PROJ_SRC%.tar.gz}
+	sudo rm -rf ${PROJ_SRC%.tar.gz}
 	tar xf ${PROJ_SRC}
     fi
 
@@ -84,9 +84,14 @@ install_proj()
     mkdir build
     cd build
 
-    cmake .. -Wno-dev -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} -DCMAKE_PREFIX_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
-    cmake --build .  -j $(nproc)
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env cmake --install . && cd ../..
+    cmake .. -Wno-dev \
+	    -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}  \
+	    -DCMAKE_PREFIX_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+	    -DCMAKE_INSTALL_LIBDIR=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib  && \
+	    cmake --build .  -j $(nproc)  && \
+	    sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env cmake --install . && \
+	    cd ../.. && \
+	    sudo rm -rf ${PROJ_SRC%.tar.gz} || exit 1
 }
 
 update_proj_version()

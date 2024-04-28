@@ -5,7 +5,7 @@
 # **************************************
 # 修改下面的版本号可以编译不同的版本组合
 # **************************************
-GCC_VERSION=${2:-12.3.0}
+GCC_VERSION=${2:-13.2.0}
 CMAKE_VERSION=3.25.1
 CLANG_VERSION=${2:-15.0.2}
 ARM_COMPILER_VERSION=${2:-24.04}
@@ -392,8 +392,9 @@ install_arm_compiler()
     sudo rm -rf "${ARM_COMPILER_SRC%_aarch64.tar}"
     tar xf "${ARM_COMPILER_SRC}"
     cd "${ARM_COMPILER_SRC%_aarch64.tar}"
-    sudo bash "${ARM_COMPILER_SRC%_aarch64.tar}.sh" -a -i ${HPC_PREFIX}/opt -f
-    cd ..
+    sudo bash "${ARM_COMPILER_SRC%_aarch64.tar}.sh" -a -i ${HPC_PREFIX}/opt -f && \
+	cd .. && \
+	sudo rm -rf "${ARM_COMPILER_SRC%_aarch64.tar}" || exit 1
 }
 
 install_intel_compiler()
@@ -411,8 +412,8 @@ install_intel_compiler()
 	product_ver=$(echo ${product} | cut -d: -f2)
         sudo bash ${INTEL_COMPILER_SRC} -a -c -s --action remove --product-id ${product_id} --product-ver ${product_ver}
     done
-    sudo bash ${INTEL_COMPILER_SRC} -a -s --eula accept --install-dir=${HPC_PREFIX}/opt/intel/oneapi
-    sudo bash ${INTEL_HPC_COMPILER_SRC} -a -s --eula accept --install-dir=${HPC_PREFIX}/opt/intel/oneapi
+    sudo bash ${INTEL_COMPILER_SRC} -a -s --eula accept --install-dir=${HPC_PREFIX}/opt/intel/oneapi && \
+	sudo bash ${INTEL_HPC_COMPILER_SRC} -a -s --eula accept --install-dir=${HPC_PREFIX}/opt/intel/oneapi || exit 1
 }
 
 install_amd_compiler()
@@ -425,19 +426,21 @@ install_amd_compiler()
     tar xf ${AMD_AOCL_SRC}
     cd ${AMD_AOCL_SRC%.tar.gz}
 
-    sudo bash ./install.sh -t ${HPC_PREFIX}/opt -i lp64
-    cd ..
+    sudo bash ./install.sh -t ${HPC_PREFIX}/opt -i lp64 && \
+	cd .. && \
+	sudo rm -rf ${AMD_AOCL_SRC%.tar.gz} || exit 1
 }
 
 
 install_nvidia_compiler()
 {
-    rm -rf ${NVIDIA_COMPILER_SRC%.tar.gz}
+    sudo rm -rf ${NVIDIA_COMPILER_SRC%.tar.gz}
     tar xf ${NVIDIA_COMPILER_SRC}
     export NVHPC_SILENT=true
     export NVHPC_INSTALL_DIR=${HPC_PREFIX}/opt/nvidia
     export NVHPC_INSTALL_TYPE=single
-    sudo --preserve-env=NVHPC_SILENT,NVHPC_INSTALL_DIR,NVHPC_INSTALL_TYPE env ${NVIDIA_COMPILER_SRC%.tar.gz}/install
+    sudo --preserve-env=NVHPC_SILENT,NVHPC_INSTALL_DIR,NVHPC_INSTALL_TYPE env ${NVIDIA_COMPILER_SRC%.tar.gz}/install && \
+	sudo rm -rf ${NVIDIA_COMPILER_SRC%.tar.gz} || exit 1
 }
 
 install_gcc_compiler()
@@ -480,7 +483,10 @@ build_cmake()
 	tar xf "${CMAKE_SRC}"
 	cd "${CMAKE_SRC%.tar.gz}"
 	./bootstrap --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} --parallel=$(($(nproc) / 2)) -- -DCMAKE_BUILD_TYPE:STRING=Release
-	make && sudo --preserve-env=PATH,LD_LIBRARY_PATH,PKG_CONFIG_PATH env make install && cd ..
+	make && \
+	    sudo --preserve-env=PATH,LD_LIBRARY_PATH,PKG_CONFIG_PATH env make install && \
+	    cd .. && \
+	    sudo rm -rf "${CMAKE_SRC%.tar.gz}" || exit 1
     fi
 }
 
@@ -505,14 +511,15 @@ build_clang()
 	-DLLVM_INSTALL_UTILS=ON \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/opt/gnu \
-	-DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;flang;lldb'
+	-DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;flang;lldb' || exit 1
 
     sudo --preserve-env=PATH,LD_LIBRARY_PATH,PKG_CONFIG_PATH env \
-	ninja -C ${BUILDDIR} install
+	ninja -C ${BUILDDIR} install || exit 1
     sudo --preserve-env=PATH,LD_LIBRARY_PATH,PKG_CONFIG_PATH env \
 	cmake -G Ninja -S llvm-project-llvmorg-${CLANG_VERSION}/llvm  -B ${BUILDDIR} \
 	-DLLVM_EXTERNAL_LIT=./llvm-project-llvmorg-${CLANG_VERSION}/llvm/utils/lit/lit.py \
-	-DLLVM_ROOT=${HPC_PREFIX}/opt/gnu
+	-DLLVM_ROOT=${HPC_PREFIX}/opt/gnu && \
+	sudo rm -rf "${CLANG_SRC%.tar.gz}" || exit 1
 
 }
 
@@ -527,6 +534,9 @@ install_clang_compiler()
 
 install_compiler()
 {
+
+    sudo mkdir -p ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib
+    sudo ln -snf ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/{lib,lib64}
     case ${HPC_COMPILER} in
     "gcc")
 	install_gcc_compiler
@@ -581,9 +591,11 @@ build_binutils_stage_one()
 	    --enable-shared \
 	    --enable-gprofng=no \
 	    --disable-nls --disable-werror
-    make
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install
-    cd ../..
+    make && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install && \
+	cd ../.. && \
+	sudo rm -rf "${BINUTILS_SRC%.tar.gz}" || exit 1
+
 }
 
 # stage2 use target build
@@ -616,9 +628,9 @@ build_binutils()
 	    --enable-gprofng=no \
 	    --disable-multilib \
 	    --disable-werror
-    make
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install
-    cd ../..
+    make && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install && \
+	cd ../.. || exit 1
 }
 
 # https://forums.gentoo.org/viewtopic-t-1089690-start-0.html
@@ -633,9 +645,10 @@ build_elfutils_stage_one()
     mkdir -p build
     cd build
     ../configure --prefix=${HPC_PREFIX}/tmp/${HPC_COMPILER}
-    make CFLAGS="-Wno-error=deprecated-declarations"
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH env make CFLAGS="-Wno-error=deprecated-declarations" install
-    cd ../..
+    make CFLAGS="-Wno-error=deprecated-declarations" && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH env make CFLAGS="-Wno-error=deprecated-declarations" install && \
+	cd ../.. && \
+	sudo rm -rf "${ELFUTILS_SRC%.tar.bz2}" || exit 1
 }
 
 # stage2 use target build
@@ -648,9 +661,10 @@ build_elfutils()
     mkdir -p build
     cd build
     ../configure --prefix=${HPC_PREFIX}/opt/gnu
-    make CFLAGS="-Wno-error=deprecated-declarations"
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH env make CFLAGS="-Wno-error=deprecated-declarations" install
-    cd ../..
+    make CFLAGS="-Wno-error=deprecated-declarations" && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH env make CFLAGS="-Wno-error=deprecated-declarations" install && \
+	cd ../.. && \
+	sudo rm -rf "${ELFUTILS_SRC%.tar.bz2}" || exit 1
 }
 
 # https://www.linuxfromscratch.org/lfs/view/development/chapter05/gcc-libstdc++.html
@@ -698,9 +712,10 @@ build_gcc_stage_one()
 	    --enable-shared \
 	    --disable-multilib \
 	    --enable-languages=c,c++,fortran
-    make
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install
-    cd ../..
+    make && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install && \
+	cd ../.. && \
+	sudo rm -rf "${GCC_SRC%.tar.gz}" || exit 1
 
     #echo "xxxx ******* build libstdcxx"
     #build_libstdcxx
@@ -740,9 +755,11 @@ build_gcc()
 	    --enable-initfini-array \
 	    --enable-gnu-indirect-function
 	    #--with-tune=neoverse-n1 --with-arch=armv8.2-a+crypto --build=aarch64-redhat-linux
-    make
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install
-    cd ../..
+    make && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH env make install && \
+	cd ../.. && \
+	sudo rm -rf "${GCC_SRC%.tar.gz}" || exit 1
+
 }
 
 update_compiler_version()

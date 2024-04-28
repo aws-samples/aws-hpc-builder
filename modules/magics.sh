@@ -3,7 +3,7 @@
 # Copyright (C) 2024 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
 #MAGICS_VERSION=git
-MAGICS_VERSION=${2:-4.15.2}
+MAGICS_VERSION=${2:-4.15.4}
 DISABLE_COMPILER_ENV=false
 
 MAGICS_SRC="magics-${MAGICS_VERSION}.tar.gz"
@@ -13,6 +13,7 @@ install_sys_dependency_for_magics()
     # packages for build magics
     case ${S_VERSION_ID} in
 	7)
+	    sudo yum -y install pango-devel
 	    return
 	    case  "${S_NAME}" in
 		"Alibaba Cloud Linux (Aliyun Linux)"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
@@ -24,6 +25,7 @@ install_sys_dependency_for_magics()
 	    esac
 	    ;;
 	8)
+	    sudo dnf -y install pango-devel
 	    return
 	    case  "${S_NAME}" in
 		"Alibaba Cloud Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
@@ -35,6 +37,7 @@ install_sys_dependency_for_magics()
 	    esac
 	    ;;
 	18|20)
+            sudo apt -y install libpango1.0-dev
 	    return
 	    ;;
 	*)
@@ -67,23 +70,28 @@ install_magics()
     then
 	mv magics magics-${MAGICS_VERSION}
     else
-	rm -rf ${MAGICS_SRC%.tar.gz}
+	sudo rm -rf ${MAGICS_SRC%.tar.gz} ${MAGICS_SRC%.tar.gz}-build
 	tar xf ${MAGICS_SRC}
     fi
 
-    cd ${MAGICS_SRC%.tar.gz}
 
-    if [ -f ../../patch/magics/magics-${MAGICS_VERSION}.patch ]
+    if [ -f ../patch/magics/magics-${MAGICS_VERSION}.patch ]
     then
+	cd ${MAGICS_SRC%.tar.gz}
 	patch -Np1 < ../../patch/magics/magics-${MAGICS_VERSION}.patch
+	cd ..
     fi
 
-    mkdir build
-    cd build
+    mkdir -p "${MAGICS_SRC%.tar.gz}-build"
 
-    cmake .. -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
-    cmake --build . -j $(nproc)
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env cmake --install . && cd ../..
+    cmake -Wno-dev -H${MAGICS_SRC%.tar.gz} -B${MAGICS_SRC%.tar.gz}-build \
+	    -DCMAKE_PREFIX_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+	    -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} || exit 1
+
+    cmake --build "${MAGICS_SRC%.tar.gz}-build"  -j $(nproc) || exit 1
+
+    sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB,I_MPI_CC,I_MPI_CXX,I_MPI_FC,I_MPI_F77,I_MPI_F90 env cmake --install "${MAGICS_SRC%.tar.gz}-build" \
+	    && sudo rm -rf ${MAGICS_SRC%.tar.gz} ${MAGICS_SRC%.tar.gz}-build || exit 1
 }
 
 update_magics_version()

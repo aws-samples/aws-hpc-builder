@@ -59,9 +59,11 @@ install_openblas()
     cd "${OPENBLAS_SRC%.tar.gz}"
     mkdir -p build
     cd build
-    cmake .. -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} -DBUILD_SHARED_LIBS=ON
-    cmake --build .  -j $(nproc)
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env cmake --install . && cd ../..
+    cmake .. -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} -DBUILD_SHARED_LIBS=ON && \
+	cmake --build .  -j $(nproc) && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env cmake --install . && \
+	cd ../.. && \
+	sudo rm -rf "${OPENBLAS_SRC%.tar.gz}" || exit 1
 }
 
 update_openblas_version()

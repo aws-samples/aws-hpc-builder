@@ -81,7 +81,8 @@ install_wgrib2()
 
     make && \
 	sudo cp wgrib2/wgrib2 ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin && \
-	cd ..
+	cd .. && \
+	sudo rm -rf grib2 || exit 1
 }
 
 update_wgrib2_version()

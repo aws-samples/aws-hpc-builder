@@ -66,10 +66,10 @@ install_lammps()
     echo "zzz *** $(date) *** Build lammps-${LAMMPS_VERSION}"
     if [ "${LAMMPS_VERSION}" == "git" ]
     then
-	rm -rf lammps-${LAMMPS_VERSION}
+	sudo rm -rf lammps-${LAMMPS_VERSION}
 	mv lammps lammps-${LAMMPS_VERSION}
     else
-	rm -rf ${LAMMPS_SRC%.tar.gz}
+	sudo rm -rf ${LAMMPS_SRC%.tar.gz}
 	tar xf ${LAMMPS_SRC}
     fi
 
@@ -98,8 +98,8 @@ install_lammps()
     fi
 	cmake --build .  -j $(nproc) && \
 	sudo --preserve-env=PATH,LD_LIBRARY_PATH,I_MPI_CC,I_MPI_CXX,I_MPI_FC,I_MPI_F77,I_MPI_F90 env make install && \
-	cd ../..
-    return $?
+	cd ../.. && \
+	sudo rm -rf lammps-${LAMMPS_VERSION} || exit 1
 }
 
 update_lammps_version()

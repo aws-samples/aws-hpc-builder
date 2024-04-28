@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
-NETCDF_C_VERSION=${2:-4.9.0}
+NETCDF_C_VERSION=${2:-4.9.2}
 NETCDF_C_SRC="netcdf-c-${NETCDF_C_VERSION}.tar.gz"
 DISABLE_COMPILER_ENV=false
 
@@ -50,9 +50,10 @@ install_netcdf_c()
 	    --with-pic \
 	    --disable-doxygen \
 	    --disable-dap
-    make
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB,CPPFLAGS,LDFLAGS make install
-    cd ../..
+    make && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB,CPPFLAGS,LDFLAGS make install && \
+	cd ../.. && \
+	sudo rm -rf "${NETCDF_C_SRC%.tar.gz}" || exit 1
 }
 
 update_netcdf_c_version()

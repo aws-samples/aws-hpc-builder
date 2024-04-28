@@ -1,0 +1,136 @@
+From 58420c994940099668a6f6f7625b645a25344673 Mon Sep 17 00:00:00 2001
+From: Ward Fisher <wfisher@ucar.edu>
+Date: Fri, 12 Jan 2024 15:16:14 -0800
+Subject: [PATCH] Attempt to fix a pernicious issue where some systems complain
+ about no implicit type. See
+ https://github.com/Unidata/netcdf-fortran/issues/427 for more information.
+
+---
+ fortran/module_netcdf_nc_data.F90 |  1 +
+ fortran/module_typesizes.F90      | 65 +++++++++++++++++++++++++++++++
+ fortran/netcdf.F90                | 26 ++++++-------
+ 3 files changed, 79 insertions(+), 13 deletions(-)
+ create mode 100644 fortran/module_typesizes.F90
+
+diff --git a/fortran/module_netcdf_nc_data.F90 b/fortran/module_netcdf_nc_data.F90
+index 9de2e74..c7c9e11 100755
+--- a/fortran/module_netcdf_nc_data.F90
++++ b/fortran/module_netcdf_nc_data.F90
+@@ -314,6 +314,7 @@ Module netcdf_nc_data
+  Integer(C_INT), Parameter :: NC_FATAL   = 1
+  Integer(C_INT), Parameter :: NC_VERBOSE = 2
+ 
++#define USE_NETCDF4
+ #ifdef USE_NETCDF4
+ 
+ !                          NETCDF4 data
+diff --git a/fortran/module_typesizes.F90 b/fortran/module_typesizes.F90
+new file mode 100644
+index 0000000..84c7f4f
+--- /dev/null
++++ b/fortran/module_typesizes.F90
+@@ -0,0 +1,65 @@
++! Description:
++!   Provide named kind parameters for use in declarations of real and integer 
++!    variables with specific byte sizes (i.e. one, two, four, and eight byte
++!    integers; four and eight byte reals). The parameters can then be used
++!    in (KIND = XX) modifiers in declarations.
++!   A single function (byteSizesOK()) is provided to ensure that the selected 
++!    kind parameters are correct.
++!  
++! Input Parameters:
++!   None.
++!
++! Output Parameters:
++!   Public parameters, fixed at compile time:
++!     OneByteInt, TwoByteInt, FourByteInt, EightByteInt
++!                                     FourByteReal, EightByteRadl
++!
++! References and Credits:
++!   Written by
++!    Robert Pincus
++!    Cooperative Institue for Meteorological Satellite Studies
++!    University of Wisconsin - Madison
++!    1225 W. Dayton St. 
++!    Madison, Wisconsin 53706
++!    Robert.Pincus@ssec.wisc.edu
++!
++! Design Notes:
++!   Fortran 90 doesn't allow one to check the number of bytes in a real variable;
++!     we check only that four byte and eight byte reals have different kind parameters. 
++!
++module typesizes
++  implicit none
++  public
++  integer, parameter ::   OneByteInt = selected_int_kind(2), &
++                          TwoByteInt = selected_int_kind(4), &
++                         FourByteInt = selected_int_kind(9), &
++                        EightByteInt = selected_int_kind(18)
++
++  integer, parameter ::                                          &
++                        FourByteReal = selected_real_kind(P =  6, R =  37), &
++                       EightByteReal = selected_real_kind(P = 13, R = 307)
++contains
++  logical function byteSizesOK()
++  ! Users may call this function once to ensure that the kind parameters 
++  !   the module defines are available with the current compiler. 
++  ! We can't ensure that the two REAL kinds are actually four and 
++  !   eight bytes long, but we can ensure that they are distinct. 
++  ! Early Fortran 90 compilers would sometimes report incorrect results for 
++  !   the bit_size intrinsic, but I haven't seen this in a long time. 
++
++    ! Local variables
++    integer (kind =  OneByteInt)  :: One
++    integer (kind =  TwoByteInt)  :: Two
++    integer (kind = FourByteInt)  :: Four
++    integer (kind = EightByteInt) :: Eight
++
++    if (bit_size( One) == 8  .and. bit_size( Two)   == 16 .and.  &
++        bit_size(Four) == 32 .and. bit_size( Eight) == 64 .and.  &
++        FourByteReal > 0 .and. EightByteReal > 0 .and. &
++        FourByteReal /= EightByteReal) then
++      byteSizesOK = .true.
++    else
++      byteSizesOK = .false.
++    end if
++  end function byteSizesOK
++end module typeSizes
+diff --git a/fortran/netcdf.F90 b/fortran/netcdf.F90
+index e47b684..a18b36c 100644
+--- a/fortran/netcdf.F90
++++ b/fortran/netcdf.F90
+@@ -43,18 +43,18 @@
+   !
+   ! Update the dependencies in the Makefile.am when modifying the list of
+   !     included files.
+-#include "netcdf_constants.f90"
+-#include "netcdf_externals.f90"
+-#include "netcdf_overloads.f90"
+-#include "netcdf_visibility.f90"
++#include "netcdf_constants.F90"
++#include "netcdf_externals.F90"
++#include "netcdf_overloads.F90"
++#include "netcdf_visibility.F90"
+ contains
+-#include "netcdf_file.f90"
+-#include "netcdf3_file.f90"
+-#include "netcdf_dims.f90"
+-#include "netcdf_attributes.f90"
+-#include "netcdf_variables.f90"
+-#include "netcdf_text_variables.f90"
+-#include "netcdf_expanded_subset.f90"
+-#include "netcdf_get_nd_expanded.f90"
+-#include "netcdf_eightbyte_subset.f90"
++#include "netcdf_file.F90"
++#include "netcdf3_file.F90"
++#include "netcdf_dims.F90"
++#include "netcdf_attributes.F90"
++#include "netcdf_variables.F90"
++#include "netcdf_text_variables.F90"
++#include "netcdf_expanded_subset.F90"
++#include "netcdf_get_nd_expanded.F90"
++#include "netcdf_eightbyte_subset.F90"
+ end module netcdf
+-- 
+2.40.1
+

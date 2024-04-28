@@ -67,7 +67,7 @@ install_sqlite()
     then
 	mv sqlite sqlite-${SQLITE_VERSION}
     else
-	rm -rf ${SQLITE_SRC%.tar.gz}
+	sudo rm -rf ${SQLITE_SRC%.tar.gz}
 	tar xf ${SQLITE_SRC}
     fi
 
@@ -78,8 +78,12 @@ install_sqlite()
 	patch -Np1 < ../../patch/sqlite/sqlite-${SQLITE_VERSION}.patch
     fi
      
-    ./configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
-     make && sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && cd ..
+    ./configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+	    --libdir=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib
+     make && \
+	 sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && \
+	 cd .. && \
+	 sudo rm -rf ${SQLITE_SRC%.tar.gz} || exit 1
 
 }
 

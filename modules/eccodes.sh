@@ -67,24 +67,27 @@ install_eccodes()
     then
 	mv eccodes eccodes-${ECCODES_VERSION}
     else
-	rm -rf ${ECCODES_SRC%.tar.gz}
+	sudo rm -rf ${ECCODES_SRC%.tar.gz}
 	tar xf ${ECCODES_SRC}
     fi
 
-    cd ${ECCODES_SRC%.tar.gz}
-
-    if [ -f ../../patch/eccodes/eccodes-${ECCODES_VERSION}.patch ]
+    if [ -f ../patch/eccodes/eccodes-${ECCODES_VERSION}.patch ]
     then
+        cd ${ECCODES_SRC%.tar.gz}
 	patch -Np1 < ../../patch/eccodes/eccodes-${ECCODES_VERSION}.patch
+	cd ..
     fi
 
-    mkdir build
-    cd build
+    mkdir -p "${ECCODES_SRC%.tar.gz}-build"
 
-    cmake .. -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
-    cmake --build . -j $(nproc)
-    ctest
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env cmake --install . && cd ../..
+    export CXXFLAGS="-I ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include/jasper"
+    cmake -H${ECCODES_SRC%.tar.gz} -B${ECCODES_SRC%.tar.gz}-build \
+	    -DCMAKE_PREFIX_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+	    -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} || exit 1
+
+    cmake --build "${ECCODES_SRC%.tar.gz}-build"  -j $(nproc) && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB,I_MPI_CC,I_MPI_CXX,I_MPI_FC,I_MPI_F77,I_MPI_F90 env cmake --install "${ECCODES_SRC%.tar.gz}-build"  && \
+	sudo rm -rf ${ECCODES_SRC%.tar.gz}-build || exit 1
 }
 
 update_eccodes_version()

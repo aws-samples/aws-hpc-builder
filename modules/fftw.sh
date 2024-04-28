@@ -58,8 +58,10 @@ install_fftw()
     tar xf "${FFTW_SRC}"
     cd "${FFTW_SRC%.tar.gz}"
     ./configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} --enable-shared --enable-openmp --enable-mpi
-    make -j$(nproc)
-    make && sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && cd ..
+    make -j$(nproc) && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && \
+	cd .. && \
+	sudo rm -rf "${FFTW_SRC%.tar.gz}" || exit 1
 }
 
 update_fftw_version()

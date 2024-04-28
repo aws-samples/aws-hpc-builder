@@ -25,13 +25,14 @@ download_qd()
 
 install_qd()
 {
-    rm -rf ${QD_SRC%.tar.gz}
+    sudo rm -rf ${QD_SRC%.tar.gz}
     tar xf ${QD_SRC}
     cd ${QD_SRC%.tar.gz}
     ./configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
-    make && sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install
-    cd ..
-
+    make && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && \
+	cd .. && \
+	sudo rm -rf ${QD_SRC%.tar.gz} || exit 1
 }
 
 update_qd_version()

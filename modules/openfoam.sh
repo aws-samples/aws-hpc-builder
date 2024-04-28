@@ -191,7 +191,7 @@ install_openfoam()
     #sed -i 's/^cOPT *= /&-std=gnu99 /g' wmake/rules/linux64${WM_COMPILER}/cOpt
     #sed -i 's/^c++OPT *= /&-std=gnu++98 /g' wmake/rules/linux64${WM_COMPILER}/c++Opt
     #./Allwmake -s -l
-    ./Allwmake -s
+    ./Allwmake -s || exit 1
     cd -
 
 }

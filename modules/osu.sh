@@ -25,7 +25,7 @@ download_osu()
 
 install_osu()
 {
-    rm -rf ${OSU_SRC%.tar.gz}
+    sudo rm -rf ${OSU_SRC%.tar.gz}
     tar xf ${OSU_SRC}
     cd ${OSU_SRC%.tar.gz}
     if [ -f ../../patch/osu/osu-${OSU_VERSION}-return-value.patch ]
@@ -33,7 +33,9 @@ install_osu()
 	patch -Np1 < ../../patch/osu/osu-${OSU_VERSION}-return-value.patch
     fi
     ./configure CC=mpicc CXX=mpicxx
-    make && cd .. && sudo mv "${OSU_SRC%.tar.gz}" "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/"
+    make && \
+	cd .. && \
+	sudo mv "${OSU_SRC%.tar.gz}" "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/" || exit 1
 }
 
 update_osu_version()

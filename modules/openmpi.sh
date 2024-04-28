@@ -88,7 +88,10 @@ install_openmpi()
     then
         return  $result
     fi
-    make && sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && cd ../..
+    make && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && \
+	cd ../.. && \
+	sudo rm -rf "${OPENMPI_SRC%.tar.gz}" || exit 1
 }
 
 update_openmpi_version()

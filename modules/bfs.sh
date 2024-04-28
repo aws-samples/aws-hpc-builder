@@ -25,7 +25,7 @@ download_bfs()
 
 install_bfs()
 {
-    rm -rf ${BFS_SRC%.tar.gz}
+    sudo rm -rf ${BFS_SRC%.tar.gz}
     tar xf ${BFS_SRC}
     cd ${BFS_SRC%.tar.gz}
     if [ -f ../../patch/bfs/bfs-${BFS_VERSION}-return-value.patch ]
@@ -33,9 +33,10 @@ install_bfs()
 	patch -Np1 < ../../patch/bfs/bfs-${BFS_VERSION}-return-value.patch
     fi
     cd src
-    make graph500_reference_bfs
-    sudo install -m 755 -D -t ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin ./graph500_reference_bfs
-    cd ../..
+    make graph500_reference_bfs && \
+	sudo install -m 755 -D -t ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin ./graph500_reference_bfs && \
+	cd ../..  && \
+	sudo rm -rf ${BFS_SRC%.tar.gz} || exit 1
 }
 
 update_bfs_version()

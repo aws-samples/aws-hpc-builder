@@ -22,7 +22,7 @@ install_sys_dependency_for_wps()
     case ${S_VERSION_ID} in
 	7)
 	    sudo yum -y update
-	    sudo yum -y install mesa-libgbm at-spi gtk3 xdg-utils libnotify libxcb jasper-devel \
+	    sudo yum -y install mesa-libgbm at-spi gtk3 xdg-utils libnotify libxcb \
 		libXrender-devel expat-devel libX11-devel freetype-devel fontconfig-devel expat-devel libXext-devel pixman-devel cairo-devel
 
 
@@ -64,12 +64,13 @@ install_sys_dependency_for_wps()
 set_wps_build_env()
 {
     export NETCDF=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
-    export JASPERLIB=/usr/lib64
-    export JASPERINC=/usr/include
+    export JASPERLIB=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib
+    export JASPERINC=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include/jasper
     #export PNETCDF=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
     #export HDF5=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
     #export PHDF5=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
-    #export NETCDF_classic=1
+    export WRFIO_NCD_LARGE_FILE_SUPPORT=1
+    export NETCDF_classic=1
 }
 
 download_wps() {
@@ -174,16 +175,17 @@ install_wps()
 
     # disable MAKEFLAGS
     unset MAKEFLAGS
+    #export LIBS="-lhdf5_hl -lhdf5"
 
     if [ "${WPS_CONFIG+set}" == "set" ]
     then
-        echo -e "${WPS_CONFIG}\n" | ./configure
+        echo -e "${WPS_CONFIG}\n" | ./configure || exit 2
     else 
 	echo "unsupported platform"
 	exit 1
     fi
 
-    ./compile >> "${HPC_BUILD_LOG}" 2>&1
+    ./compile >> "${HPC_BUILD_LOG}" 2>&1 || exit 1
     rm -f ../WRFV3
     cd ..
 

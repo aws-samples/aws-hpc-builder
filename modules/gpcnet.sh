@@ -36,7 +36,7 @@ install_gpcnet()
     then
 	cd GPCNET
     else
-	rm -rf ${GPCNET_SRC%.tar.gz}
+	sudo rm -rf ${GPCNET_SRC%.tar.gz}
 	tar xf ${GPCNET_SRC}
 	cd ${GPCNET_SRC%.tar.gz}
     fi
@@ -46,7 +46,8 @@ install_gpcnet()
 	    sudo mv GPCNET "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/GPCNET-${GPCNET_VERSION}"
 	else
 	    sudo mv "${GPCNET_SRC%.tar.gz}" "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/GPCNET-${GPCNET_VERSION}"
-	fi
+	fi && \
+	    sudo rm -rf ${GPCNET_SRC%.tar.gz} || exit 1
 }
 
 update_gpcnet_version()

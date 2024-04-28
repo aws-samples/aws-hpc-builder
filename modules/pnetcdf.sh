@@ -75,7 +75,10 @@ install_pnetcdf()
     ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
 	    --enable-fortran \
             --enable-shared && fix_clang_ld 
-    make && sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && cd ../..
+    make && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && \
+	cd ../.. && \
+	sudo rm -rf "${PNETCDF_SRC%.tar.gz}" || exit 1
 }
 
 update_pnetcdf_version()

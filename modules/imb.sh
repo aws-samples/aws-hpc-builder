@@ -25,14 +25,16 @@ download_imb()
 
 install_imb()
 {
-    rm -rf mpi-benchmarks-${IMB_SRC%.tar.gz}
+    sudo rm -rf mpi-benchmarks-${IMB_SRC%.tar.gz}
     tar xf ${IMB_SRC}
     cd mpi-benchmarks-${IMB_SRC%.tar.gz}
     if [ -f ../../patch/imb/imb-${IMB_VERSION}-return-value.patch ]
     then
 	patch -Np1 < ../../patch/imb/imb-${IMB_VERSION}-return-value.patch
     fi
-    CC=mpicc CXX=mpicxx make && cd .. && sudo mv "mpi-benchmarks-${IMB_SRC%.tar.gz}" "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/"
+    CC=mpicc CXX=mpicxx make && \
+	cd .. && \
+	sudo mv "mpi-benchmarks-${IMB_SRC%.tar.gz}" "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/" || exit 1
 }
 
 update_imb_version()

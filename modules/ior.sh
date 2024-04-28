@@ -67,7 +67,7 @@ install_ior()
     then
 	mv ior ior-${IOR_VERSION}
     else
-	rm -rf ${IOR_SRC%.tar.gz}
+	sudo rm -rf ${IOR_SRC%.tar.gz}
 	tar xf ${IOR_SRC}
     fi
 
@@ -84,7 +84,10 @@ install_ior()
     fi
     export CC=$(which mpicc)
     ./configure --prefix="${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}"
-    make && sudo --preserve-env=PATH,LD_LIBRARY_PATH,I_MPI_CC,I_MPI_CXX,I_MPI_FC,I_MPI_F77,I_MPI_F90 env make install && cd ..
+    make && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH,I_MPI_CC,I_MPI_CXX,I_MPI_FC,I_MPI_F77,I_MPI_F90 env make install && \
+	cd .. && \
+	sudo rm -rf ${IOR_SRC%.tar.gz} || exit 1
 }
 
 update_ior_version()

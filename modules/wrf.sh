@@ -97,11 +97,12 @@ set_wrf_build_env()
 {
     echo "zzz *** $(date) *** Setup build env"
     export NETCDF=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
+    export NETCDFF=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
     export PNETCDF=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
     export HDF5=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
     export PHDF5=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
-    export JASPERLIB=/usr/lib64
-    export JASPERINC=/usr/include
+    export JASPERLIB=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib
+    export JASPERINC=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include/jasper
     export WRFIO_NCD_LARGE_FILE_SUPPORT=1
     export NETCDF_classic=1
 }
@@ -294,14 +295,14 @@ install_wrf()
 
     if [ "${WRF_CONFIG+set}" == "set" ]
     then
-        echo -e "${WRF_CONFIG}\n1\n" | ./configure || exit 1
+        echo -e "${WRF_CONFIG}\n1\n" | ./configure || exit 2
     else 
 	echo "unsupported platform"
 	exit 1
     fi
 
     # 默认是 -j 2, 如果有问题,尝试改成 -j 1
-    ./compile em_real >> "${HPC_BUILD_LOG}" 2>&1 || exit 2
+    ./compile em_real >> "${HPC_BUILD_LOG}" 2>&1 || exit 1
     cd ..
 
     if [ "${WRF_VERSION}" == "git" ]

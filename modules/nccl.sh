@@ -63,7 +63,8 @@ install_nccl()
     export PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
     sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB,PREFIX make src.install \
 	CUDA_HOME=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/usr/local/cuda && \
-	cd ..
+	cd .. && \
+	sudo rm -rf "${NCCL_SRC%.tar.gz}" || exit 1
 }
 
 update_nccl_version()

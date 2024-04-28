@@ -24,12 +24,14 @@ download_mt_dgemm()
 
 install_mt_dgemm()
 {
-    rm -rf ${MT_DEGMM_SRC%.tar.gz}
+    sudo rm -rf ${MT_DEGMM_SRC%.tar.gz}
     tar xf ${MT_DEGMM_SRC}
     mv mt-dgemm ${MT_DEGMM_SRC%.tar.gz}
     cd ${MT_DEGMM_SRC%.tar.gz}/src
     cp ../../../patch/mt-dgemm/Makefile.${HPC_COMPILER} .
-    make -f Makefile.${HPC_COMPILER} && cd ../../ && sudo mv "${MT_DEGMM_SRC%.tar.gz}" "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/"
+    make -f Makefile.${HPC_COMPILER} && \
+	cd ../../ && \
+	sudo mv "${MT_DEGMM_SRC%.tar.gz}" "${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/" || exit 1
 }
 
 update_mt_dgemm_version()

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2022 by Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
-NETCDF_FORTRAN_VERSION=${2:-4.5.4}
+NETCDF_FORTRAN_VERSION=${2:-4.6.1}
 NETCDF_FORTRAN_SRC="netcdf-fortran-${NETCDF_FORTRAN_VERSION}.tar.gz"
 DISABLE_COMPILER_ENV=false
 
@@ -46,7 +46,7 @@ download_netcdf_fortran() {
     then
 	return
     else
-	curl --retry 3 -JLOk "https://downloads.unidata.ucar.edu/netcdf-fortran/${NETCDF_FORTRAN_VERSION}/${NETCDF_FORTRAN_SRC}"
+	curl --retry 3 -JLOk "https://github.com/Unidata/netcdf-fortran/archive/refs/tags/v${NETCDF_FORTRAN_VERSION}.tar.gz"
 	return $?
     fi
 }
@@ -54,23 +54,27 @@ download_netcdf_fortran() {
 install_netcdf_fortran()
 {
     echo "zzz *** $(date) *** Build ${NETCDF_FORTRAN_SRC%.tar.gz}"
-    sudo rm -rf "${NETCDF_FORTRAN_SRC%.tar.gz}"
+    sudo rm -rf "${NETCDF_FORTRAN_SRC%.tar.gz}" "${NETCDF_FORTRAN_SRC%.tar.gz}-build"
     tar xf "${NETCDF_FORTRAN_SRC}"
-    cd "${NETCDF_FORTRAN_SRC%.tar.gz}"
-    mkdir build
-    cd build
-	    #--build=${HPC_TARGET} \
-	    #--host=${HPC_TARGET} \
-	    #--target=${HPC_TARGET} \
-    #CC=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/mpicc FC=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/mpif90 F77=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/bin/mpif77 \
-    CPPFLAGS=-I${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include LDFLAGS=-L${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib \
-    ../configure --prefix=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
-            --libdir=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib \
-            --enable-shared
-    fix_clang_ld
-    make check
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB,CPPFLAGS,LDFLAGS env make install
-    cd ../..
+
+    if [ -f ../patch/netcdf-fortran/netcdf-fortran-${NETCDF_FORTRAN_VERSION}.patch ]
+    then
+	cd "${NETCDF_FORTRAN_SRC%.tar.gz}"
+	patch -Np1 < ../../patch/netcdf-fortran/netcdf-fortran-${NETCDF_FORTRAN_VERSION}.patch
+	cd ..
+    fi
+
+    mkdir -p "${NETCDF_FORTRAN_SRC%.tar.gz}-build"
+
+    cmake -H${NETCDF_FORTRAN_SRC%.tar.gz} -B${NETCDF_FORTRAN_SRC%.tar.gz}-build \
+	    -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} -DCMAKE_PREFIX_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+	    -DBUILD_SHARED_LIBS=ON || exit 1
+
+    cmake --build "${NETCDF_FORTRAN_SRC%.tar.gz}-build"  -j $(nproc) || exit 1
+
+    sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB,I_MPI_CC,I_MPI_CXX,I_MPI_FC,I_MPI_F77,I_MPI_F90 env cmake --install "${NETCDF_FORTRAN_SRC%.tar.gz}-build" \
+	    && sudo rm -rf "${NETCDF_FORTRAN_SRC%.tar.gz}" "${NETCDF_FORTRAN_SRC%.tar.gz}-build" || exit 1
+
 }
 
 update_netcdf_fortran_version()

@@ -67,7 +67,7 @@ install_libaec()
     then
 	mv libaec libaec-${LIBAEC_VERSION}
     else
-	rm -rf ${LIBAEC_SRC%.tar.gz}
+	sudo rm -rf ${LIBAEC_SRC%.tar.gz}
 	tar xf ${LIBAEC_SRC}
     fi
 
@@ -81,9 +81,12 @@ install_libaec()
     mkdir build
     cd build
 
-    cmake .. -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
-    cmake --build .  -j $(nproc)
-    sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env cmake --install . && cd ../..
+    cmake .. -DCMAKE_INSTALL_PREFIX=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI} \
+	    -DCMAKE_INSTALL_LIBDIR=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib || exit 1
+    cmake --build .  -j $(nproc) && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env cmake --install . && \
+	cd ../.. && \
+	sudo rm -rf ${LIBAEC_SRC%.tar.gz} || exit 1
 }
 
 update_libaec_version()

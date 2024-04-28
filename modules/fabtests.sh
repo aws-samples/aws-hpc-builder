@@ -75,7 +75,10 @@ install_fabtests()
     then
         return  $result
     fi
-    make && sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB,FFLAGS,FCFLAGS env make install && cd ../..
+    make && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB,FFLAGS,FCFLAGS env make install && \
+	cd ../.. && \
+	sudo rm -rf "${FABTESTS_SRC%.tar.gz} || exit 1
 }
 
 update_fabtests_version()
