@@ -106,6 +106,11 @@ install_hdf5()
     sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB,I_MPI_CC,I_MPI_CXX,I_MPI_FC,I_MPI_F77,I_MPI_F90 env cmake --install "${HDF5_SRC%.tar.gz}-build" \
 	    && sudo rm -rf ${HDF5_SRC%.tar.gz} ${HDF5_SRC%.tar.gz}-build || exit 1
 
+    # add compatible links
+    sudo ln -s libhdf5_hl_fortran.so libhdf5hl_fortran.so
+    sudo ln -s libhdf5_hl_fortran.a libhdf5hl_fortran.a
+    sudo mv libhdf5hl_fortran.a libhdf5hl_fortran.so ${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib
+
 }
 
 update_hdf5_version()
