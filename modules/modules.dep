@@ -26,7 +26,35 @@ icx-mpich:mpich,sqlite,proj,zlib,libaec,ecbuild,jasper,eccodes,magics
 icx-mvapich:mvapich,sqlite,proj,zlib,libaec,ecbuild,jasper,eccodes,magics
 icx-intelmpi:sqlite,proj,zlib,libaec,ecbuild,jasper,eccodes,magics
 
-# eccodes's dependencies
+# geos's dependencies
+amdclang-openmpi:openmpi,geos
+amdclang-mpich:mpich,geos
+amdclang-mvapich:mvapich,geos
+amdclang-intelmpi:geos
+armgcc-openmpi:openmpi,geos
+armgcc-mpich:mpich,geos
+armgcc-mvapich:mvapich,geos
+armclang-openmpi:openmpi,geos
+armclang-mpich:mpich,geos
+armclang-mvapich:mvapich,geos
+clang-openmpi:openmpi,geos
+clang-mpich:mpich,geos
+clang-mvapich:mvapich,geos
+clang-intelmpi:geos
+gcc-openmpi:openmpi,geos
+gcc-mpich:mpich,geos
+gcc-mvapich:mvapich,geos
+gcc-intelmpi:geos
+icc-openmpi:openmpi,geos
+icc-mpich:mpich,geos
+icc-mvapich:mvapich,geos
+icc-intelmpi:geos
+icx-openmpi:openmpi,geos
+icx-mpich:mpich,geos
+icx-mvapich:mvapich,geos
+icx-intelmpi:geos
+
+# geos's dependencies
 amdclang-openmpi:openmpi,zlib,libaec,ecbuild,jasper,eccodes
 amdclang-mpich:mpich,zlib,libaec,ecbuild,jasper,eccodes
 amdclang-mvapich:mvapich,zlib,libaec,ecbuild,jasper,eccodes
