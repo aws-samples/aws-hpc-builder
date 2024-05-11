@@ -1253,6 +1253,34 @@ icx-mpich:mpich,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran
 icx-mvapich:mvapich,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran
 icx-intelmpi:zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran
 
+# WRFDA's dependencies
+amdclang-openmpi:openmpi,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+amdclang-mpich:mpich,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+amdclang-mvapich:mvapich,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+amdclang-intelmpi:zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+armgcc-openmpi:openmpi,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+armgcc-mpich:mpich,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+armgcc-mvapich:mvapich,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+armclang-openmpi:openmpi,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+armclang-mpich:mpich,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+armclang-mvapich:mvapich,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+clang-openmpi:openmpi,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+clang-mpich:mpich,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+clang-mvapich:mvapich,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+clang-intelmpi:zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+gcc-openmpi:openmpi,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+gcc-mpich:mpich,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+gcc-mvapich:mvapich,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+gcc-intelmpi:zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+icc-openmpi:openmpi,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+icc-mpich:mpich,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+icc-mvapich:mvapich,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+icc-intelmpi:zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+icx-openmpi:openmpi,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+icx-mpich:mpich,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+icx-mvapich:mvapich,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+icx-intelmpi:zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrfda
+
 # WRF's dependencies
 amdclang-openmpi:openmpi,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrf
 amdclang-mpich:mpich,zlib,hdf5,pnetcdf,netcdf-c,netcdf-fortran,jasper,wrf
