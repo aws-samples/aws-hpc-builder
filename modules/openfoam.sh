@@ -167,8 +167,9 @@ install_openfoam()
 
     export FOAM_INST_DIR=${OPENFOAM_PREFIX}
 
-    . "${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION}/etc/bashrc" WM_COMPILER=${WM_COMPILER} WM_MPLIB=${WM_MPLIB}
+    . "${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION}/etc/bashrc" WM_COMPILER=${WM_COMPILER} WM_MPLIB=${WM_MPLIB} WM_COMPILE_OPTION=OptHB
     #export LD_LIBRARY_PATH=${FOAM_LIBBIN}:${LD_LIBRARY_PATH}
+    cp ../patch/openfoam/c*OptHB ${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION}/wmake/rules/${WM_ARCH}${WM_COMPILER} 
     cd "${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION}"
     # 4 以下版本 ipcp 等编译器无法找到 .o 文件导致很多库无法链接，而编译器生成的是 .so 文件
     # https://www.cfd-online.com/Forums/openfoam-programming-development/162594-usr-bin-ld-cannot-find-llagrangianturbulence-usr-bin-ld-cannot-find-lfluidtherm.html

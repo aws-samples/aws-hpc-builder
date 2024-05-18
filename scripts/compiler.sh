@@ -410,15 +410,22 @@ case ${HPC_COMPILER} in
 	export LD_LIBRARY_PATH=${HPC_PREFIX}/opt/gnu/lib64:${HPC_PREFIX}/opt/gnu/lib:${LD_LIBRARY_PATH}
 	export PATH=${HPC_PREFIX}/opt/gnu/${HPC_TARGET}/bin:${HPC_PREFIX}/opt/gnu/bin:${PATH}
 	export MANPATH=:${HPC_PREFIX}/opt/gnu/share/man${MANPATH}
-	export HPC_LLIBS="-L${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib64 -lblas -lopenblas -llapack"
-	export HPC_INC_DIR="${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include"
-	export HPC_INCS="-I${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include"
 	if [ "$(arch)" == "aarch64" ]
 	then
 	    export HPC_CFLAGS="-Ofast -mcpu=native"
+	    export HPC_CXXFLAGS="-Ofast -mcpu=native"
+	    export HPC_FCFLAGS="-Ofast -mcpu=native"
+	    export HPC_FFLAGS="-Ofast -mcpu=native"
 	else
 	    export HPC_CFLAGS="-Ofast -march=native"
+	    export HPC_CXXFLAGS="-Ofast -march=native"
+	    export HPC_FCFLAGS="-Ofast -march=native"
+	    export HPC_FFLAGS="-Ofast -march=native"
 	fi
+	export HPC_LDFLAGS="-L${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib64 -lblas -lopenblas -llapack"
+	export HPC_LLIBS="-L${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib64 -lblas -lopenblas -llapack"
+	export HPC_INCS="-I${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include"
+	export HPC_INC_DIR="${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include"
 	export HPC_FFT_LIB="-L${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib -llftw3"
 	;;
     "armgcc")
@@ -429,6 +436,23 @@ case ${HPC_COMPILER} in
         module load armpl/$(ls ${HPC_PREFIX}/opt/moduledeps/gnu/[0-9.]*/armpl)
         #module load $(ls ${HPC_PREFIX}/opt/moduledeps/gnu/[0-9.]*/armpl/[0-9.]*)
         export HPC_TARGET=$(gcc -dumpmachine)
+	if [ "$(arch)" == "aarch64" ]
+	then
+	    export HPC_CFLAGS="-Ofast -mcpu=native"
+	    export HPC_CXXFLAGS="-Ofast -mcpu=native"
+	    export HPC_FCFLAGS="-Ofast -mcpu=native"
+	    export HPC_FFLAGS="-Ofast -mcpu=native"
+	else
+	    export HPC_CFLAGS="-Ofast -march=native"
+	    export HPC_CXXFLAGS="-Ofast -march=native"
+	    export HPC_FCFLAGS="-Ofast -march=native"
+	    export HPC_FFLAGS="-Ofast -march=native"
+	fi
+	export HPC_LDFLAGS="-L${ARMPL_DIR}/lib -fopenmp -larmpl_${PROG_MODEL} -lamath -lm -lastring"
+	export HPC_LLIBS="-L${ARMPL_DIR}/lib -armpl=${PROG_MODEL} -lamath -lm -lastring"
+	export HPC_INC_DIR="${ARMPL_DIR}/include"
+	export HPC_INCS="-I${ARMPL_DIR}/include"
+	export HPC_FFT_LIB="${ARMPL_DIR}/lib/libarmpl.so"
 	;;
     "armclang")
         source /etc/profile.d/modules.sh
@@ -446,10 +470,16 @@ case ${HPC_COMPILER} in
 	armgcc_lib_search_loc=$(echo /fsx/aarch64/opt/*Generic-AArch64*/lib/gcc/aarch64-linux-gnu)
 	sysgcc_lib_search_loc="/usr/lib/gcc/${HPC_HOST_TARGET}"
 
-	export HPC_LLIBS="-L${ARMPL_DIR}/lib -armpl=${PROG_MODEL} -lamath -lastring"
+
+	export HPC_CFLAGS="-Ofast -mcpu=native"
+	export HPC_CXXFLAGS="-Ofast -mcpu=native"
+	export HPC_FCFLAGS="-Ofast -mcpu=native"
+	export HPC_FFLAGS="-Ofast -mcpu=native"
+	export HPC_LDFLAGS="-L${ARMPL_DIR}/lib -armpl=${PROG_MODEL} -lamath -lm -lastring"
+
+	export HPC_LLIBS="-L${ARMPL_DIR}/lib -armpl=${PROG_MODEL} -lamath -lm -lastring"
 	export HPC_INC_DIR="${ARMPL_DIR}/include"
 	export HPC_INCS="-I${ARMPL_DIR}/include"
-	export HPC_CFLAGS="-Ofast -mcpu=native"
 	export HPC_FFT_LIB="${ARMPL_DIR}/lib/libarmpl.so"
 
 	## https://unix.stackexchange.com/questions/207294/create-symlink-overwrite-if-one-exists
@@ -476,11 +506,15 @@ case ${HPC_COMPILER} in
 	source ${HPC_PREFIX}/opt/intel/oneapi/compiler/latest/env/vars.sh
 	source ${HPC_PREFIX}/opt/intel/oneapi/mkl/latest/env/vars.sh
         export HPC_TARGET=$(${HPC_COMPILER} -dumpmachine)
-	export HPC_LLIBS="-L${MKLROOT}/lib/intel64 -lmkl_scalapack_${PROG_MODEL} -lmkl_cdft_core -lmkl_intel_${PROG_MODEL} -lmkl_intel_thread -lmkl_core -lmkl_blacs_intelmpi_${PROG_MODEL} -liomp5 -lpthread -lm -ldl"
 	#export HPC_CFLAGS="-xHOST -fma -ftz -fomit-frame-pointer"
 	#export HPC_CFLAGS="-Ofast -ipo -mavx -axCORE-AVX2,CORE-AVX512"
 	#export HPC_CFLAGS="-Ofast -ipo -mavx -axCORE-AVX2,CORE-AVX512 -march=icelake-server"
 	export HPC_CFLAGS="-Ofast -ipo -mavx -axCORE-AVX2,CORE-AVX512"
+	export HPC_CXXFLAGS="-Ofast -ipo -mavx -axCORE-AVX2,CORE-AVX512"
+	export HPC_FCFLAGS="-Ofast -ipo -mavx -axCORE-AVX2,CORE-AVX512"
+	export HPC_FFLAGS="-Ofast -ipo -mavx -axCORE-AVX2,CORE-AVX512"
+	export HPC_LDFLAGS="-L${MKLROOT}/lib/intel64 -lmkl_scalapack_${PROG_MODEL} -lmkl_cdft_core -lmkl_intel_${PROG_MODEL} -lmkl_intel_thread -lmkl_core -lmkl_blacs_intelmpi_${PROG_MODEL} -liomp5 -lpthread -lm -ldl"
+	export HPC_LLIBS="-L${MKLROOT}/lib/intel64 -lmkl_scalapack_${PROG_MODEL} -lmkl_cdft_core -lmkl_intel_${PROG_MODEL} -lmkl_intel_thread -lmkl_core -lmkl_blacs_intelmpi_${PROG_MODEL} -liomp5 -lpthread -lm -ldl"
 	export HPC_INCS="-I${MKLROOT}/include"
 	export HPC_INC_DIR="${MKLROOT}/include"
 	;;
@@ -491,11 +525,16 @@ case ${HPC_COMPILER} in
 	# acocc 4.1.0
 	source $(ls ${HPC_PREFIX}/opt/[0-9.]*/aocc/amd-libs.cfg)
         export HPC_TARGET=$(clang -dumpmachine)
-	export HPC_CFLAGS="-O3 -march=znver3 -mfma -fvectorize -mfma -mavx2 -m3dnow -floop-unswitch-aggressive -fuse-ld=lld"
-	export HPC_CCFLAGS="-O3 -march=znver3 -mfma -fvectorize -mfma -mavx2 -m3dnow -fuse-ld=lld"
+	#export HPC_CFLAGS="-O3 -march=znver3 -mfma -fvectorize -mfma -mavx2 -m3dnow -floop-unswitch-aggressive -fuse-ld=lld"
+	#export HPC_CXXFLAGS="-O3 -march=znver3 -mfma -fvectorize -mfma -mavx2 -m3dnow -fuse-ld=lld"
+	export HPC_CFLAGS="-Ofast -march=native -fuse-ld=lld"
+	export HPC_CXXFLAGS="-Ofast -march=native -fuse-ld=lld"
+	export HPC_FCFLAGS="-Ofast -march=native -fuse-ld=lld"
+	export HPC_FFLAGS="-Ofast -march=native -fuse-ld=lld"
+	export HPC_LDFLAGS="-L${AOCL_ROOT}/lib -lblis-mt -lflame -lscalapack -lfftw3 -lfftw3_omp -lalm -lm"
+	export HPC_LLIBS="-L${AOCL_ROOT}/lib -lblis-mt -lflame -lscalapack -lfftw3 -lfftw3_omp -lalm -lm"
 	export HPC_INC_DIR="${AOCL_ROOT}/include"
 	export HPC_INCS="-I${AOCL_ROOT}/include"
-	export HPC_LLIBS="-L${AOCL_ROOT}/lib -lblis-mt -lflame -lscalapack -lfftw3 -lfftw3_omp -lalm -lm"
 	export HPC_FFT_LIB="${AOCL_ROOT}/lib/libfftw3.so"
 	;;
     "nvc")

@@ -1,0 +1,2 @@
+cDBUG       =
+cOPT        = $(HPC_CFLAGS)
