@@ -36,17 +36,18 @@ case ${HPC_MPI} in
     "intelmpi")
 	export MPI_ROOT=${I_MPI_ROOT}
         export MPI_ARCH_FLAGS="-DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX"
-	WM_MPLIB="INTELMPI"
+	export WM_MPLIB="INTELMPI"
 	;;
     "mpich"|"mvapich"|"openmpi")
 	export MPI_ROOT=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
 	export MPI_ARCH_FLAGS="-DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX"
 	export MPI_ARCH_INC="-isystem ${MPI_ROOT}/include"
-	WM_MPLIB="SYSTEMMPI"
 	if [ "${HPC_MPI}" == "openmpi" ]
 	then 
+            export WM_MPLIB="SYSTEMOPENMPI"
 	    export MPI_ARCH_LIBS="-L${MPI_ROOT}/lib -lmpi"
 	else
+            export WM_MPLIB="SYSTEMMPI"
 	    export MPI_ARCH_LIBS="-L${MPI_ROOT}/lib -lmpi -lrt"
 	fi
 	;;

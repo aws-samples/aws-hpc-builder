@@ -1,0 +1,22 @@
+diff -urN OpenFOAM-2006.orig/modules/avalanche/src/avalanche/gistools/shapefile.H OpenFOAM-2006/modules/avalanche/src/avalanche/gistools/shapefile.H
+--- OpenFOAM-2006.orig/modules/avalanche/src/avalanche/gistools/shapefile.H	2020-06-19 11:12:57.000000000 +0000
++++ OpenFOAM-2006/modules/avalanche/src/avalanche/gistools/shapefile.H	2024-05-20 11:29:29.000000000 +0000
+@@ -47,6 +47,7 @@
+ #define shapefile_H
+ 
+ #include <vector>
++#include <cstdint>
+ #include <iostream>
+ 
+ class shapefile
+diff -urN OpenFOAM-2006.orig/src/OpenFOAM/primitives/strings/word/word.C OpenFOAM-2006/src/OpenFOAM/primitives/strings/word/word.C
+--- OpenFOAM-2006.orig/src/OpenFOAM/primitives/strings/word/word.C	2020-06-29 17:16:22.000000000 +0000
++++ OpenFOAM-2006/src/OpenFOAM/primitives/strings/word/word.C	2024-05-20 11:28:50.000000000 +0000
+@@ -29,6 +29,7 @@
+ #include "word.H"
+ #include "debug.H"
+ #include <cctype>
++#include <cstdint>
+ #include <sstream>
+ 
+ // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //

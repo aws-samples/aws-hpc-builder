@@ -1,0 +1,40 @@
+diff -urN OpenFOAM-2006.orig/src/sampling/sampledSurface/sampledSurface/sampledSurface.H OpenFOAM-2006/src/sampling/sampledSurface/sampledSurface/sampledSurface.H
+--- OpenFOAM-2006.orig/src/sampling/sampledSurface/sampledSurface/sampledSurface.H	2020-06-29 17:16:22.000000000 +0000
++++ OpenFOAM-2006/src/sampling/sampledSurface/sampledSurface/sampledSurface.H	2024-05-23 01:25:38.000000000 +0000
+@@ -275,31 +275,31 @@
+     // Access
+ 
+         //- Access to the underlying mesh
+-        const polyMesh& mesh() const
++        const polyMesh& mesh() const noexcept
+         {
+             return mesh_;
+         }
+ 
+         //- Name of surface
+-        const word& name() const
++        const word& name() const noexcept
+         {
+             return name_;
+         }
+ 
+         //- Surface is enabled
+-        bool enabled() const
++        bool enabled() const noexcept
+         {
+             return enabled_;
+         }
+ 
+         //- Surface is invariant with geometry change (caution)
+-        bool invariant() const
++        bool invariant() const noexcept
+         {
+             return invariant_;
+         }
+ 
+         //- Interpolation to nodes requested for surface
+-        bool interpolate() const
++        bool interpolate() const noexcept
+         {
+             return interpolate_;
+         }

@@ -31,17 +31,17 @@ install_sys_dependency_for_openfoam()
 	    sudo yum -y update
 	    case  "${S_NAME}" in
 		"Alibaba Cloud Linux (Aliyun Linux)"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
-		    sudo yum -y install tmux git
+		    sudo yum -y install tmux git gmp-devel mpfr-devel
 		    ;;
 		"Amazon Linux")
-		    sudo yum -y install tmux git
+		    sudo yum -y install tmux git gmp-devel mpfr-devel
 		    ;;
 	    esac
 	    ;;
 	8)
 	    sudo $(dnf check-release-update 2>&1 | grep "dnf update --releasever" | tail -n1) -y 2> /dev/null
 	    sudo dnf -y update
-	    sudo dnf -y install tmux git
+	    sudo dnf -y install tmux git gmp-devel
 	    case  "${S_NAME}" in
 		"Alibaba Cloud Linux"|"Oracle Linux Server"|"Red Hat Enterprise Linux Server"|"CentOS Linux")
 		    return
@@ -53,7 +53,7 @@ install_sys_dependency_for_openfoam()
 	    ;;
 	18|20)
 	    sudo apt-get -y update
-	    sudo apt-get -y install tmux git
+	    sudo apt-get -y install tmux git libgmp-dev libmpfr-dev
 	    ;;
 	*)
 	    exit 1
@@ -93,10 +93,49 @@ download_openfoam()
 
 patch_openfoam()
 {
-    if [ -f ../../patch/openfoam/openfoam-$(arch)-${HPC_COMPILER}.patch ]
+    if [ -f ../patch/openfoam/OpenFOAM-${OPENFOAM_VERSION}.patch ]
     then
-	patch -Np1 < ../../patch/openfoam/openfoam-$(arch)-${HPC_COMPILER}.patch
+	patch -d${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION} -Np1 < ../patch/openfoam/OpenFOAM-${OPENFOAM_VERSION}.patch
     fi
+
+    if [ -f ../patch/openfoam/OpenFOAM-${OPENFOAM_VERSION}-sigfpe.patch ]
+    then
+	patch -d${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION} -Np1 < ../patch/openfoam/OpenFOAM-${OPENFOAM_VERSION}-sigfpe.patch
+    fi
+
+    if [ -f ../patch/openfoam/OpenFOAM-${OPENFOAM_VERSION}-sha1.patch ]
+    then
+	patch -d${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION} -Np1 < ../patch/openfoam/OpenFOAM-${OPENFOAM_VERSION}-sha1.patch
+    fi
+
+    if [ -f ../patch/openfoam/ThirdParty-${OPENFOAM_VERSION}.patch ]
+    then
+	patch -d${OPENFOAM_PREFIX}/ThirdParty-${OPENFOAM_VERSION} -Np1 < ../patch/openfoam/ThirdParty-${OPENFOAM_VERSION}.patch
+    fi
+
+    sed -i -e s"/^ccmio_version=.*/ccmio_version=ccmio-system/g" \
+	    -e s"%^export CCMIO_ARCH_PATH=.*%export CCMIO_ARCH_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}%g" \
+	    ${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION}/etc/config.sh/ccmio
+
+    sed -i -e s"/^fftw_version=.*/fftw_version=fftw-system/g" \
+	    -e s"%^export FFTW_ARCH_PATH=.*%export FFTW_ARCH_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}%g" \
+	    ${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION}/etc/config.sh/FFTW
+
+    sed -i -e s"/^METIS_VERSION=.*/METIS_VERSION=metis-system/g" \
+	    -e s"%^export METIS_ARCH_PATH=.*%export METIS_ARCH_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}%g" \
+	    ${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION}/etc/config.sh/metis
+
+    sed -i -e s"/^SCOTCH_VERSION=.*/SCOTCH_VERSION=scotch-system/g" \
+	    -e s"%^export SCOTCH_ARCH_PATH=.*%export SCOTCH_ARCH_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}%g" \
+	    ${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION}/etc/config.sh/scotch
+
+    sed -i -e s"/^KAHIP_VERSION=.*/KAHIP_VERSION=scotch-system/g" \
+	    -e s"%^export KAHIP_ARCH_PATH=.*%export KAHIP_ARCH_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}%g" \
+	    ${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION}/etc/config.sh/kahip
+
+    sed -i -e s"/^adios2_version=.*/adios2_version=adios2-system/g" \
+	    -e s"%^export ADIOS2_ARCH_PATH=.*%export ADIOS2_ARCH_PATH=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}%g" \
+	    ${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION}/etc/config.sh/adios2
 }
 
 install_openfoam()
@@ -145,17 +184,20 @@ install_openfoam()
 	"intelmpi")
 	    export MPI_ROOT=${I_MPI_ROOT}
 	    export MPI_ARCH_FLAGS="-DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX"
-	    WM_MPLIB="INTELMPI"
+	    export WM_MPLIB="INTELMPI"
 	    ;;
 	"mpich"|"mvapich"|"openmpi")
 	    export MPI_ROOT=${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}
+	    export MPI_ARCH_PATH=${MPI_ROOT}
 	    export MPI_ARCH_FLAGS="-DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX"
 	    export MPI_ARCH_INC="-isystem ${MPI_ROOT}/include"
-	    WM_MPILIB="SYSTEMMPI"
+
 	    if [ "${HPC_MPI}" == "openmpi" ]
 	    then 
+                export WM_MPILIB="SYSTEMOPENMPI"
 		export MPI_ARCH_LIBS="-L${MPI_ROOT}/lib -lmpi"
 	    else
+                export WM_MPILIB="SYSTEMMPI"
 		export MPI_ARCH_LIBS="-L${MPI_ROOT}/lib -lmpi -lrt"
 	    fi
 	    ;;
@@ -167,9 +209,30 @@ install_openfoam()
 
     export FOAM_INST_DIR=${OPENFOAM_PREFIX}
 
+    #export WM_LDFLAGS="-Wl,--allow-multiple-definition"
+    #export HPC_CXXFLAGS="${HPC_CXXFLAGS} -Wl,-z,muldefs"
+    patch_openfoam
+
     . "${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION}/etc/bashrc" WM_COMPILER=${WM_COMPILER} WM_MPLIB=${WM_MPLIB} WM_COMPILE_OPTION=OptHB
     #export LD_LIBRARY_PATH=${FOAM_LIBBIN}:${LD_LIBRARY_PATH}
+    #"${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION}"uu
     cp ../patch/openfoam/c*OptHB ${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION}/wmake/rules/${WM_ARCH}${WM_COMPILER} 
+    if [ "${HPC_COMPILER}" == "armgcc" ]
+    then
+        echo 'LINKLIBSO  += $(HPC_LLIBS)' >> ${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION}/wmake/rules/${WM_ARCH}${WM_COMPILER}/c
+       	echo 'LINKLIBSO  += $(HPC_LLIBS)' >> ${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION}/wmake/rules/${WM_ARCH}${WM_COMPILER}/c++
+        echo 'LINKEXE    += $(HPC_LLIBS)' >> ${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION}/wmake/rules/${WM_ARCH}${WM_COMPILER}/c
+        echo 'LINKEXE    += $(HPC_LLIBS)' >> ${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION}/wmake/rules/${WM_ARCH}${WM_COMPILER}/c++
+    fi
+    if [ "${HPC_COMPILER}" == "icc" ]
+    then
+        sed -i s"/makeCGAL ||/makeCGAL -toolset=intel-linux ||/g" ${OPENFOAM_PREFIX}/ThirdParty-${OPENFOAM_VERSION}/Allwmake
+	# fix libo build error: 
+	sed -i s"/\$(LD) -r/& --allow-multiple-definition/g" ${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION}/wmake/makefiles/general
+	#unset HPC_LLIBS
+    fi
+
+
     cd "${OPENFOAM_PREFIX}/OpenFOAM-${OPENFOAM_VERSION}"
     # 4 以下版本 ipcp 等编译器无法找到 .o 文件导致很多库无法链接，而编译器生成的是 .so 文件
     # https://www.cfd-online.com/Forums/openfoam-programming-development/162594-usr-bin-ld-cannot-find-llagrangianturbulence-usr-bin-ld-cannot-find-lfluidtherm.html
@@ -192,7 +255,8 @@ install_openfoam()
     #sed -i 's/^cOPT *= /&-std=gnu99 /g' wmake/rules/linux64${WM_COMPILER}/cOpt
     #sed -i 's/^c++OPT *= /&-std=gnu++98 /g' wmake/rules/linux64${WM_COMPILER}/c++Opt
     #./Allwmake -s -l
-    ./Allwmake -s || exit 1
+    export WM_NCOMPPROCS=$(nproc)
+    ./Allwmake -j ${WM_NCOMPPROCS} -s || exit 1
     cd -
 
 }

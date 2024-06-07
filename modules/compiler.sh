@@ -269,16 +269,6 @@ install_sys_dependency_for_compiler()
 }
 
 download_compiler() {
-    if [ ! -f ${CMAKE_SRC} ] && ([ ${S_VERSION_ID} -eq 7 ] || [ ${S_VERSION_ID} -eq 18 ])
-    then
-	curl --retry 3 -JLOk https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/${CMAKE_SRC}
-	result=$?
-	if [ ${result} -ne 0 ]
-	then
-	    return ${result}
-	fi
-    fi
-
     case "${HPC_COMPILER}" in
 	"armgcc" | "armclang")
 	    if [ -f ${ARM_COMPILER_SRC} ]
@@ -476,6 +466,17 @@ install_gcc_compiler()
 
 build_cmake()
 {
+    if [ ! -f ${CMAKE_SRC} ] && ([ ${S_VERSION_ID} -eq 7 ] || [ ${S_VERSION_ID} -eq 18 ])
+    then
+	curl --retry 3 -JLOk https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/${CMAKE_SRC}
+	result=$?
+	if [ ${result} -ne 0 ]
+	then
+	    return ${result}
+	fi
+    fi
+
+
     if [ ${S_VERSION_ID} -eq 7 ] || [ ${S_VERSION_ID} -eq 18 ]
     then
 	echo "zzz *** $(date) *** Build ${CMAKE_SRC%.tar.gz}"

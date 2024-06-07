@@ -26,6 +26,35 @@ icx-mpich:mpich,sqlite,proj,zlib,libaec,ecbuild,jasper,eccodes,magics
 icx-mvapich:mvapich,sqlite,proj,zlib,libaec,ecbuild,jasper,eccodes,magics
 icx-intelmpi:sqlite,proj,zlib,libaec,ecbuild,jasper,eccodes,magics
 
+# paraview's dependencies
+amdclang-openmpi:openmpi,ninja,vtk,paraview
+amdclang-mpich:mpich,ninja,vtk,paraview
+amdclang-mvapich:mvapich,ninja,vtk,paraview
+amdclang-intelmpi:ninja,vtk,paraview
+armgcc-openmpi:openmpi,ninja,vtk,paraview
+armgcc-mpich:mpich,ninja,vtk,paraview
+armgcc-mvapich:mvapich,ninja,vtk,paraview
+armclang-openmpi:openmpi,ninja,vtk,paraview
+armclang-mpich:mpich,ninja,vtk,paraview
+armclang-mvapich:mvapich,ninja,vtk,paraview
+clang-openmpi:openmpi,ninja,vtk,paraview
+clang-mpich:mpich,ninja,vtk,paraview
+clang-mvapich:mvapich,ninja,vtk,paraview
+clang-intelmpi:ninja,vtk,paraview
+gcc-openmpi:openmpi,ninja,vtk,paraview
+gcc-mpich:mpich,ninja,vtk,paraview
+gcc-mvapich:mvapich,ninja,vtk,paraview
+gcc-intelmpi:ninja,vtk,paraview
+icc-openmpi:openmpi,ninja,vtk,paraview
+icc-mpich:mpich,ninja,vtk,paraview
+icc-mvapich:mvapich,ninja,vtk,paraview
+icc-intelmpi:ninja,vtk,paraview
+icx-openmpi:openmpi,ninja,vtk,paraview
+icx-mpich:mpich,ninja,vtk,paraview
+icx-mvapich:mvapich,ninja,vtk,paraview
+icx-intelmpi:ninja,vtk,paraview
+
+
 # geos's dependencies
 amdclang-openmpi:openmpi,geos
 amdclang-mpich:mpich,geos
@@ -391,32 +420,32 @@ icx-mvapich:mvapich,bfs
 icx-intelmpi:bfs
 
 # openfoam's dependencies
-amdclang-openmpi:openmpi,openfoam
-amdclang-mpich:mpich,openfoam
-amdclang-mvapich:mvapich,openfoam
-amdclang-intelmpi:openfoam
-armgcc-openmpi:openmpi,openfoam
-armgcc-mpich:mpich,openfoam
-armgcc-mvapich:mvapich,openfoam
-armclang-openmpi:openmpi,openfoam
-armclang-mpich:mpich,openfoam
-armclang-mvapich:mvapich,openfoam
-clang-openmpi:openmpi,openfoam
-clang-mpich:mpich,openfoam
-clang-mvapich:mvapich,openfoam
-clang-intelmpi:openfoam
-gcc-openmpi:openmpi,openfoam
-gcc-mpich:mpich,openfoam
-gcc-mvapich:mvapich,openfoam
-gcc-intelmpi:openfoam
-icc-openmpi:openmpi,openfoam
-icc-mpich:mpich,openfoam
-icc-mvapich:mvapich,openfoam
-icc-intelmpi:openfoam
-icx-openmpi:openmpi,openfoam
-icx-mpich:mpich,openfoam
-icx-mvapich:mvapich,openfoam
-icx-intelmpi:openfoam
+amdclang-openmpi:openmpi,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+amdclang-mpich:mpich,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+amdclang-mvapich:mvapich,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+amdclang-intelmpi:zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+armgcc-openmpi:openmpi,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+armgcc-mpich:mpich,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+armgcc-mvapich:mvapich,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+armclang-openmpi:openmpi,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+armclang-mpich:mpich,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+armclang-mvapich:mvapich,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+clang-openmpi:openmpi,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+clang-mpich:mpich,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+clang-mvapich:mvapich,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+clang-intelmpi:zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+gcc-openmpi:openmpi,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+gcc-mpich:mpich,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+gcc-mvapich:mvapich,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+gcc-intelmpi:zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+icc-openmpi:openmpi,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+icc-mpich:mpich,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+icc-mvapich:mvapich,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+icc-intelmpi:zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+icx-openmpi:openmpi,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+icx-mpich:mpich,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+icx-mvapich:mvapich,zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
+icx-intelmpi:zlib,fftw,scotch,gklib,metis,kahip,adios2,openfoam
 
 # b-eff's dependencies
 amdclang-openmpi:openmpi,b-eff
@@ -651,33 +680,6 @@ icx-nvidiampi:gromacs
 nvc-openmpi:openmpi,gromacs
 nvc-mpich:mpich,gromacs
 nvc-intelmpi:gromacs
-# openfoam's dependencies
-amdclang-openmpi:openmpi,openfoam
-amdclang-mpich:mpich,openfoam
-amdclang-mvapich:mvapich,openfoam
-amdclang-intelmpi:openfoam
-armgcc-openmpi:openmpi,openfoam
-armgcc-mpich:mpich,openfoam
-armgcc-mvapich:mvapich,openfoam
-armclang-openmpi:openmpi,openfoam
-armclang-mpich:mpich,openfoam
-armclang-mvapich:mvapich,openfoam
-clang-openmpi:openmpi,openfoam
-clang-mpich:mpich,openfoam
-clang-mvapich:mvapich,openfoam
-clang-intelmpi:openfoam
-gcc-openmpi:openmpi,openfoam
-gcc-mpich:mpich,openfoam
-gcc-mvapich:mvapich,openfoam
-gcc-intelmpi:openfoam
-icc-openmpi:openmpi,openfoam
-icc-mpich:mpich,openfoam
-icc-mvapich:mvapich,openfoam
-icc-intelmpi:openfoam
-icx-openmpi:openmpi,openfoam
-icx-mpich:mpich,openfoam
-icx-mvapich:mvapich,openfoam
-icx-intelmpi:openfoam
 
 # b-eff's dependencies
 amdclang-openmpi:openmpi,b-eff
