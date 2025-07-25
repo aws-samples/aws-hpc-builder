@@ -1,0 +1,336 @@
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linux64Clang/c++ OpenFOAM-2.3.1/wmake/rules/linux64Clang/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linux64Clang/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linux64Clang/c++	2024-07-25 05:33:16.000000000 +0000
+@@ -7,7 +7,7 @@
+ # Suppress CGAL warnings
+ c++CGALWARN = -Wno-c++11-extensions -Wno-sometimes-uninitialized -Wno-mismatched-tags
+ 
+-CC          = clang++ -m64
++CC          = clang++ -m64 -std=c++0x -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linux64Gcc/c++ OpenFOAM-2.3.1/wmake/rules/linux64Gcc/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linux64Gcc/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linux64Gcc/c++	2024-07-25 05:34:12.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast -Wnon-virtual-dtor
+ 
+-CC          = g++ -m64
++CC          = g++ -m64 -std=c++0x -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linux64Gcc++0x/c++ OpenFOAM-2.3.1/wmake/rules/linux64Gcc++0x/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linux64Gcc++0x/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linux64Gcc++0x/c++	2024-07-25 05:33:25.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast -Wnon-virtual-dtor
+ 
+-CC          = g++ -m64 -std=c++0x
++CC          = g++ -m64 -std=c++0x -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linux64Gcc43/c++ OpenFOAM-2.3.1/wmake/rules/linux64Gcc43/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linux64Gcc43/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linux64Gcc43/c++	2024-07-25 05:33:30.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++ -m64
++CC          = g++ -m64 -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linux64Gcc44/c++ OpenFOAM-2.3.1/wmake/rules/linux64Gcc44/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linux64Gcc44/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linux64Gcc44/c++	2024-07-25 05:33:36.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++ -m64
++CC          = g++ -m64 -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linux64Gcc45/c++ OpenFOAM-2.3.1/wmake/rules/linux64Gcc45/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linux64Gcc45/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linux64Gcc45/c++	2024-07-25 05:33:43.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++ -m64
++CC          = g++ -m64 -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linux64Gcc46/c++ OpenFOAM-2.3.1/wmake/rules/linux64Gcc46/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linux64Gcc46/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linux64Gcc46/c++	2024-07-25 05:33:49.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++ -m64
++CC          = g++ -m64 -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linux64Gcc47/c++ OpenFOAM-2.3.1/wmake/rules/linux64Gcc47/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linux64Gcc47/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linux64Gcc47/c++	2024-07-25 05:33:57.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++ -m64
++CC          = g++ -m64 -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linux64Gcc48/c++ OpenFOAM-2.3.1/wmake/rules/linux64Gcc48/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linux64Gcc48/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linux64Gcc48/c++	2024-07-25 05:34:03.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++ -m64
++CC          = g++ -m64 -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linux64Gcc49/c++ OpenFOAM-2.3.1/wmake/rules/linux64Gcc49/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linux64Gcc49/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linux64Gcc49/c++	2024-07-25 05:34:07.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++ -m64
++CC          = g++ -m64 -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linux64Icc/c++ OpenFOAM-2.3.1/wmake/rules/linux64Icc/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linux64Icc/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linux64Icc/c++	2024-07-25 05:34:19.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -wd327,525,654,819,1125,1476,1505,1572
+ 
+-CC          = icpc -std=c++0x
++CC          = icpc -std=c++0x -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linuxARM7Gcc/c++ OpenFOAM-2.3.1/wmake/rules/linuxARM7Gcc/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linuxARM7Gcc/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linuxARM7Gcc/c++	2024-07-25 05:34:26.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++
++CC          = g++ -std=c++0x -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linuxClang/c++ OpenFOAM-2.3.1/wmake/rules/linuxClang/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linuxClang/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linuxClang/c++	2024-07-25 05:34:34.000000000 +0000
+@@ -7,7 +7,7 @@
+ # Suppress CGAL warnings
+ c++CGALWARN = -Wno-c++11-extensions -Wno-sometimes-uninitialized -Wno-mismatched-tags
+ 
+-CC          = clang++ -m32
++CC          = clang++ -m32 -std=c++0x -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linuxGcc/c++ OpenFOAM-2.3.1/wmake/rules/linuxGcc/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linuxGcc/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linuxGcc/c++	2024-07-25 05:35:13.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++ -m32
++CC          = g++ -m32 -std=c++0x -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linuxGcc43/c++ OpenFOAM-2.3.1/wmake/rules/linuxGcc43/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linuxGcc43/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linuxGcc43/c++	2024-07-25 05:34:39.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++ -m32
++CC          = g++ -m32 -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linuxGcc44/c++ OpenFOAM-2.3.1/wmake/rules/linuxGcc44/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linuxGcc44/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linuxGcc44/c++	2024-07-25 05:34:43.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++ -m32
++CC          = g++ -m32 -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linuxGcc45/c++ OpenFOAM-2.3.1/wmake/rules/linuxGcc45/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linuxGcc45/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linuxGcc45/c++	2024-07-25 05:34:47.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++ -m32
++CC          = g++ -m32 -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linuxGcc46/c++ OpenFOAM-2.3.1/wmake/rules/linuxGcc46/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linuxGcc46/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linuxGcc46/c++	2024-07-25 05:34:53.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++ -m32
++CC          = g++ -m32 -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linuxGcc47/c++ OpenFOAM-2.3.1/wmake/rules/linuxGcc47/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linuxGcc47/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linuxGcc47/c++	2024-07-25 05:34:57.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++ -m32
++CC          = g++ -m32 -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linuxGcc48/c++ OpenFOAM-2.3.1/wmake/rules/linuxGcc48/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linuxGcc48/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linuxGcc48/c++	2024-07-25 05:35:02.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++ -m32
++CC          = g++ -m32 -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linuxGcc49/c++ OpenFOAM-2.3.1/wmake/rules/linuxGcc49/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linuxGcc49/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linuxGcc49/c++	2024-07-25 05:35:08.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++ -m32
++CC          = g++ -m32 -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linuxIA64Gcc/c++ OpenFOAM-2.3.1/wmake/rules/linuxIA64Gcc/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linuxIA64Gcc/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linuxIA64Gcc/c++	2024-07-25 05:35:18.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++
++CC          = g++ -std=c++0x -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linuxIA64Icc/c++ OpenFOAM-2.3.1/wmake/rules/linuxIA64Icc/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linuxIA64Icc/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linuxIA64Icc/c++	2024-07-25 05:35:22.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -wd327,525,654,819,1125,1476,1505,1572
+ 
+-CC          = icpc
++CC          = icpc -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linuxIcc/c++ OpenFOAM-2.3.1/wmake/rules/linuxIcc/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linuxIcc/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linuxIcc/c++	2024-07-25 05:35:27.000000000 +0000
+@@ -3,7 +3,7 @@
+ c++WARN     = -wd327,525,654,819,1125,1476,1505,1572
+ 
+ #CC          = icpc -gcc-version=400
+-CC          = icpc -std=c++0x
++CC          = icpc -std=c++0x -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/linuxPPC64Gcc/c++ OpenFOAM-2.3.1/wmake/rules/linuxPPC64Gcc/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/linuxPPC64Gcc/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/linuxPPC64Gcc/c++	2024-07-25 05:35:32.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++ -m64 -mcpu=power5+
++CC          = g++ -m64 -mcpu=power5+ -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/SiCortex64Gcc/c++ OpenFOAM-2.3.1/wmake/rules/SiCortex64Gcc/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/SiCortex64Gcc/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/SiCortex64Gcc/c++	2024-07-25 05:35:38.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++ -mabi=64
++CC          = g++ -mabi=64 -pthread
+ #CC          = scg++ -mabi=64
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/solarisGcc/c++ OpenFOAM-2.3.1/wmake/rules/solarisGcc/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/solarisGcc/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/solarisGcc/c++	2024-07-25 05:35:43.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter
+ 
+-CC          = g++
++CC          = g++ -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-2.3.1.orig/wmake/rules/SunOS64Gcc/c++ OpenFOAM-2.3.1/wmake/rules/SunOS64Gcc/c++
+--- OpenFOAM-2.3.1.orig/wmake/rules/SunOS64Gcc/c++	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/wmake/rules/SunOS64Gcc/c++	2024-07-25 05:35:49.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ c++WARN     = -Wall -Wextra -Wno-unused-parameter -Wold-style-cast
+ 
+-CC          = g++ -m64
++CC          = g++ -m64 -pthread
+ 
+ include $(RULES)/c++$(WM_COMPILE_OPTION)
+ 

@@ -1,0 +1,54 @@
+diff -urN ThirdParty-6-version-6.orig/Allwmake ThirdParty-6-version-6/Allwmake
+--- ThirdParty-6-version-6.orig/Allwmake	2018-07-07 18:45:40.000000000 +0000
++++ ThirdParty-6-version-6/Allwmake	2024-07-25 04:10:00.000000000 +0000
+@@ -192,11 +192,11 @@
+ scotchMakefile=../../etc/wmakeFiles/scotch/Makefile.inc.i686_pc_linux2.shlib-OpenFOAM
+ 
+ if [ -f $SCOTCH_ARCH_PATH/include/scotch.h \
+-  -a -r $FOAM_EXT_LIBBIN/libscotch.so \
+-  -a -r $FOAM_EXT_LIBBIN/libscotcherrexit.so ]
++  -a -r $SCOTCH_ARCH_PATH/lib/libscotch.so \
++  -a -r $SCOTCH_ARCH_PATH/lib/libscotcherrexit.so ]
+ then
+     echo "    scotch header in $SCOTCH_ARCH_PATH/include"
+-    echo "    scotch libs   in $FOAM_EXT_LIBBIN"
++    echo "    scotch libs   in $SCOTCH_ARCH_PATH/lib"
+     echo
+ else
+ (
+@@ -252,12 +252,12 @@
+     echo "    $SCOTCH_ARCH_PATH"
+     echo
+ 
+-    if [ -f $SCOTCH_ARCH_PATH/include/$FOAM_MPI/ptscotch.h \
+-      -a -r $FOAM_EXT_LIBBIN/$FOAM_MPI/libptscotch.so \
+-      -a -r $FOAM_EXT_LIBBIN/$FOAM_MPI/libptscotcherrexit.so ]
++    if [ -f $SCOTCH_ARCH_PATH/include/ptscotch.h \
++      -a -r $SCOTCH_ARCH_PATH/lib/libptscotch.so \
++      -a -r $SCOTCH_ARCH_PATH/lib/libptscotcherrexit.so ]
+     then
+-        echo "    ptscotch header in $SCOTCH_ARCH_PATH/include/$FOAM_MPI"
+-        echo "    ptscotch libs   in $FOAM_EXT_LIBBIN/$FOAM_MPI"
++        echo "    ptscotch header in $SCOTCH_ARCH_PATH/include"
++        echo "    ptscotch libs   in $SCOTCH_ARCH_PATH/lib"
+         echo
+     else
+     (
+@@ -318,14 +318,14 @@
+ then
+     . $settings
+ fi
+-if [ -d "$METIS_VERSION" ]
++if [ "$METIS_VERSION" == "metis-system" ]
+ then
+ 
+     if [ -f $METIS_ARCH_PATH/include/metis.h \
+-      -a -r $FOAM_EXT_LIBBIN/libmetis.so ]
++      -a -r $METIS_ARCH_PATH/lib/libmetis.so ]
+     then
+         echo "    metis header in $METIS_ARCH_PATH/include"
+-        echo "    metis libs   in $FOAM_EXT_LIBBIN"
++        echo "    metis libs   in $METIS_ARCH_PATH/lib"
+         echo
+     else
+     (

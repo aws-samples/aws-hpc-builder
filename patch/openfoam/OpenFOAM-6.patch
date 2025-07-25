@@ -1,0 +1,201 @@
+diff -urN OpenFOAM-6-version-6.orig/etc/config.sh/settings OpenFOAM-6-version-6/etc/config.sh/settings
+--- OpenFOAM-6-version-6.orig/etc/config.sh/settings	2018-07-09 16:01:02.000000000 +0000
++++ OpenFOAM-6-version-6/etc/config.sh/settings	2024-07-25 05:01:21.000000000 +0000
+@@ -74,6 +74,17 @@
+         esac
+         ;;
+ 
++    aarch64)
++        WM_ARCH=linux64
++        export WM_COMPILER_LIB_ARCH=64
++        export WM_CC='gcc'
++        export WM_CXX='g++'
++        export WM_CFLAGS='-fPIC'
++        export WM_CXXFLAGS='-fPIC -std=c++0x'
++        export WM_LDFLAGS=
++        ;;
++
++        
+     ia64)
+         WM_ARCH=linuxIA64
+         export WM_COMPILER=I64
+diff -urN OpenFOAM-6-version-6.orig/wmake/rules/linux64Clang/c++ OpenFOAM-6-version-6/wmake/rules/linux64Clang/c++
+--- OpenFOAM-6-version-6.orig/wmake/rules/linux64Clang/c++	2018-07-09 16:01:02.000000000 +0000
++++ OpenFOAM-6-version-6/wmake/rules/linux64Clang/c++	2024-07-25 05:03:01.000000000 +0000
+@@ -5,7 +5,7 @@
+ # Suppress some warnings for flex++ and CGAL
+ c++LESSWARN = -Wno-old-style-cast -Wno-unused-local-typedefs -Wno-tautological-undefined-compare -Wno-shift-negative-value
+ 
+-CC          = clang++ -std=c++11 -m64
++CC          = clang++ -std=c++11 -m64 -pthread
+ 
+ include $(DEFAULT_RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-6-version-6.orig/wmake/rules/linux64Gcc/c++ OpenFOAM-6-version-6/wmake/rules/linux64Gcc/c++
+--- OpenFOAM-6-version-6.orig/wmake/rules/linux64Gcc/c++	2018-07-09 16:01:02.000000000 +0000
++++ OpenFOAM-6-version-6/wmake/rules/linux64Gcc/c++	2024-07-25 05:01:59.000000000 +0000
+@@ -6,7 +6,7 @@
+ # Suppress some warnings for flex++ and CGAL
+ c++LESSWARN = -Wno-old-style-cast -Wno-unused-local-typedefs -Wno-array-bounds
+ 
+-CC          = g++ -std=c++11 -m64
++CC          = g++ -std=c++11 -m64 -pthread
+ 
+ include $(DEFAULT_RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-6-version-6.orig/wmake/rules/linux64GccKNL/c++ OpenFOAM-6-version-6/wmake/rules/linux64GccKNL/c++
+--- OpenFOAM-6-version-6.orig/wmake/rules/linux64GccKNL/c++	2018-07-09 16:01:02.000000000 +0000
++++ OpenFOAM-6-version-6/wmake/rules/linux64GccKNL/c++	2024-07-25 05:03:29.000000000 +0000
+@@ -6,7 +6,7 @@
+ # Suppress some warnings for flex++ and CGAL
+ c++LESSWARN = -Wno-old-style-cast -Wno-unused-local-typedefs -Wno-array-bounds
+ 
+-CC          = g++ -std=c++11 -m64 -march=knl -DvectorMachine
++CC          = g++ -std=c++11 -m64 -march=knl -DvectorMachine -pthread
+ 
+ include $(DEFAULT_RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-6-version-6.orig/wmake/rules/linux64Icc/c++ OpenFOAM-6-version-6/wmake/rules/linux64Icc/c++
+--- OpenFOAM-6-version-6.orig/wmake/rules/linux64Icc/c++	2018-07-09 16:01:02.000000000 +0000
++++ OpenFOAM-6-version-6/wmake/rules/linux64Icc/c++	2024-07-25 05:03:38.000000000 +0000
+@@ -6,7 +6,7 @@
+ # Suppress some warnings for flex++ and CGAL
+ c++LESSWARN = -diag-disable 1224,2026,2305
+ 
+-CC          = icpc -std=c++11 -fp-trap=common -fp-model precise
++CC          = icpc -std=c++11 -fp-trap=common -fp-model precise -pthread
+ 
+ include $(DEFAULT_RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-6-version-6.orig/wmake/rules/linux64IccKNL/c++ OpenFOAM-6-version-6/wmake/rules/linux64IccKNL/c++
+--- OpenFOAM-6-version-6.orig/wmake/rules/linux64IccKNL/c++	2018-07-09 16:01:02.000000000 +0000
++++ OpenFOAM-6-version-6/wmake/rules/linux64IccKNL/c++	2024-07-25 05:03:49.000000000 +0000
+@@ -6,7 +6,7 @@
+ # Suppress some warnings for flex++ and CGAL
+ c++LESSWARN = -diag-disable 1224,2026,2305
+ 
+-CC          = icpc -std=c++11 -xmic-avx512 -DvectorMachine -fp-trap=common -fp-model precise -fp-speculation=safe
++CC          = icpc -std=c++11 -xmic-avx512 -DvectorMachine -fp-trap=common -fp-model precise -fp-speculation=safe -pthread
+ 
+ include $(DEFAULT_RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-6-version-6.orig/wmake/rules/linuxARM7Gcc/c++ OpenFOAM-6-version-6/wmake/rules/linuxARM7Gcc/c++
+--- OpenFOAM-6-version-6.orig/wmake/rules/linuxARM7Gcc/c++	2018-07-09 16:01:02.000000000 +0000
++++ OpenFOAM-6-version-6/wmake/rules/linuxARM7Gcc/c++	2024-07-25 05:04:56.000000000 +0000
+@@ -6,7 +6,7 @@
+ # Suppress some warnings for flex++ and CGAL
+ c++LESSWARN = -Wno-old-style-cast -Wno-unused-local-typedefs -Wno-array-bounds
+ 
+-CC          = g++ -std=c++11
++CC          = g++ -std=c++11 -pthread
+ 
+ include $(DEFAULT_RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-6-version-6.orig/wmake/rules/linuxClang/c++ OpenFOAM-6-version-6/wmake/rules/linuxClang/c++
+--- OpenFOAM-6-version-6.orig/wmake/rules/linuxClang/c++	2018-07-09 16:01:02.000000000 +0000
++++ OpenFOAM-6-version-6/wmake/rules/linuxClang/c++	2024-07-25 05:05:03.000000000 +0000
+@@ -5,7 +5,7 @@
+ # Suppress some warnings for flex++ and CGAL
+ c++LESSWARN = -Wno-old-style-cast -Wno-unused-local-typedefs -Wno-tautological-undefined-compare -Wno-shift-negative-value
+ 
+-CC          = clang++ -std=c++11 -m32
++CC          = clang++ -std=c++11 -m32 -pthread
+ 
+ include $(DEFAULT_RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-6-version-6.orig/wmake/rules/linuxGcc/c++ OpenFOAM-6-version-6/wmake/rules/linuxGcc/c++
+--- OpenFOAM-6-version-6.orig/wmake/rules/linuxGcc/c++	2018-07-09 16:01:02.000000000 +0000
++++ OpenFOAM-6-version-6/wmake/rules/linuxGcc/c++	2024-07-25 05:05:11.000000000 +0000
+@@ -6,7 +6,7 @@
+ # Suppress some warnings for flex++ and CGAL
+ c++LESSWARN = -Wno-old-style-cast -Wno-unused-local-typedefs -Wno-array-bounds
+ 
+-CC          = g++ -std=c++11 -m32
++CC          = g++ -std=c++11 -m32 -pthread
+ 
+ include $(DEFAULT_RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-6-version-6.orig/wmake/rules/linuxIA64Gcc/c++ OpenFOAM-6-version-6/wmake/rules/linuxIA64Gcc/c++
+--- OpenFOAM-6-version-6.orig/wmake/rules/linuxIA64Gcc/c++	2018-07-09 16:01:02.000000000 +0000
++++ OpenFOAM-6-version-6/wmake/rules/linuxIA64Gcc/c++	2024-07-25 05:04:03.000000000 +0000
+@@ -6,7 +6,7 @@
+ # Suppress some warnings for flex++ and CGAL
+ c++LESSWARN = -Wno-old-style-cast -Wno-unused-local-typedefs -Wno-array-bounds
+ 
+-CC          = g++ -std=c++11
++CC          = g++ -std=c++11 -pthread
+ 
+ include $(DEFAULT_RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-6-version-6.orig/wmake/rules/linuxIA64Icc/c++ OpenFOAM-6-version-6/wmake/rules/linuxIA64Icc/c++
+--- OpenFOAM-6-version-6.orig/wmake/rules/linuxIA64Icc/c++	2018-07-09 16:01:02.000000000 +0000
++++ OpenFOAM-6-version-6/wmake/rules/linuxIA64Icc/c++	2024-07-25 05:04:12.000000000 +0000
+@@ -6,7 +6,7 @@
+ # Suppress some warnings for flex++ and CGAL
+ c++LESSWARN = -diag-disable 1224,2026,2305
+ 
+-CC          = icpc -std=c++11
++CC          = icpc -std=c++11 -pthread
+ 
+ include $(DEFAULT_RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-6-version-6.orig/wmake/rules/linuxIcc/c++ OpenFOAM-6-version-6/wmake/rules/linuxIcc/c++
+--- OpenFOAM-6-version-6.orig/wmake/rules/linuxIcc/c++	2018-07-09 16:01:02.000000000 +0000
++++ OpenFOAM-6-version-6/wmake/rules/linuxIcc/c++	2024-07-25 05:05:22.000000000 +0000
+@@ -6,7 +6,7 @@
+ # Suppress some warnings for flex++ and CGAL
+ c++LESSWARN = -diag-disable 1224,2026,2305
+ 
+-CC          = icpc -std=c++11 -fp-trap=common -fp-model precise
++CC          = icpc -std=c++11 -fp-trap=common -fp-model precise -pthread
+ 
+ include $(DEFAULT_RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-6-version-6.orig/wmake/rules/linuxPPC64Gcc/c++ OpenFOAM-6-version-6/wmake/rules/linuxPPC64Gcc/c++
+--- OpenFOAM-6-version-6.orig/wmake/rules/linuxPPC64Gcc/c++	2018-07-09 16:01:02.000000000 +0000
++++ OpenFOAM-6-version-6/wmake/rules/linuxPPC64Gcc/c++	2024-07-25 05:04:22.000000000 +0000
+@@ -6,7 +6,7 @@
+ # Suppress some warnings for flex++ and CGAL
+ c++LESSWARN = -Wno-old-style-cast -Wno-unused-local-typedefs -Wno-array-bounds
+ 
+-CC          = g++ -std=c++11 -m64 -mcpu=power5+
++CC          = g++ -std=c++11 -m64 -mcpu=power5+ -pthread
+ 
+ include $(DEFAULT_RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-6-version-6.orig/wmake/rules/linuxPPC64leGcc/c++ OpenFOAM-6-version-6/wmake/rules/linuxPPC64leGcc/c++
+--- OpenFOAM-6-version-6.orig/wmake/rules/linuxPPC64leGcc/c++	2018-07-09 16:01:02.000000000 +0000
++++ OpenFOAM-6-version-6/wmake/rules/linuxPPC64leGcc/c++	2024-07-25 05:04:29.000000000 +0000
+@@ -6,7 +6,7 @@
+ # Suppress some warnings for flex++ and CGAL
+ c++LESSWARN = -Wno-old-style-cast -Wno-unused-local-typedefs -Wno-array-bounds
+ 
+-CC          = g++ -std=c++11 -m64 -mcpu=power8
++CC          = g++ -std=c++11 -m64 -mcpu=power8 -pthread
+ 
+ include $(DEFAULT_RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-6-version-6.orig/wmake/rules/solaris64Gcc/c++ OpenFOAM-6-version-6/wmake/rules/solaris64Gcc/c++
+--- OpenFOAM-6-version-6.orig/wmake/rules/solaris64Gcc/c++	2018-07-09 16:01:02.000000000 +0000
++++ OpenFOAM-6-version-6/wmake/rules/solaris64Gcc/c++	2024-07-25 05:04:37.000000000 +0000
+@@ -6,7 +6,7 @@
+ # Suppress some warnings for flex++ and CGAL
+ c++LESSWARN =
+ 
+-CC          = g++ -std=c++11 -m64
++CC          = g++ -std=c++11 -m64 -pthread
+ 
+ include $(DEFAULT_RULES)/c++$(WM_COMPILE_OPTION)
+ 
+diff -urN OpenFOAM-6-version-6.orig/wmake/rules/solarisGcc/c++ OpenFOAM-6-version-6/wmake/rules/solarisGcc/c++
+--- OpenFOAM-6-version-6.orig/wmake/rules/solarisGcc/c++	2018-07-09 16:01:02.000000000 +0000
++++ OpenFOAM-6-version-6/wmake/rules/solarisGcc/c++	2024-07-25 05:05:38.000000000 +0000
+@@ -6,7 +6,7 @@
+ # Suppress some warnings for flex++ and CGAL
+ c++LESSWARN =
+ 
+-CC          = g++ -std=c++11
++CC          = g++ -std=c++11 -pthread
+ 
+ include $(DEFAULT_RULES)/c++$(WM_COMPILE_OPTION)
+ 

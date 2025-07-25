@@ -223,6 +223,34 @@ icx-mpich:mpich,sqlite
 icx-mvapich:mvapich,sqlite
 icx-intelmpi:sqlite
 
+# singularity's dependencies
+amdclang-openmpi:openmpi,singularity
+amdclang-mpich:mpich,singularity
+amdclang-mvapich:mvapich,singularity
+amdclang-intelmpi:singularity
+armgcc-openmpi:openmpi,singularity
+armgcc-mpich:mpich,singularity
+armgcc-mvapich:mvapich,singularity
+armclang-openmpi:openmpi,singularity
+armclang-mpich:mpich,singularity
+armclang-mvapich:mvapich,singularity
+clang-openmpi:openmpi,singularity
+clang-mpich:mpich,singularity
+clang-mvapich:mvapich,singularity
+clang-intelmpi:singularity
+gcc-openmpi:openmpi,singularity
+gcc-mpich:mpich,singularity
+gcc-mvapich:mvapich,singularity
+gcc-intelmpi:singularity
+icc-openmpi:openmpi,singularity
+icc-mpich:mpich,singularity
+icc-mvapich:mvapich,singularity
+icc-intelmpi:singularity
+icx-openmpi:openmpi,singularity
+icx-mpich:mpich,singularity
+icx-mvapich:mvapich,singularity
+icx-intelmpi:singularity
+
 # osu's dependencies
 amdclang-openmpi:openmpi,osu
 amdclang-mpich:mpich,osu

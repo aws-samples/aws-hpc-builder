@@ -76,7 +76,7 @@ install_aws_ofi_nccl()
 	    --with-mpi=$(dirname $(dirname $(which mpirun)))
     fi
     make && \
-	sudo --preserve-env=PATH,LD_LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && \
+	sudo --preserve-env=PATH,LD_LIBRARY_PATH,LIBRARY_PATH,CC,CXX,F77,FC,AR,RANLIB env make install && \
 	cd .. && \
 	sudo rm -rf "${AWS_OFI_NCCL_SRC%.tar.gz}" || exit 1
 }

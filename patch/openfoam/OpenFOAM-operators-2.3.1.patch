@@ -1,0 +1,12 @@
+diff -urN OpenFOAM-2.3.1.orig/src/OpenFOAM/containers/Lists/PackedList/PackedBoolList.H OpenFOAM-2.3.1/src/OpenFOAM/containers/Lists/PackedList/PackedBoolList.H
+--- OpenFOAM-2.3.1.orig/src/OpenFOAM/containers/Lists/PackedList/PackedBoolList.H	2014-12-04 17:52:43.000000000 +0000
++++ OpenFOAM-2.3.1/src/OpenFOAM/containers/Lists/PackedList/PackedBoolList.H	2024-07-24 03:25:40.000000000 +0000
+@@ -200,7 +200,7 @@
+             inline PackedBoolList& operator=(const PackedList<1>&);
+ 
+             //- Assignment operator.
+-            PackedBoolList& operator=(const UList<bool>&);
++            PackedBoolList& operator=(const Foam::UList<bool>&);
+ 
+             //- Assignment operator,
+             //  using the labels as indices to indicate which bits are set

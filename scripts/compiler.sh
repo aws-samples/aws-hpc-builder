@@ -426,6 +426,8 @@ case ${HPC_COMPILER} in
 	export HPC_LLIBS="-L${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib64 -lblas -lopenblas -llapack"
 	export HPC_INCS="-I${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include"
 	export HPC_INC_DIR="${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include"
+	export C_INCLUDE_PATH="${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include"
+	export CPLUS_INCLUDE_PATH="${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include"
 	export HPC_FFT_LIB="-L${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/lib -llftw3"
 	;;
     "armgcc")
@@ -451,6 +453,8 @@ case ${HPC_COMPILER} in
 	export HPC_LDFLAGS="-L${ARMPL_DIR}/lib -larmpl_${PROG_MODEL} -lamath -lm -lastring"
 	export HPC_LLIBS="-L${ARMPL_DIR}/lib -larmpl_${PROG_MODEL} -lamath -lm -lastring"
 	export HPC_INC_DIR="${ARMPL_DIR}/include"
+	export C_INCLUDE_PATH="${HPC_INC_DIR}:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include"
+	export CPLUS_INCLUDE_PATH="${HPC_INC_DIR}:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include"
 	export HPC_INCS="-I${ARMPL_DIR}/include"
 	export HPC_FFT_LIB="${ARMPL_DIR}/lib/libarmpl.so"
 	;;
@@ -479,6 +483,8 @@ case ${HPC_COMPILER} in
 
 	export HPC_LLIBS="-L${ARMPL_DIR}/lib -armpl=${PROG_MODEL} -lamath -lm -lastring"
 	export HPC_INC_DIR="${ARMPL_DIR}/include"
+	export C_INCLUDE_PATH="${HPC_INC_DIR}:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include"
+	export CPLUS_INCLUDE_PATH="${HPC_INC_DIR}:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include"
 	export HPC_INCS="-I${ARMPL_DIR}/include"
 	export HPC_FFT_LIB="${ARMPL_DIR}/lib/libarmpl.so"
 
@@ -509,13 +515,15 @@ case ${HPC_COMPILER} in
 	#export HPC_CFLAGS="-xHOST -fma -ftz -fomit-frame-pointer"
 	#export HPC_CFLAGS="-Ofast -ipo -mavx -axCORE-AVX2,CORE-AVX512"
 	#export HPC_CFLAGS="-Ofast -ipo -mavx -axCORE-AVX2,CORE-AVX512 -march=icelake-server"
-	export HPC_CFLAGS="-Ofast -ipo -fp-model fast=2 -xHost -no-prec-div -no-prec-sqrt -axCORE-AVX2,CORE-AVX512"
-	export HPC_CXXFLAGS="-Ofast -ipo -fp-model fast=2 -xHost -no-prec-div -no-prec-sqrt -axCORE-AVX2,CORE-AVX512"
-	export HPC_FCFLAGS="-Ofast -ipo -fp-model fast=2 -xHost -no-prec-div -no-prec-sqrt -axCORE-AVX2,CORE-AVX512"
-	export HPC_FFLAGS="-Ofast -ipo -fp-model fast=2 -xHost -no-prec-div -no-prec-sqrt -axCORE-AVX2,CORE-AVX512"
+	export HPC_CFLAGS="-Ofast -fp-model fast=2 -xHost -no-prec-div -no-prec-sqrt -axCORE-AVX2,CORE-AVX512"
+	export HPC_CXXFLAGS="-Ofast -fp-model fast=2 -xHost -no-prec-div -no-prec-sqrt -axCORE-AVX2,CORE-AVX512"
+	export HPC_FCFLAGS="-Ofast -fp-model fast=2 -xHost -no-prec-div -no-prec-sqrt -axCORE-AVX2,CORE-AVX512"
+	export HPC_FFLAGS="-Ofast -fp-model fast=2 -xHost -no-prec-div -no-prec-sqrt -axCORE-AVX2,CORE-AVX512"
 	export HPC_LDFLAGS="-L${MKLROOT}/lib/intel64 -lmkl_scalapack_${PROG_MODEL} -lmkl_cdft_core -lmkl_intel_${PROG_MODEL} -lmkl_intel_thread -lmkl_core -lmkl_blacs_intelmpi_${PROG_MODEL} -liomp5 -lpthread -lm -ldl"
 	export HPC_LLIBS="-L${MKLROOT}/lib/intel64 -lmkl_scalapack_${PROG_MODEL} -lmkl_cdft_core -lmkl_intel_${PROG_MODEL} -lmkl_intel_thread -lmkl_core -lmkl_blacs_intelmpi_${PROG_MODEL} -liomp5 -lpthread -lm -ldl"
 	export HPC_INCS="-I${MKLROOT}/include"
+	export C_INCLUDE_PATH="${HPC_INC_DIR}:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include"
+	export CPLUS_INCLUDE_PATH="${HPC_INC_DIR}:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include"
 	export HPC_INC_DIR="${MKLROOT}/include"
 	;;
     "amdclang")
@@ -534,6 +542,8 @@ case ${HPC_COMPILER} in
 	export HPC_LDFLAGS="-L${AOCL_ROOT}/lib -lblis-mt -lflame -lscalapack -lfftw3 -lfftw3_omp -lalm -lm"
 	export HPC_LLIBS="-L${AOCL_ROOT}/lib -lblis-mt -lflame -lscalapack -lfftw3 -lfftw3_omp -lalm -lm"
 	export HPC_INC_DIR="${AOCL_ROOT}/include"
+	export C_INCLUDE_PATH="${HPC_INC_DIR}:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include"
+	export CPLUS_INCLUDE_PATH="${HPC_INC_DIR}:${HPC_PREFIX}/${HPC_COMPILER}/${HPC_MPI}/include"
 	export HPC_INCS="-I${AOCL_ROOT}/include"
 	export HPC_FFT_LIB="${AOCL_ROOT}/lib/libfftw3.so"
 	;;
